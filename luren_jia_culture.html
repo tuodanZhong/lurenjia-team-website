@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>路人甲 · 定位 · 使命 · 行动准则</title>
+<style>
+  :root {
+    --bg-000: #ffffff;
+    --bg-100: #f8f8f6;
+    --bg-200: #f4f4f1;
+    --bg-300: #efeeed;
+    --bg-400: #e6e5e0;
+    --text-100: #121212;
+    --text-200: #373734;
+    --text-400: #7b7974;
+    --accent-brand: #d97757;
+    --accent-link: #2977d6;
+    --danger: #c0392b;
+    --warning: #a86b00;
+    --success: #3d7400;
+    --border-light: rgba(18,18,18,0.08);
+    --border-medium: rgba(18,18,18,0.12);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-100);
+    color: var(--text-200);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 900px; margin: 0 auto; padding: 0 40px; }
+
+  /* Hero */
+  .hero { padding: 72px 40px 48px; text-align: center; }
+  .hero .eyebrow {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent-brand); margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(30px, 5vw, 48px); font-weight: 300;
+    color: var(--text-100); letter-spacing: -0.02em; line-height: 1.25;
+  }
+  .hero .subtitle {
+    font-size: 16px; color: var(--text-400);
+    max-width: 560px; margin: 18px auto 0;
+  }
+
+  /* Section */
+  .section { padding: 44px 0; border-top: 1px solid var(--border-light); }
+  .section:first-of-type { border-top: none; }
+  .section-num {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--accent-brand); margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 25px; font-weight: 600; color: var(--text-100);
+    letter-spacing: -0.01em; margin-bottom: 6px;
+  }
+  .section-desc { font-size: 15px; color: var(--text-400); margin-bottom: 28px; max-width: 640px; }
+
+  /* Statement block */
+  .statement {
+    background: var(--bg-000); border: 1px solid var(--border-light);
+    border-left: 3px solid var(--accent-brand);
+    border-radius: var(--radius-md); padding: 26px 30px; margin-bottom: 16px;
+  }
+  .statement .lead {
+    font-size: 21px; font-weight: 400; color: var(--text-100);
+    line-height: 1.5; letter-spacing: -0.01em;
+  }
+  .statement .lead strong { font-weight: 600; }
+  .statement .note { font-size: 14px; color: var(--text-400); margin-top: 14px; }
+
+  /* Two-part inline */
+  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 4px; }
+  .duo .card { margin-bottom: 0; }
+
+  /* Card */
+  .card {
+    background: var(--bg-000); border: 1px solid var(--border-light);
+    border-radius: var(--radius-md); padding: 24px 26px; margin-bottom: 14px;
+  }
+  .card h3 { font-size: 17px; font-weight: 600; color: var(--text-100); margin-bottom: 10px; }
+  .card p { font-size: 15px; color: var(--text-200); }
+  .card .sub { font-size: 13px; color: var(--text-400); margin-top: 8px; }
+
+  /* Pillar row */
+  .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .pillar {
+    background: var(--bg-000); border: 1px solid var(--border-light);
+    border-radius: var(--radius-md); padding: 24px 26px;
+  }
+  .pillar .who { font-size: 13px; font-weight: 600; color: var(--accent-brand); letter-spacing: 0.02em; }
+  .pillar .role { font-size: 15px; font-weight: 600; color: var(--text-100); margin: 6px 0 14px; }
+  .pillar ul { list-style: none; }
+  .pillar li {
+    font-size: 14px; color: var(--text-200); padding: 6px 0 6px 18px;
+    position: relative; line-height: 1.55;
+  }
+  .pillar li::before {
+    content: ""; position: absolute; left: 0; top: 13px;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--accent-brand); opacity: 0.5;
+  }
+
+  /* Four-grid do/dont */
+  .grid4 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .qcard {
+    background: var(--bg-000); border: 1px solid var(--border-light);
+    border-radius: var(--radius-md); padding: 22px 24px; border-top: 3px solid var(--border-medium);
+  }
+  .qcard.do { border-top-color: var(--success); }
+  .qcard.maybe { border-top-color: var(--warning); }
+  .qcard.never { border-top-color: var(--danger); }
+  .qcard.notus { border-top-color: var(--text-400); }
+  .qcard .qhead {
+    display: flex; align-items: baseline; gap: 8px; margin-bottom: 14px;
+  }
+  .qcard .qtag {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.03em;
+    padding: 3px 10px; border-radius: var(--radius-sm);
+  }
+  .qcard.do .qtag { background: rgba(61,116,0,0.1); color: var(--success); }
+  .qcard.maybe .qtag { background: rgba(168,107,0,0.1); color: var(--warning); }
+  .qcard.never .qtag { background: rgba(192,57,43,0.1); color: var(--danger); }
+  .qcard.notus .qtag { background: rgba(123,121,116,0.12); color: var(--text-400); }
+  .qcard .qhint { font-size: 12px; color: var(--text-400); }
+  .qcard ul { list-style: none; }
+  .qcard li {
+    font-size: 14px; color: var(--text-200); padding: 5px 0 5px 16px;
+    position: relative; line-height: 1.5;
+  }
+  .qcard li::before {
+    content: ""; position: absolute; left: 0; top: 12px;
+    width: 4px; height: 4px; border-radius: 50%; background: var(--text-400); opacity: 0.5;
+  }
+  .qcard .rule {
+    margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-light);
+    font-size: 13px; color: var(--text-400); font-style: italic;
+  }
+
+  /* Checklist / decision */
+  .decision {
+    background: var(--bg-000); border: 1px solid var(--border-medium);
+    border-radius: var(--radius-md); padding: 8px 0;
+  }
+  .decision .row {
+    display: flex; align-items: flex-start; gap: 16px;
+    padding: 18px 28px; border-bottom: 1px solid var(--border-light);
+  }
+  .decision .row:last-child { border-bottom: none; }
+  .decision .qn {
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+    background: rgba(217,119,87,0.1); color: var(--accent-brand);
+    font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center;
+  }
+  .decision .qtext { font-size: 15px; color: var(--text-100); font-weight: 500; }
+  .decision .qtext span { display: block; font-size: 13px; color: var(--text-400); font-weight: 400; margin-top: 3px; }
+  .decision .verdict {
+    padding: 16px 28px; font-size: 14px; color: var(--text-200);
+    background: var(--bg-200); border-radius: 0 0 var(--radius-md) var(--radius-md);
+  }
+  .decision .verdict strong { color: var(--text-100); }
+
+  /* Target: mission structure */
+  .layer {
+    background: var(--bg-000); border: 1px solid var(--border-light);
+    border-radius: var(--radius-md); padding: 22px 26px; margin-bottom: 12px;
+    display: grid; grid-template-columns: 120px 1fr; gap: 20px; align-items: start;
+  }
+  .layer .lname { font-size: 14px; font-weight: 600; color: var(--accent-brand); }
+  .layer .lname .en { display: block; font-size: 11px; color: var(--text-400); font-weight: 400; letter-spacing: 0.04em; margin-top: 2px; text-transform: uppercase;}
+  .layer .lbody { font-size: 14px; color: var(--text-200); }
+  .layer .lbody ul { list-style: none; margin-top: 4px; }
+  .layer .lbody li { padding: 3px 0 3px 16px; position: relative; }
+  .layer .lbody li::before {
+    content: "—"; position: absolute; left: 0; color: var(--text-400);
+  }
+
+  /* Flywheel */
+  .flywheel {
+    background: var(--bg-000); border: 1px solid var(--border-light);
+    border-radius: var(--radius-md); padding: 26px 30px;
+    font-size: 15px; color: var(--text-200); text-align: center; line-height: 2.1;
+  }
+  .flywheel .step { display: inline-block; }
+  .flywheel .step strong { color: var(--text-100); font-weight: 600; }
+  .flywheel .arrow { color: var(--accent-brand); margin: 0 8px; font-weight: 600; }
+
+  .closing {
+    text-align: center; padding: 40px; margin-top: 20px;
+    background: var(--bg-200); border-radius: var(--radius-lg);
+  }
+  .closing p { font-size: 18px; font-weight: 300; color: var(--text-100); line-height: 1.6; max-width: 620px; margin: 0 auto; }
+  .closing p strong { font-weight: 600; }
+
+  footer { text-align: center; padding: 40px; font-size: 13px; color: var(--text-400); }
+
+  @media (max-width: 768px) {
+    .container { padding: 0 20px; }
+    .hero { padding: 44px 20px 30px; }
+    .duo, .pillars, .grid4 { grid-template-columns: 1fr; }
+    .layer { grid-template-columns: 1fr; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="eyebrow">团队文化 · 内容与产品准则</div>
+  <h1>路人甲</h1>
+  <p class="subtitle">一个普通人，替普通人亲手把 AI 玩明白、也拆明白。<br>这份文档定义我们是谁、做什么，以及绝不做什么。</p>
+</div>
+
+<div class="container">
+
+  <!-- 1. 定位 -->
+  <div class="section">
+    <div class="section-num">01 — 定位</div>
+    <div class="section-title">我们是谁</div>
+    <p class="section-desc">定位不是一句口号，而是一把刀：它把世界切成"这是我们的"和"这不是我们的"，并让我们心甘情愿地错过后者。</p>
+
+    <div class="statement">
+      <div class="lead">用<strong>圈内的功力</strong>，替<strong>小白</strong>说人话。</div>
+      <div class="note">受众是小白，专业度是圈内。"深入"是给自己的要求，"浅出"是给读者的交付。我们不站在讲台上，我们站在读者身边。</div>
+    </div>
+
+    <div class="duo">
+      <div class="card">
+        <h3>看懂 AI</h3>
+        <p>用得明白，工具怎么上手、适合谁、怎么用进自己的场景。</p>
+        <p class="sub">这是我们的手艺：把复杂的东西讲到普通人会心一笑地看懂。</p>
+      </div>
+      <div class="card">
+        <h3>看穿 AI</h3>
+        <p>想得明白、不被忽悠，懂原理、有独立判断、不跟风吹捧。</p>
+        <p class="sub">这是我们的立场：benchmark 高不等于好用，通稿再热也不等于真好。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 文化内核 -->
+  <div class="section">
+    <div class="section-num">02 — 文化内核</div>
+    <div class="section-title">大道至简：本分</div>
+    <p class="section-desc">我们的内核只有两个字：本分。它不是道德说教，而是一套做事哲学："做对的事情，把事情做对"。先想清楚什么是对的，再把它做到位；其余的诱惑，一律放下。</p>
+
+    <div class="statement">
+      <div class="lead">做<strong>对的事情</strong>，把事情<strong>做对</strong>。</div>
+      <div class="note">"做对的事情"是不为清单，发现做错了就马上停,再晚也不晚。"把事情做对"靠的是深入浅出这门手艺本身。前者是价值观，后者是能力圈。</div>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="who">做对的事情 · 价值观</div>
+        <div class="role">守住本分的边界</div>
+        <ul>
+          <li>不装懂，不懂的老实说"我没搞明白"，绝不蒙读者</li>
+          <li>不赚该拒绝的钱，坑读者的广告，钱再多也不接</li>
+          <li>不做超出理解的事，能力圈之外，宁可错过</li>
+          <li>慢即是快，不比谁快，比谁的读者三年后还在</li>
+        </ul>
+      </div>
+      <div class="pillar">
+        <div class="who">把事情做对 · 能力圈</div>
+        <div class="role">深入浅出这门手艺</div>
+        <ul>
+          <li>亲手上手实测，结论从不来自通稿和 benchmark</li>
+          <li>选题先问"我自己想搞明白吗"，好奇心驱动</li>
+          <li>把复杂的 AI，讲到普通人会心一笑地看懂</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 使命 -->
+  <div class="section">
+    <div class="section-num">03 — 使命</div>
+    <div class="section-title">我们为什么存在</div>
+    <p class="section-desc">使命锚定在"为谁解决什么问题"，而不是"用什么形式"。正因如此，它能同时罩住内容和产品，两者只是同一使命的两种手段。</p>
+
+    <div class="statement">
+      <div class="lead">帮每一个普通人真正把 AI <strong>用起来、用明白</strong>，让 AI 成为普通人手里的<strong>杠杆</strong>，而不是甩下他们的浪潮。</div>
+      <div class="note">靠内容，我们帮他们看懂；靠产品，我们直接帮他们用上。无论哪条线，只做一件事：<strong style="color:var(--text-200)">降低普通人用 AI 的门槛</strong>。我们的独特能力不是技术最强，而是最懂普通人卡在哪。</div>
+    </div>
+  </div>
+
+  <!-- 4. 行动清单 -->
+  <div class="section">
+    <div class="section-num">04 — 行动清单</div>
+    <div class="section-title">做什么，不做什么</div>
+    <p class="section-desc">使命是天上的星，这张表是地上的路。每次选题会、每个合作、每个新业务，拿它对照，30 秒就能判断该不该做。</p>
+
+    <div class="grid4">
+      <div class="qcard do">
+        <div class="qhead"><span class="qtag">要做</span><span class="qhint">主航道 · 主动追求</span></div>
+        <ul>
+          <li>亲手实测的工具评测：真实体验、怎么上手、适合谁</li>
+          <li>把复杂 AI 概念翻译成人话</li>
+          <li>帮小白避坑 / 做选择：选哪个、值不值、先学什么</li>
+          <li>自己下场用 AI 做东西（短剧、小游戏、做号），过程即内容</li>
+          <li>拆 AI 行业的商业逻辑给普通人看</li>
+        </ul>
+        <div class="rule">小白需要 + 我亲手验证 + 讲人话 → 做。</div>
+      </div>
+
+      <div class="qcard maybe">
+        <div class="qhead"><span class="qtag">可以做</span><span class="qhint">不排斥 · 但守底线</span></div>
+        <ul>
+          <li>接广告：只接信得过的，缺点照说、如实讲</li>
+          <li>蹭大热点：前提是真懂、能加实测和独立判断</li>
+          <li>付费课程 / 专栏：卖判断力和方法，不卖焦虑</li>
+          <li>追更新快的模型：可跟，但结论必须自己测</li>
+        </ul>
+        <div class="rule">能做，但每个都要先过"本分"这关。</div>
+      </div>
+
+      <div class="qcard never">
+        <div class="qhead"><span class="qtag">不能做</span><span class="qhint">红线 · 一次都不行</span></div>
+        <ul>
+          <li>标题党（内容配不上标题）</li>
+          <li>接自己都不信、会坑读者的广告</li>
+          <li>写没验证的结论 / 搬别人评测当自己的</li>
+          <li>贩卖 AI 焦虑（"不学就被淘汰"）</li>
+          <li>装懂 / 写假读者评论 / 刷假数据</li>
+        </ul>
+        <div class="rule">靠牺牲读者信任换流量或钱 → 红线。</div>
+      </div>
+
+      <div class="qcard notus">
+        <div class="qhead"><span class="qtag">不要做</span><span class="qhint">不属于我们 · 会稀释聚焦</span></div>
+        <ul>
+          <li>纯圈内硬核技术解读（交给技术号）</li>
+          <li>纯工具信息搬运 / 大而全的工具合集</li>
+          <li>什么热点都追的泛资讯号</li>
+          <li>ToB 到影响独立性的厂商定制服务</li>
+          <li>同时铺很多个小 IP</li>
+        </ul>
+        <div class="rule">能赚钱、也不违法，但做了就不再是"路人甲"。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. 产品准则 -->
+  <div class="section">
+    <div class="section-num">05 — 产品准则</div>
+    <div class="section-title">什么产品该做</div>
+    <p class="section-desc">做产品不是跨界，是同一使命的另一种手段。我们的护城河是同理心，不是技术。不做技术最牛的 AI 产品，做最懂普通人、最容易上手的 AI 产品。</p>
+
+    <div class="decision">
+      <div class="row">
+        <div class="qn">1</div>
+        <div class="qtext">这个产品，是在降低普通人用 AI 的门槛、放大他们的能力吗？<span>而不是蹭 AI 概念、和"帮普通人"无关的流量产品。</span></div>
+      </div>
+      <div class="row">
+        <div class="qn">2</div>
+        <div class="qtext">我们真懂、真信、真能做好吗？<span>超出能力圈、自己都不信的，不做。</span></div>
+      </div>
+      <div class="row">
+        <div class="qn">3</div>
+        <div class="qtext">它靠真为用户创造价值赚钱，还是靠制造焦虑 / 割韭菜赚钱？<span>"AI 速成、不学淘汰"式的割韭菜产品，碰都不碰。</span></div>
+      </div>
+      <div class="verdict">三个都过 → <strong>可以做</strong>。任何一个过不了 → <strong>不做</strong>，哪怕风口正劲、来钱很快。</div>
+    </div>
+  </div>
+
+  <!-- 7. 飞轮 -->
+  <div class="section">
+    <div class="section-num">06 — 飞轮</div>
+    <div class="section-title">内容与产品，互为燃料</div>
+    <p class="section-desc">内容不是产品的营销，产品也不是内容的变现。它们是一个循环，而"最懂普通人卡在哪"是驱动整个飞轮的独特能量。</p>
+
+    <div class="flywheel">
+      <span class="step"><strong>内容</strong>帮普通人看懂 AI</span><span class="arrow">→</span>
+      <span class="step">积累<strong>信任</strong></span><span class="arrow">→</span>
+      <span class="step">比谁都清楚普通人卡在哪</span><span class="arrow">→</span>
+      <span class="step">做出真解决痛点的<strong>产品</strong></span><span class="arrow">→</span>
+      <span class="step">真实使用变成新<strong>内容素材</strong></span><span class="arrow">↺</span>
+    </div>
+  </div>
+
+  <!-- Closing -->
+  <div class="closing">
+    <p>我们不设"做到多少"的目标，只定"什么叫做对"的标准。<br><strong>粉丝和收入，是我们做对了事情之后，世界给的回礼，不是出发时要抢的东西。</strong></p>
+  </div>
+
+</div>
+
+<footer>
+  路人甲 · 团队文化与准则 v1 &nbsp;|&nbsp; 用圈内的功力，替小白说人话
+</footer>
+
+</body>
+</html>
