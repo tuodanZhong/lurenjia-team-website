@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>团队「深入」能力训练 · 自测与练习</title>
+<style>
+  :root {
+    --bg-000: #ffffff;
+    --bg-100: #f8f8f6;
+    --bg-200: #f4f4f1;
+    --bg-300: #efeeed;
+    --bg-400: #e6e5e0;
+    --text-100: #121212;
+    --text-200: #373734;
+    --text-400: #7b7974;
+    --accent-brand: #d97757;
+    --accent-link: #2977d6;
+    --success: #3d7400;
+    --border-light: rgba(18,18,18,0.08);
+    --border-medium: rgba(18,18,18,0.12);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-100);
+    color: var(--text-200);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 940px; margin: 0 auto; padding: 0 40px; }
+
+  .topnav { max-width: 940px; margin: 0 auto; padding: 24px 40px 0; }
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 14px; color: var(--accent-link); text-decoration: none;
+    padding: 6px 14px; background: rgba(41,119,214,0.06); border-radius: var(--radius-sm);
+  }
+  .back-link:hover { background: rgba(41,119,214,0.12); }
+
+  .hero { padding: 40px 40px 8px; text-align: center; }
+  .hero .eyebrow {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent-brand); margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(30px, 5vw, 46px); font-weight: 300;
+    color: var(--text-100); letter-spacing: -0.02em; line-height: 1.2;
+  }
+  .hero .subtitle {
+    font-size: 17px; color: var(--text-400); max-width: 640px; margin: 16px auto 0;
+  }
+
+  .how {
+    max-width: 940px; margin: 28px auto 0; padding: 0 40px;
+  }
+  .how-box {
+    background: var(--bg-000); border: 1px solid var(--border-light);
+    border-left: 3px solid var(--accent-brand); border-radius: var(--radius-md);
+    padding: 20px 26px; font-size: 15px; color: var(--text-200);
+  }
+  .how-box b { color: var(--text-100); }
+
+  section { padding: 44px 0 0; }
+  .section-head { margin-bottom: 22px; }
+  .section-head h2 { font-size: 26px; font-weight: 600; color: var(--text-100); letter-spacing: -0.01em; }
+  .section-head .desc { font-size: 15px; color: var(--text-400); margin-top: 6px; }
+
+  .q-cat { margin-bottom: 30px; }
+  .q-cat-head { display: flex; align-items: baseline; gap: 12px; margin: 6px 0 14px; flex-wrap: wrap; }
+  .q-cat-head .n {
+    font-size: 12px; font-weight: 600; color: var(--accent-brand);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .q-cat-head h3 { font-size: 19px; font-weight: 600; color: var(--text-100); }
+  .q-cat-head .count { font-size: 13px; color: var(--text-400); }
+
+  .q-list {
+    background: var(--bg-000); border: 1px solid var(--border-light);
+    border-radius: var(--radius-md); overflow: hidden;
+  }
+  details.q { border-bottom: 1px solid var(--border-light); }
+  details.q:last-child { border-bottom: none; }
+  details.q > summary {
+    list-style: none; cursor: pointer; padding: 16px 20px;
+    display: flex; gap: 12px; align-items: baseline;
+    font-size: 15.5px; color: var(--text-100); font-weight: 500;
+    transition: background .12s;
+  }
+  details.q > summary::-webkit-details-marker { display: none; }
+  details.q > summary:hover { background: var(--bg-200); }
+  details.q .q-num { color: var(--accent-brand); font-weight: 600; min-width: 26px; font-size: 14px; }
+  details.q .q-text { flex: 1; }
+  details.q .caret {
+    color: var(--text-400); font-size: 12px; transition: transform .15s; margin-left: 8px;
+    align-self: center;
+  }
+  details.q[open] .caret { transform: rotate(90deg); }
+  details.q .q-ans {
+    padding: 0 20px 18px 58px; font-size: 14.5px; color: var(--text-200); line-height: 1.75;
+    animation: fade .18s ease;
+  }
+  @keyframes fade { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
+  details.q .q-ans .lead { color: var(--accent-brand); font-weight: 600; }
+
+  .toy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .toy-card {
+    background: var(--bg-000); border: 1px solid var(--border-light);
+    border-radius: var(--radius-md); padding: 24px 26px;
+  }
+  .toy-card:hover { border-color: var(--border-medium); box-shadow: var(--shadow-sm); }
+  .toy-card .tag {
+    display: inline-block; background: rgba(41,119,214,0.08); color: var(--accent-link);
+    font-size: 11px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: var(--radius-sm); margin-bottom: 12px;
+  }
+  .toy-card h4 { font-size: 17px; font-weight: 600; color: var(--text-100); margin-bottom: 8px; }
+  .toy-card p { font-size: 14.5px; color: var(--text-200); }
+
+  .footer {
+    margin-top: 52px; padding: 28px 0 64px; text-align: center;
+    font-size: 13px; color: var(--text-400); border-top: 1px solid var(--border-light);
+  }
+  .footer a { color: var(--accent-link); text-decoration: none; }
+
+  @media (max-width: 768px) {
+    .container, .how, .topnav { padding-left: 20px; padding-right: 20px; }
+    .hero { padding: 28px 20px 8px; }
+    .toy-grid { grid-template-columns: 1fr; }
+    details.q .q-ans { padding-left: 20px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topnav" style="display:flex; gap:10px; flex-wrap:wrap;">
+    <a class="back-link" href="index.html">← 路人甲官网</a>
+    <a class="back-link" href="团队深入能力训练-三层深度地图.html">← 三层深度地图</a>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">团队能力训练 · 自测与练习</div>
+    <h1>自测与练习</h1>
+    <p class="subtitle">检验「深入」是否到位的自测题（点击展开答案），以及逼出深度的动手练习。全部能从机制答出、不靠背诵，就算验收通过。</p>
+  </div>
+
+  <div class="how">
+    <div class="how-box">
+      <b>怎么用：</b>先自己在心里（或对同事）把答案讲一遍，再点开对照。答不出来、或答得含糊的那几题，就是你下一步要补的洞——把它标记下来，回到「三层深度地图」找对应模块和课程去补。
+    </div>
+  </div>
+
+  <div class="container">
+
+    <section>
+      <div class="section-head">
+        <h2>自测清单</h2>
+        <div class="desc">共 51 题，按五类组织。点击任意问题展开参考答案。</div>
+      </div>
+
+      <div class="q-cat">
+        <div class="q-cat-head"><span class="n">A</span><h3>大模型底层</h3><span class="count">核心必懂 · 9 题</span></div>
+        <div class="q-list">
+          <details class="q"><summary><span class="q-num">1</span><span class="q-text">大模型的本质是什么？为什么说它不是「检索」或「数据库」？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>它是逐 token 的概率预测——根据前文一个词一个词地生成最可能的下一个词。不查表、不检索，所有输出都是「算」出来的，这是理解它一切行为的起点。</div></details>
+          <details class="q"><summary><span class="q-num">2</span><span class="q-text">为什么模型会一本正经地编造事实（幻觉）？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>它在生成「最像正确答案」的文字，而不是核查真伪。幻觉是逐 token 概率生成的结构性必然，不是能彻底修掉的 bug。</div></details>
+          <details class="q"><summary><span class="q-num">3</span><span class="q-text">为什么同一个 prompt 两次结果不一样？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>采样带随机性。模型给出的是一个概率分布，每次从中抽样，所以结果会变；调低 temperature 会更稳定。</div></details>
+          <details class="q"><summary><span class="q-num">4</span><span class="q-text">为什么它数不清 strawberry 里有几个 r？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>tokenization——模型看到的是 token（词块），不是一个个字母，所以字符级任务天然吃亏。</div></details>
+          <details class="q"><summary><span class="q-num">5</span><span class="q-text">上下文窗口是什么？窗口外的内容模型知道吗？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>上下文窗口是单次能「看到」的输入上限（有限预算）。窗口外的内容它完全不知道，超出就被丢掉或需另想办法（如 RAG）。</div></details>
+          <details class="q"><summary><span class="q-num">6</span><span class="q-text">模型在两次对话之间有记忆吗？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>没有。每次调用都是无状态的，「记得」是把历史重新塞进上下文造成的错觉。</div></details>
+          <details class="q"><summary><span class="q-num">7</span><span class="q-text">预训练和后训练（指令微调 / RLHF）分别做什么？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>预训练在海量文本上学语言和世界知识；后训练（指令微调、RLHF）教它「听懂指令、有用、无害」。很多「性格」来自后训练。</div></details>
+          <details class="q"><summary><span class="q-num">8</span><span class="q-text">「知识截止」是什么意思？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>训练完成后模型知识就定格在某个时间点，之后发生的事它并不知道，除非通过检索或工具喂给它。</div></details>
+          <details class="q"><summary><span class="q-num">9</span><span class="q-text">注意力机制在概念层做了什么？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>让每个词在生成时「看」上下文里所有词、按相关性加权组合信息。它是 Transformer 的核心。</div></details>
+        </div>
+      </div>
+
+      <div class="q-cat">
+        <div class="q-cat-head"><span class="n">B</span><h3>大模型进阶</h3><span class="count">10 题</span></div>
+        <div class="q-list">
+          <details class="q"><summary><span class="q-num">10</span><span class="q-text">为什么长文档里中间那句指令容易被忽略？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>注意力有位置效应（lost in the middle），开头结尾权重高、中间易被稀释。多是位置问题，不是模型变笨。</div></details>
+          <details class="q"><summary><span class="q-num">11</span><span class="q-text">模型爱道歉、爱附和、爱列点，这些「性格」从哪来？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>主要来自后训练（RLHF）的塑造，包括谄媚（sycophancy），不是模型「本性」，也不是预训练里的知识。</div></details>
+          <details class="q"><summary><span class="q-num">12</span><span class="q-text">为什么它错得很自信？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>校准问题——它输出的「确定语气」和「实际正确率」是脱钩的，对错误答案也可以一样自信。</div></details>
+          <details class="q"><summary><span class="q-num">13</span><span class="q-text">为什么给几个例子（few-shot）它就会照做？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>上下文学习（in-context learning）。它在做模式匹配而非真正「理解」，所以例子和措辞影响很大。</div></details>
+          <details class="q"><summary><span class="q-num">14</span><span class="q-text">为什么厂商也说不准下一代能干什么？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>能力是「涌现」的（scaling laws 下），某个能力何时出现无法精确预测，所以行业在「炼丹」。</div></details>
+          <details class="q"><summary><span class="q-num">15</span><span class="q-text">为什么不能盲信模型跑分（benchmark）？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>benchmark 会被污染、被过拟合刷分，「测得好」不等于「真的好」，跑分要留一手。</div></details>
+          <details class="q"><summary><span class="q-num">16</span><span class="q-text">temperature 调高调低分别影响什么？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>调高更发散、更有创造性也更易跑偏；调低更确定、更稳定。它是「确定 vs 发散」的旋钮。</div></details>
+          <details class="q"><summary><span class="q-num">17</span><span class="q-text">模型是「冻结」的，怎么让它用上实时 / 私有知识？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>用 RAG 把资料检索出来喂进上下文。模型本身没「学到」，只是当场「查着答」。</div></details>
+          <details class="q"><summary><span class="q-num">18</span><span class="q-text">Transformer 的核心结构是什么？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>自注意力：每个词加权组合全上下文的信息，可并行处理长文本。现在几乎所有大模型都以它为骨架。</div></details>
+          <details class="q"><summary><span class="q-num">19</span><span class="q-text">什么是对齐（Alignment）？包含哪些方法？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>让模型行为符合人类意图与价值观的一整套方法：RLHF、宪法式 AI、RLAIF、DPO 等。「有用又无害」就属于对齐。</div></details>
+        </div>
+      </div>
+
+      <div class="q-cat">
+        <div class="q-cat-head"><span class="n">C</span><h3>Agent 与 Harness</h3><span class="count">10 题</span></div>
+        <div class="q-list">
+          <details class="q"><summary><span class="q-num">20</span><span class="q-text">一个 Agent 本质上是什么？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>模型 + 工具 + 把工具结果喂回上下文的控制循环（think→act→observe）。「智能」还是那个模型在选下一个 token。</div></details>
+          <details class="q"><summary><span class="q-num">21</span><span class="q-text">模型真的「执行」了函数吗？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>没有。它只输出一段结构化文本（function call），由 harness 去解析、执行、再把结果喂回。它始终只是在生成文本。</div></details>
+          <details class="q"><summary><span class="q-num">22</span><span class="q-text">Agent 多步任务为什么越走越歪？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>错误会跨步累积、上下文被污染、模型一旦「迷路」很难自我纠偏。</div></details>
+          <details class="q"><summary><span class="q-num">23</span><span class="q-text">什么是 Harness？为什么同一模型换个产品行为就变？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>Harness 是模型外的脚手架：系统提示、上下文管理、工具定义、护栏等。它们塑造了你看到的行为，所以换 harness 行为就变。</div></details>
+          <details class="q"><summary><span class="q-num">24</span><span class="q-text">为什么很多「模型不行」其实是 harness 问题？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>你观察到的大量行为是 harness 塑造的。「模型做不了 X」追下去常是「harness 没让它行」。</div></details>
+          <details class="q"><summary><span class="q-num">25</span><span class="q-text">Agent 的「记忆」是模型自带的吗？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>不是。是外部存储 + 检索拼出来的：短期记忆在上下文里、长期记忆在外面。</div></details>
+          <details class="q"><summary><span class="q-num">26</span><span class="q-text">为什么 Agent 又慢又贵？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>每走一步都要一次模型推理，还按 token 计费，所以天然又慢又贵。</div></details>
+          <details class="q"><summary><span class="q-num">27</span><span class="q-text">为什么 Agent 的可靠性是全新问题？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>传统软件是确定性的，Agent 是概率性的，每次都可能不同，所以测试、可靠性、上线都得重新想。</div></details>
+          <details class="q"><summary><span class="q-num">28</span><span class="q-text">什么是上下文工程？为什么说它是真正瓶颈？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>决定给 Agent 喂什么、怎么组织、何时清理上下文。它往往比换更强的模型更决定成败。</div></details>
+          <details class="q"><summary><span class="q-num">29</span><span class="q-text">为什么危险操作要 human-in-the-loop？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>Agent 的自主性边界是设计出来的。发钱、删数据、对外发送等必须卡人工审批，防止失控。</div></details>
+        </div>
+      </div>
+
+      <div class="q-cat">
+        <div class="q-cat-head"><span class="n">D</span><h3>应用层</h3><span class="count">14 题</span></div>
+        <div class="q-list">
+          <details class="q"><summary><span class="q-num">30</span><span class="q-text">MCP、Skill、RAG、微调分别解决什么，别搞混？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>MCP=统一接线口（连工具），Skill=说明书（教做这类事），RAG=记忆外挂（补事实），微调=改模型行为倾向。</div></details>
+          <details class="q"><summary><span class="q-num">31</span><span class="q-text">MCP 和 A2A 有什么区别？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>MCP 解决「Agent 连工具」，A2A 解决「Agent 连 Agent」。二者互补，不是替代。</div></details>
+          <details class="q"><summary><span class="q-num">32</span><span class="q-text">Tool、MCP、Plugin 的关系？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>Tool 是「手」（能做动作），MCP 是「统一的接线标准」，Plugin 是把这些打包分发的「盒子」。</div></details>
+          <details class="q"><summary><span class="q-num">33</span><span class="q-text">定制模型的三条路径及取舍？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>提示工程（最轻，改说法）、RAG（补事实、接私有知识）、微调（最重，改行为倾向）。先用轻的，不够再上重的。</div></details>
+          <details class="q"><summary><span class="q-num">34</span><span class="q-text">Embedding / 向量库在 RAG 里起什么作用？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>把文字变成向量，用语义距离找相似内容，是 RAG 的检索地基。检索不准常错在这一层。</div></details>
+          <details class="q"><summary><span class="q-num">35</span><span class="q-text">为什么要 JSON mode（结构化输出）？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>强制模型输出可被程序解析的固定格式，才能把「会聊天的模型」接进真实系统。</div></details>
+          <details class="q"><summary><span class="q-num">36</span><span class="q-text">为什么 AI 回复是一个字一个字出来的？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>流式输出——逐 token 生成、边生成边吐出，「打字机效果」是它的自然呈现。</div></details>
+          <details class="q"><summary><span class="q-num">37</span><span class="q-text">提示缓存（prompt caching）省了什么？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>把重复用的长上下文缓存起来，省去每次重算，大幅降本降延迟。</div></details>
+          <details class="q"><summary><span class="q-num">38</span><span class="q-text">什么是量化与蒸馏？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>两种模型压缩手段：量化降精度省显存，蒸馏用大模型教出能力接近的小模型。让模型能跑在本地 / 手机。</div></details>
+          <details class="q"><summary><span class="q-num">39</span><span class="q-text">合成数据是什么？有什么隐忧？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>用 AI 生成的数据训练 AI，已成训练核心一环。隐忧是「模型崩溃」——在自产数据上反复训练会退化。</div></details>
+          <details class="q"><summary><span class="q-num">40</span><span class="q-text">什么是提示注入（prompt injection）？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>攻击者把恶意指令藏在网页 / 文档 / 邮件里，Agent 读进上下文后被劫持。是 Agent 时代最独特的安全风险。</div></details>
+          <details class="q"><summary><span class="q-num">41</span><span class="q-text">护栏（guardrails）是什么？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>加在模型输入 / 输出两端的安全层：过滤有害内容、拦越界、校格式。独立于模型本身。</div></details>
+          <details class="q"><summary><span class="q-num">42</span><span class="q-text">什么是 Eval / LLM-as-Judge？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>Eval 是系统化衡量质量；LLM-as-Judge 是用一个模型给另一个模型的输出打分，替代昂贵人工评测（但裁判本身可能带偏差）。</div></details>
+          <details class="q"><summary><span class="q-num">43</span><span class="q-text">开源 vs 闭源、API vs 本地部署怎么取舍？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>权衡性能、成本、隐私、可控性。敏感行业常选本地 / 开源，哪怕性能略逊。</div></details>
+        </div>
+      </div>
+
+      <div class="q-cat">
+        <div class="q-cat-head"><span class="n">E</span><h3>前沿热概念</h3><span class="count">8 题</span></div>
+        <div class="q-list">
+          <details class="q"><summary><span class="q-num">44</span><span class="q-text">什么是推理 / 思维模型？为什么更慢更贵？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>它在给答案前先生成一段内部「思考」（推理链），用更多计算换更高准确率，所以更慢更贵。</div></details>
+          <details class="q"><summary><span class="q-num">45</span><span class="q-text">什么是测试时计算（test-time compute）？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>不靠把模型练更大，而靠回答时多花计算（想更久、试多条路）来提升表现。是近一年最重要的范式转变。</div></details>
+          <details class="q"><summary><span class="q-num">46</span><span class="q-text">什么是 RLVR？推理能力怎么「自我练出来」？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>可验证奖励强化学习：对数学、代码等能自动判对错的任务，模型自己生成多条解法、按对错强化。DeepSeek-R1、o 系列即此。</div></details>
+          <details class="q"><summary><span class="q-num">47</span><span class="q-text">什么是 Agentic Loop（长时程自主循环）？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>Agent 在一个目标下持续自主循环——规划、执行、观察、再规划——跑很多步完成复杂任务。步数一多也更易跑偏。</div></details>
+          <details class="q"><summary><span class="q-num">48</span><span class="q-text">什么是机制可解释性（interpretability）？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>试图打开黑箱，找出模型内部的「特征」和「回路」，看它到底怎么想。是 2026 年热门方向和安全审计基础。</div></details>
+          <details class="q"><summary><span class="q-num">49</span><span class="q-text">多智能体编排是什么？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>用一个「编排者」协调多个各司其职的子智能体，完成单个 Agent 搞不定的复杂任务。带来新的协调与失控风险。</div></details>
+          <details class="q"><summary><span class="q-num">50</span><span class="q-text">Mamba/SSM、世界模型、扩散语言模型各是什么方向？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>Mamba/SSM 是「后 Transformer」的高效长序列架构；世界模型让 AI 学「环境如何演变」；扩散语言模型并行「去噪」生成文本。</div></details>
+          <details class="q"><summary><span class="q-num">51</span><span class="q-text">什么是 Vibe Coding？在往什么方向演进？</span><span class="caret">▸</span></summary><div class="q-ans"><span class="lead">指向：</span>用自然语言「凭感觉」让 AI 生成可用代码，2025 年爆火；2026 年正演进为「你定目标并验收、一队 Agent 自主实现」。</div></details>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>动手练习</h2>
+        <div class="desc">看十篇解读，不如自己搓一个跑起来。前两个逼出「机制深度」，后三个逼出「日常内功」。</div>
+      </div>
+      <div class="toy-grid">
+        <div class="toy-card">
+          <div class="tag">练习 A</div>
+          <h4>最小 Agent 循环</h4>
+          <p>用几十行代码手搓：模型 + 一个工具 + 把结果喂回去。跑通后刻意把它搞崩，观察它在哪一步开始迷路——亲手体会错误累积和上下文污染。</p>
+        </div>
+        <div class="toy-card">
+          <div class="tag">练习 B</div>
+          <h4>最小 Harness</h4>
+          <p>自己拼系统提示、自己管上下文预算、自己决定工具结果怎么截断格式化。改一处就看行为怎么变——亲手体会「harness 在塑造模型行为」。</p>
+        </div>
+        <div class="toy-card">
+          <div class="tag">练习 C</div>
+          <h4>预测-验证日课</h4>
+          <p>每次动手前，先写下你对模型行为的预测；跑完再写实际与预测的差异。让「使用」升级成「校准」——这一个习惯顶得上十篇教程。</p>
+        </div>
+        <div class="toy-card">
+          <div class="tag">练习 D</div>
+          <h4>拆解优秀样本</h4>
+          <p>每周挑 2–3 篇公认讲得好的 AI 内容，逐句标注它用了什么手法：哪里用了类比、哪里先讲「跟你有什么关系」、哪里把术语换成大白话。</p>
+        </div>
+        <div class="toy-card">
+          <div class="tag">练习 E</div>
+          <h4>三约束仿写</h4>
+          <p>对同一个技术点，用三种约束各写一遍：一句话讲清、讲给完全不懂的人听、只能用一个类比。带镣铐的练习最长「浅出」的能力。</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      团队「深入」能力训练 · 自测与练习　|　<a href="团队深入能力训练-三层深度地图.html">← 返回三层深度地图</a>
+    </div>
+
+  </div>
+
+</body>
+</html>

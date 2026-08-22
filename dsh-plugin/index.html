@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSH 插件小卖部 · 路人甲</title>
+<meta name="description" content="路人甲精选的 DeepSeek Harness 插件市场：每个插件都用大白话告诉你是干嘛的、怎么装。">
+<link rel="icon" type="image/png" href="../assets/mascot.png">
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.5/dist/purify.min.js"></script>
+<style>
+  :root {
+    --bg-000: #ffffff;
+    --bg-100: #f8f8f6;
+    --bg-200: #f4f4f1;
+    --bg-300: #efeeed;
+    --bg-400: #e6e5e0;
+    --ink: #1a1a1a;
+    --text-100: #121212;
+    --text-200: #373734;
+    --text-400: #7b7974;
+    --accent-brand: #d97757;
+    --accent-brand-soft: rgba(217,119,87,0.12);
+    --accent-link: #2977d6;
+    --border-light: rgba(18,18,18,0.08);
+    --border-medium: rgba(18,18,18,0.12);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-100);
+    color: var(--text-200);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; }
+
+  /* Nav */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(248,248,246,0.85); backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--border-light);
+  }
+  .nav .inner {
+    max-width: 1080px; margin: 0 auto; padding: 12px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav .brand { display: flex; align-items: center; gap: 10px; }
+  .nav .brand img { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-000); }
+  .nav .brand .name { font-size: 17px; font-weight: 600; color: var(--text-100); }
+  .nav .brand .crumb { font-size: 13px; color: var(--text-400); }
+  .nav .links { display: flex; gap: 22px; align-items: center; }
+  .nav .links a { font-size: 14px; color: var(--text-400); transition: color 0.15s; }
+  .nav .links a:hover { color: var(--text-100); }
+  .btn-login {
+    font-size: 13px; padding: 7px 16px; border-radius: 999px;
+    border: 1px solid var(--border-medium); background: var(--bg-000); color: var(--text-200);
+    transition: all 0.15s;
+  }
+  .btn-login:hover { border-color: var(--accent-brand); color: var(--accent-brand); }
+
+  /* Hero */
+  .hero { max-width: 1080px; margin: 0 auto; padding: 72px 40px 36px; text-align: center; }
+  .hero .kicker {
+    display: inline-block; font-size: 13px; color: var(--accent-brand);
+    background: var(--accent-brand-soft); padding: 4px 14px; border-radius: 999px;
+    font-weight: 500; letter-spacing: 0.03em; margin-bottom: 18px;
+  }
+  .hero h1 { font-size: 42px; font-weight: 700; color: var(--text-100); letter-spacing: -0.01em; margin-bottom: 14px; }
+  .hero p.sub { font-size: 16px; color: var(--text-400); max-width: 560px; margin: 0 auto 34px; }
+
+  /* Search */
+  .search-wrap { max-width: 620px; margin: 0 auto; position: relative; }
+  .search-wrap svg {
+    position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
+    width: 18px; height: 18px; stroke: var(--text-400); pointer-events: none;
+  }
+  #search {
+    width: 100%; padding: 16px 22px 16px 50px; font-size: 16px;
+    border: 1px solid var(--border-medium); border-radius: 999px;
+    background: var(--bg-000); color: var(--text-100); outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    font-family: inherit;
+  }
+  #search:focus { border-color: var(--accent-brand); box-shadow: 0 0 0 4px var(--accent-brand-soft); }
+  #search::placeholder { color: var(--text-400); }
+  .search-meta { margin-top: 12px; font-size: 13px; color: var(--text-400); }
+  .search-meta b { color: var(--accent-brand); font-weight: 600; }
+
+  /* Category chips */
+  .cats { max-width: 1080px; margin: 28px auto 0; padding: 0 40px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .chip {
+    font-size: 13px; padding: 6px 15px; border-radius: 999px;
+    border: 1px solid var(--border-light); background: var(--bg-000); color: var(--text-400);
+    transition: all 0.15s;
+  }
+  .chip:hover { border-color: var(--accent-brand); color: var(--accent-brand); }
+  .chip.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .chip .cnt { opacity: 0.55; font-size: 12px; margin-left: 3px; }
+
+  /* Grid */
+  .grid-wrap { max-width: 1080px; margin: 0 auto; padding: 34px 40px 20px; }
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--bg-000); border: 1px solid var(--border-light);
+    border-radius: var(--radius-md); padding: 20px 20px 16px;
+    display: flex; flex-direction: column; gap: 10px; min-width: 0;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  }
+  .card:hover { border-color: var(--border-medium); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .card .top { min-width: 0; }
+  .card .top .name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; font-weight: 600; color: var(--text-100); }
+  .card .top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .card .name {
+    font-size: 15px; font-weight: 600; color: var(--text-100);
+    font-family: var(--font-mono); word-break: break-all; line-height: 1.4;
+  }
+  .card .name a:hover { color: var(--accent-brand); }
+  .badge {
+    flex-shrink: 0; font-size: 11px; padding: 2px 9px; border-radius: 999px; font-weight: 500;
+  }
+  .badge.official { background: var(--accent-brand-soft); color: var(--accent-brand); }
+  .badge.community { background: var(--bg-300); color: var(--text-400); }
+  .badge.tested { background: #e8f3e2; color: var(--success, #3d7400); }
+  .badge.featured { background: linear-gradient(135deg, #d97757, #b85c3d); color: #fff; }
+  .card .badges { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+  .card .name { flex: 1; }
+  .card .desc {
+    font-size: 13.5px; color: var(--text-200); line-height: 1.65;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    flex: 1;
+  }
+  .card .gh-desc {
+    font-size: 12px; color: var(--text-400); line-height: 1.55; margin-top: -4px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    padding-left: 8px; border-left: 2px solid var(--border-medium);
+  }
+  .card .gh-desc::before { content: 'GitHub · '; opacity: 0.7; }
+  .card .meta { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-400); }
+  .card .cat-tag { background: var(--bg-200); padding: 2px 8px; border-radius: var(--radius-sm); }
+  .card .stars { color: #b8860b; }
+  .card .actions { display: flex; gap: 8px; margin-top: 2px; }
+  .btn-copy {
+    flex: 1; min-width: 0; font-size: 12.5px; padding: 7px 10px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light); background: var(--bg-100); color: var(--text-200);
+    font-family: var(--font-mono); text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .card .actions { min-width: 0; }
+  .btn-copy:hover { border-color: var(--accent-brand); color: var(--accent-brand); background: var(--bg-000); }
+  .btn-copy.copied { border-color: #3d7400; color: #3d7400; background: #e8f3e2; }
+  .btn-gh {
+    font-size: 12.5px; padding: 7px 12px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light); background: var(--bg-100); color: var(--text-400);
+    transition: all 0.15s; flex-shrink: 0;
+  }
+  .btn-gh:hover { color: var(--text-100); border-color: var(--border-medium); }
+
+  .empty { text-align: center; padding: 80px 20px; color: var(--text-400); }
+  .empty .big { font-size: 40px; margin-bottom: 12px; }
+
+  .load-more-wrap { text-align: center; padding: 10px 0 60px; }
+  .btn-more {
+    font-size: 14px; padding: 10px 32px; border-radius: 999px;
+    border: 1px solid var(--border-medium); background: var(--bg-000); color: var(--text-200);
+    transition: all 0.15s;
+  }
+  .btn-more:hover { border-color: var(--accent-brand); color: var(--accent-brand); }
+
+  /* Login modal */
+  .modal-mask {
+    position: fixed; inset: 0; background: rgba(18,18,18,0.4); z-index: 100;
+    display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px);
+  }
+  .modal-mask.show { display: flex; }
+  .modal {
+    background: var(--bg-000); border-radius: var(--radius-lg); padding: 36px 34px 30px;
+    width: 380px; max-width: calc(100vw - 40px); box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .modal h3 { font-size: 20px; color: var(--text-100); margin-bottom: 6px; }
+  .modal .tip { font-size: 13px; color: var(--text-400); margin-bottom: 22px; }
+  .modal input {
+    width: 100%; padding: 12px 14px; font-size: 14px; margin-bottom: 12px;
+    border: 1px solid var(--border-medium); border-radius: var(--radius-sm);
+    background: var(--bg-100); outline: none; font-family: inherit;
+  }
+  .modal input:focus { border-color: var(--accent-brand); background: var(--bg-000); }
+  .modal .btn-submit {
+    width: 100%; padding: 12px; font-size: 15px; font-weight: 500;
+    background: var(--ink); color: #fff; border: none; border-radius: var(--radius-sm);
+    transition: opacity 0.15s;
+  }
+  .modal .btn-submit:hover { opacity: 0.85; }
+  /* Plugin detail modal：头部通栏 + 左 README + 右信息栏 */
+  .modal.detail {
+    width: 980px; max-width: calc(100vw - 48px);
+    max-height: 84vh; display: flex; flex-direction: column;
+    padding: 26px 30px 24px;
+  }
+  .detail-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    padding-bottom: 16px; margin-bottom: 18px; border-bottom: 1px solid var(--border-light);
+    flex-shrink: 0;
+  }
+  .detail-name { font-size: 20px; font-weight: 700; color: var(--text-100); font-family: var(--font-mono); word-break: break-all; line-height: 1.4; min-width: 0; }
+  .detail-badges { display: flex; gap: 6px; flex-shrink: 0; }
+  .detail-body {
+    flex: 1; min-height: 0;
+    display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px;
+  }
+  .detail-main { min-height: 0; display: flex; flex-direction: column; }
+  .detail-main .readme-title { font-size: 12.5px; font-weight: 600; color: var(--text-400); letter-spacing: 0.04em; margin-bottom: 10px; }
+  .detail-main .readme-box { flex: 1; min-height: 0; max-height: none; }
+  .detail-side { min-height: 0; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; overscroll-behavior: contain; }
+  .detail-side .side-sec { margin-bottom: 20px; }
+  .detail-side .side-bottom { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-light); }
+  .detail-side .sec-title { font-size: 12px; font-weight: 600; color: var(--text-400); letter-spacing: 0.04em; margin-bottom: 8px; }
+  .detail-desc { font-size: 13.5px; color: var(--text-200); line-height: 1.75; white-space: pre-wrap; word-break: break-word; }
+  .detail-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .detail-meta .item { font-size: 12px; color: var(--text-400); background: var(--bg-100); padding: 4px 11px; border-radius: 999px; }
+  .detail-meta .item b { color: var(--text-200); font-weight: 600; }
+  @media (max-width: 760px) {
+    .modal.detail { max-height: 88vh; padding: 20px; }
+    .detail-body { grid-template-columns: 1fr; overflow-y: auto; display: block; }
+    .detail-main { margin-bottom: 20px; }
+    .detail-main .readme-box { max-height: 46vh; }
+    .detail-side { overflow: visible; display: block; }
+    .detail-side .side-bottom { margin-top: 0; }
+  }
+  .cmd-box {
+    display: flex; gap: 8px; align-items: center;
+    background: var(--ink); border-radius: var(--radius-sm); padding: 12px 14px;
+  }
+  .cmd-box code { flex: 1; color: #fff; font-family: var(--font-mono); font-size: 13px; word-break: break-all; line-height: 1.5; }
+  .cmd-box button {
+    flex-shrink: 0; font-size: 12.5px; padding: 6px 14px; border-radius: var(--radius-sm);
+    border: none; background: var(--accent-brand); color: #fff; transition: opacity 0.15s;
+  }
+  .cmd-box button:hover { opacity: 0.85; }
+  .detail-links { display: flex; gap: 10px; }
+  .detail-links a {
+    flex: 1; text-align: center; font-size: 14px; padding: 10px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border-medium); color: var(--text-200); transition: all 0.15s;
+  }
+  .detail-links a:hover { border-color: var(--accent-brand); color: var(--accent-brand); }
+  .detail-links a.primary { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .detail-links a.primary:hover { opacity: 0.85; color: #fff; }
+
+  /* README 渲染 */
+  .readme-box {
+    border: 1px solid var(--border-light); border-radius: var(--radius-sm);
+    background: var(--bg-100); padding: 18px 20px; max-height: 420px; overflow-y: auto;
+    font-size: 13.5px; line-height: 1.75; color: var(--text-200);
+    overscroll-behavior: contain;
+  }
+  .readme-box h1, .readme-box h2, .readme-box h3, .readme-box h4 {
+    color: var(--text-100); line-height: 1.4; margin: 18px 0 8px; font-weight: 600;
+  }
+  .readme-box h1 { font-size: 19px; margin-top: 4px; }
+  .readme-box h2 { font-size: 17px; }
+  .readme-box h3 { font-size: 15px; }
+  .readme-box h4 { font-size: 14px; }
+  .readme-box p { margin: 8px 0; }
+  .readme-box ul, .readme-box ol { padding-left: 22px; margin: 8px 0; }
+  .readme-box li { margin: 3px 0; }
+  .readme-box code {
+    font-family: var(--font-mono); font-size: 12px;
+    background: var(--bg-300); padding: 2px 6px; border-radius: 4px;
+    word-break: break-all;
+  }
+  .readme-box pre {
+    background: var(--ink); color: #e8e6e3; padding: 12px 14px;
+    border-radius: var(--radius-sm); overflow-x: auto; margin: 10px 0;
+  }
+  .readme-box pre code { background: none; padding: 0; color: inherit; font-size: 12px; }
+  .readme-box a { color: var(--accent-link); border-bottom: 1px solid rgba(41,119,214,0.3); }
+  .readme-box img { max-width: 100%; border-radius: var(--radius-sm); }
+  .readme-box table { border-collapse: collapse; margin: 10px 0; width: 100%; font-size: 12.5px; }
+  .readme-box th, .readme-box td { border: 1px solid var(--border-medium); padding: 6px 10px; text-align: left; }
+  .readme-box th { background: var(--bg-200); font-weight: 600; }
+  .readme-box blockquote {
+    border-left: 3px solid var(--accent-brand); margin: 10px 0;
+    padding: 4px 14px; color: var(--text-400); background: var(--bg-200); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+  .readme-box hr { border: none; border-top: 1px solid var(--border-light); margin: 16px 0; }
+  .rlang { font-size: 10.5px; padding: 1px 7px; border-radius: 999px; background: var(--bg-300); color: var(--text-400); margin-left: 8px; font-weight: 500; letter-spacing: 0; text-transform: none; }
+  .readme-loading { text-align: center; color: var(--text-400); font-size: 13px; padding: 30px 0; }
+  .readme-fail { text-align: center; color: var(--text-400); font-size: 13px; padding: 20px 0; }
+  .readme-fail a { color: var(--accent-brand); }
+
+  /* Auth modal */
+  .modal.auth { width: 420px; max-width: calc(100vw - 40px); padding: 0; overflow: hidden; }
+  .auth-brand {
+    padding: 32px 32px 22px; text-align: center;
+    background: linear-gradient(180deg, rgba(217,119,87,0.08), transparent);
+    border-bottom: 1px solid var(--border-light);
+  }
+  .auth-brand .logo { width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 12px; display: block; background: var(--bg-000); box-shadow: var(--shadow-sm); }
+  .auth-brand h2 { font-size: 20px; font-weight: 700; color: var(--text-100); margin-bottom: 4px; letter-spacing: -0.01em; }
+  .auth-brand p { font-size: 13px; color: var(--text-400); }
+  .auth-body { padding: 24px 32px 28px; }
+  .auth-tabs {
+    display: flex; gap: 4px; padding: 4px; margin-bottom: 22px;
+    background: var(--bg-200); border-radius: 999px;
+  }
+  .auth-tab {
+    flex: 1; padding: 8px 0; font-size: 13.5px; font-weight: 500;
+    border: none; background: transparent; color: var(--text-400);
+    border-radius: 999px; transition: all 0.18s; cursor: pointer;
+  }
+  .auth-tab.active {
+    background: var(--bg-000); color: var(--text-100);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .field {
+    position: relative; margin-bottom: 14px;
+  }
+  .field .ic {
+    position: absolute; left: 13px; top: 14px;
+    width: 16px; height: 16px;
+    color: var(--text-400); pointer-events: none; display: block;
+  }
+  .field input {
+    width: 100%; padding: 11px 14px 11px 38px; font-size: 14px;
+    border: 1px solid var(--border-medium); border-radius: var(--radius-sm);
+    background: var(--bg-000); color: var(--text-100); outline: none;
+    font-family: inherit; transition: border-color 0.15s, box-shadow 0.15s;
+    line-height: 1.4;
+  }
+  .field input:focus { border-color: var(--accent-brand); box-shadow: 0 0 0 4px var(--accent-brand-soft); }
+  .field.pw input { padding-right: 42px; }
+  .field .toggle-pw {
+    position: absolute; right: 8px; top: 8px;
+    width: 28px; height: 28px; border: none; background: transparent;
+    color: var(--text-400); cursor: pointer; display: flex; align-items: center; justify-content: center;
+    border-radius: 6px; transition: all 0.15s;
+  }
+  .field .toggle-pw:hover { background: var(--bg-200); color: var(--text-200); }
+  .field .toggle-pw svg { width: 16px; height: 16px; }
+  .auth-err {
+    font-size: 12.5px; color: var(--danger); background: rgba(192,57,43,0.07);
+    padding: 8px 12px; border-radius: var(--radius-sm); margin-bottom: 14px;
+    display: none; line-height: 1.5;
+  }
+  .auth-err.show { display: block; }
+  .btn-submit {
+    width: 100%; padding: 12px; font-size: 14.5px; font-weight: 600;
+    background: var(--ink); color: #fff; border: none; border-radius: var(--radius-sm);
+    cursor: pointer; transition: opacity 0.15s; display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-submit:hover { opacity: 0.88; }
+  .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+  .btn-submit .spin {
+    width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.35);
+    border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .auth-foot { text-align: center; margin-top: 16px; font-size: 12px; color: var(--text-400); }
+  .auth-foot a { color: var(--accent-brand); border-bottom: 1px solid rgba(217,119,87,0.3); padding-bottom: 1px; }
+  .user-chip { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--text-200); }
+  .user-chip .uname { font-weight: 600; color: var(--text-100); }
+  .user-chip a.admin-link { color: var(--accent-brand); font-weight: 500; }
+  .user-chip button { border: none; background: none; color: var(--text-400); font-size: 13px; padding: 0; }
+  .user-chip button:hover { color: var(--text-100); }
+  .modal .close-x {
+    position: absolute; top: 14px; right: 18px; border: none; background: none;
+    font-size: 20px; color: var(--text-400); line-height: 1;
+  }
+  .modal { position: relative; }
+
+  /* Footer */
+  .footer { border-top: 1px solid var(--border-light); margin-top: 20px; }
+  .footer .inner {
+    max-width: 1080px; margin: 0 auto; padding: 28px 40px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    font-size: 13px; color: var(--text-400);
+  }
+  .footer a { color: var(--text-400); border-bottom: 1px solid var(--border-medium); padding-bottom: 1px; }
+  .footer a:hover { color: var(--text-100); }
+
+  .toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--ink); color: #fff; font-size: 13px; padding: 10px 20px;
+    border-radius: 999px; opacity: 0; transition: all 0.25s; z-index: 200; pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 640px) {
+    .nav .inner, .hero, .cats, .grid-wrap, .footer .inner { padding-left: 20px; padding-right: 20px; }
+    .hero { padding-top: 48px; }
+    .hero h1 { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="inner">
+    <a class="brand" href="../index.html">
+      <img src="../assets/mascot.png" alt="路人甲">
+      <span class="name">路人甲</span>
+      <span class="crumb">/ DSH 插件小卖部</span>
+    </a>
+    <div class="links">
+      <a href="../index.html">主站</a>
+      <span id="auth-area"><button class="btn-login" id="btn-open-login">登录</button></span>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <span class="kicker">路人甲 · 只说人话的插件市场</span>
+  <h1>DSH 插件小卖部</h1>
+  <p class="sub">收录社区里各类 DeepSeek Harness 插件，每个都用大白话告诉你是干嘛的、怎么装。看上了，复制命令就能用。</p>
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="search" type="text" placeholder="搜插件：比如「识图」「PPT」「飞书」…" autocomplete="off">
+  </div>
+  <div class="search-meta" id="search-meta">共收录 <b id="total-cnt">…</b> 个插件，数据来自社区 awesome 列表</div>
+</section>
+
+<div class="cats" id="cats"></div>
+
+<div class="grid-wrap">
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none">
+    <div class="big">🔍</div>
+    <div>没搜到相关插件。换个词试试？比如「视觉」「记忆」「编程」。</div>
+  </div>
+</div>
+
+<div class="load-more-wrap" id="more-wrap" style="display:none">
+  <button class="btn-more" id="btn-more">加载更多</button>
+</div>
+
+<footer class="footer">
+  <div class="inner">
+    <div>路人甲 · 只说人话，分享真正实用的 AI 秘籍</div>
+    <div><a href="../index.html">返回主站</a></div>
+  </div>
+</footer>
+
+<div class="modal-mask" id="login-mask">
+  <div class="modal auth">
+    <button class="close-x" id="btn-close-login">×</button>
+    <div class="auth-brand">
+      <img class="logo" src="../assets/mascot.png" alt="路人甲">
+      <h2 id="auth-title">欢迎回来</h2>
+    </div>
+    <div class="auth-body">
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">登录</button>
+        <button class="auth-tab" data-tab="register">注册</button>
+      </div>
+      <div class="field">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <input type="text" id="auth-username" placeholder="用户名（2~24 位中英文或数字）" autocomplete="username" maxlength="24">
+      </div>
+      <div class="field pw">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <input type="password" id="auth-password" placeholder="密码（至少 6 位）" autocomplete="current-password">
+        <button class="toggle-pw" type="button" id="toggle-pw" aria-label="显示密码">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <div class="field pw" id="field-confirm" style="display:none">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <input type="password" id="auth-confirm" placeholder="再输一次密码" autocomplete="new-password">
+      </div>
+      <div class="auth-err" id="auth-err"></div>
+      <button class="btn-submit" id="btn-auth-submit">登录</button>
+      <div class="auth-foot">登录即表示你只是个路人甲，我们不收集多余信息</div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-mask" id="detail-mask">
+  <div class="modal detail">
+    <button class="close-x" id="btn-close-detail">×</button>
+    <div class="detail-head">
+      <div class="detail-name" id="d-name"></div>
+      <div class="detail-badges" id="d-badges"></div>
+    </div>
+    <div class="detail-body">
+      <div class="detail-main" id="d-readme-sec" style="display:none">
+        <div class="readme-title">项目说明（README）<span class="rlang" id="d-rlang" style="display:none"></span></div>
+        <div class="readme-box" id="d-readme"><div class="readme-loading">加载中…</div></div>
+      </div>
+      <div class="detail-side">
+        <div class="side-sec">
+          <div class="sec-title">简介</div>
+          <div class="detail-desc" id="d-desc"></div>
+        </div>
+        <div class="side-sec" id="d-gh-sec" style="display:none">
+          <div class="sec-title">GitHub 项目简介</div>
+          <div class="detail-desc" id="d-gh" style="margin-bottom:0;color:var(--text-400);font-size:13px"></div>
+        </div>
+        <div class="side-sec">
+          <div class="sec-title">安装命令</div>
+          <div class="cmd-box"><code id="d-cmd"></code><button id="btn-d-copy">复制</button></div>
+        </div>
+        <div class="side-sec">
+          <div class="detail-meta" id="d-meta"></div>
+        </div>
+        <div class="side-bottom">
+          <div class="detail-links">
+            <a href="#" id="d-repo" target="_blank" rel="noopener">在 GitHub 查看 →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const PAGE = 60;
+let ALL = [];
+let filtered = [];
+let shown = 0;
+let activeCat = '全部';
+let query = '';
+
+const $ = s => document.querySelector(s);
+const grid = $('#grid'), empty = $('#empty'), moreWrap = $('#more-wrap');
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function installCmd(p) {
+  const m = p.r.match(/github\.com\/([^/]+\/[^/#?]+)/);
+  if (m) return 'dsh plugin --profile web add "github:' + m[1].replace(/\.git$/,'') + '#main"';
+  return p.r;
+}
+
+function badgeFor(p) {
+  let out = '';
+  if (p.f) out += '<span class="badge featured">路人甲精选</span>';
+  if (p.t) out += '<span class="badge tested">路人甲实测</span>';
+  if (!p.f && !p.t) {
+    if (p.c === '官方') out += '<span class="badge official">官方</span>';
+    else out += '<span class="badge community">社区</span>';
+  }
+  return out;
+}
+
+function cardHTML(p) {
+  return '<div class="card" data-r="' + esc(p.r) + '">'
+    + '<div class="top"><div class="name">' + esc(p.n) + '</div><div class="badges">' + badgeFor(p) + '</div></div>'
+    + '<div class="desc">' + esc(p.d) + '</div>'
+    + (p.gh ? '<div class="gh-desc">' + esc(p.gh) + '</div>' : '')
+    + '<div class="meta"><span class="cat-tag">' + esc(p.c) + '</span>'
+    + (p.s > 0 ? '<span class="stars">⭐ ' + p.s + '</span>' : '')
+    + '</div>'
+    + '<div class="actions">'
+    + '<button class="btn-copy" data-cmd="' + esc(installCmd(p)) + '" title="' + esc(installCmd(p)) + '">' + esc(installCmd(p)) + '</button>'
+    + '<a class="btn-gh" href="' + esc(p.r) + '" target="_blank" rel="noopener">GitHub</a>'
+    + '</div></div>';
+}
+
+function applyFilter() {
+  const q = query.trim().toLowerCase();
+  filtered = ALL.filter(p => {
+    if (activeCat !== '全部' && p.c !== activeCat) return false;
+    if (!q) return true;
+    return p.n.toLowerCase().includes(q) || p.d.toLowerCase().includes(q) || p.c.toLowerCase().includes(q);
+  });
+  // 路人甲精选置顶，然后按星数、再按名称
+  filtered.sort((a, b) => (b.f - a.f) || (b.s - a.s) || a.n.localeCompare(b.n, 'zh'));
+  shown = 0;
+  grid.innerHTML = '';
+  renderMore(true);
+  const featCnt = ALL.filter(p => p.f).length;
+  $('#search-meta').innerHTML = q || activeCat !== '全部'
+    ? '找到 <b>' + filtered.length + '</b> 个相关插件（共收录 ' + ALL.length + ' 个）'
+    : '共收录 <b>' + ALL.length + '</b> 个插件，含 <b>' + featCnt + '</b> 个路人甲精选，数据来自社区 awesome 列表';
+}
+
+function renderMore(reset) {
+  const next = filtered.slice(shown, shown + PAGE);
+  if (next.length) grid.insertAdjacentHTML('beforeend', next.map(cardHTML).join(''));
+  shown += next.length;
+  empty.style.display = filtered.length === 0 ? '' : 'none';
+  moreWrap.style.display = shown < filtered.length ? '' : 'none';
+}
+
+function buildCats() {
+  const cnt = {};
+  ALL.forEach(p => cnt[p.c] = (cnt[p.c] || 0) + 1);
+  const cats = ['全部', ...Object.keys(cnt).sort((a,b) => cnt[b] - cnt[a])];
+  $('#cats').innerHTML = cats.map(c =>
+    '<button class="chip' + (c === activeCat ? ' active' : '') + '" data-cat="' + esc(c) + '">'
+    + esc(c) + '<span class="cnt">' + (c === '全部' ? ALL.length : cnt[c]) + '</span></button>'
+  ).join('');
+}
+
+let debounce;
+$('#search').addEventListener('input', e => {
+  clearTimeout(debounce);
+  debounce = setTimeout(() => { query = e.target.value; applyFilter(); }, 150);
+});
+$('#cats').addEventListener('click', e => {
+  const btn = e.target.closest('.chip');
+  if (!btn) return;
+  activeCat = btn.dataset.cat;
+  document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c.dataset.cat === activeCat));
+  applyFilter();
+});
+$('#btn-more').addEventListener('click', () => renderMore());
+
+grid.addEventListener('click', e => {
+  const btn = e.target.closest('.btn-copy');
+  if (btn) {
+    e.stopPropagation();
+    copyText(btn.dataset.cmd, () => {
+      btn.classList.add('copied');
+      toast('安装命令已复制，到终端粘贴运行即可');
+      setTimeout(() => btn.classList.remove('copied'), 1500);
+    });
+    return;
+  }
+  // 点击卡片打开详情（点在 GitHub 链接上除外）
+  if (e.target.closest('.btn-gh')) return;
+  const card = e.target.closest('.card');
+  if (card) openDetail(card.dataset.r);
+});
+
+/* ---------- 插件详情弹窗 ---------- */
+const detailMask = $('#detail-mask');
+let curDetail = null;
+function openDetail(repo) {
+  const p = ALL.find(x => x.r === repo);
+  if (!p) return;
+  curDetail = p;
+  $('#d-name').textContent = p.n;
+  $('#d-badges').innerHTML = badgeFor(p);
+  $('#d-desc').textContent = p.d;
+  if (p.gh) {
+    $('#d-gh').textContent = p.gh;
+    $('#d-gh-sec').style.display = '';
+  } else {
+    $('#d-gh-sec').style.display = 'none';
+  }
+  $('#d-meta').innerHTML =
+    '<span class="item">分类 <b>' + esc(p.c) + '</b></span>'
+    + (p.s > 0 ? '<span class="item">⭐ <b>' + p.s + '</b> stars</span>' : '')
+    + '<span class="item">来源 <b>' + esc(p.r.replace('https://github.com/', '')) + '</b></span>';
+  $('#d-cmd').textContent = installCmd(p);
+  $('#d-repo').href = p.r;
+  detailMask.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  loadReadme(p);
+}
+
+// README 加载与渲染：优先本地预抓文件，其次实时拉 raw（main/master）
+function loadReadme(p) {
+  const box = $('#d-readme');
+  const sec = $('#d-readme-sec');
+  if (!window.marked || !window.DOMPurify) { sec.style.display = 'none'; return; }
+  const repo = p.r.replace('https://github.com/', '').replace(/\.git$/, '').replace(/\/$/, '');
+  const sources = [];
+  // 本地预抓的 README（抓取时已按中文优先选好）
+  if (p.readme) sources.push('readmes/' + p.readme);
+  // 实时兜底：中文文件名优先，再默认
+  const CN = ['README.zh-CN.md', 'README.zh_CN.md', 'README_CN.md', 'README.zh.md', 'README-zh.md'];
+  const DEF = ['README.md', 'readme.md'];
+  for (const b of ['main', 'master']) for (const f of CN) sources.push('https://raw.githubusercontent.com/' + repo + '/' + b + '/' + f);
+  for (const b of ['main', 'master']) for (const f of DEF) sources.push('https://raw.githubusercontent.com/' + repo + '/' + b + '/' + f);
+  sec.style.display = '';
+  box.innerHTML = '<div class="readme-loading">加载中…</div>';
+  const langTag = $('#d-rlang');
+  langTag.style.display = 'none';
+  (function tryNext(i) {
+    if (i >= sources.length) {
+      box.innerHTML = '<div class="readme-fail">README 拉取失败，<a href="' + esc(p.r) + '" target="_blank" rel="noopener">去 GitHub 看</a></div>';
+      return;
+    }
+    const srcUrl = sources[i];
+    fetch(srcUrl)
+      .then(r => { if (!r.ok) throw 0; return r.text(); })
+      .then(md => {
+        // 语言标签：优先用预抓时记录的 rlang，否则按来源 URL 猜
+        let lang = p.rlang;
+        if (!lang) lang = /zh[-_]?CN|zh[-_]?cn|_CN|-zh|README\.zh/i.test(srcUrl) ? 'zh' : 'en';
+        langTag.textContent = lang === 'zh' ? '中文' : 'EN';
+        langTag.style.display = '';
+        if (!md.trim()) throw 0;
+        // 相对图片/链接转绝对路径（基于默认分支 raw 地址）
+        const rawBase = 'https://raw.githubusercontent.com/' + repo + '/' + (p.branch || 'main') + '/';
+        const blobBase = 'https://github.com/' + repo + '/blob/' + (p.branch || 'main') + '/';
+        md = md.replace(/(!\[[^\]]*\]\()((?!https?:|\/|#)[^)]+)(\))/g, (m, a, u, b) => a + rawBase + u + b);
+        md = md.replace(/(\[[^\]]+\]\()((?!https?:|\/|#|mailto)[^)]+)(\))/g, (m, a, u, b) => a + blobBase + u + b);
+        marked.setOptions({ breaks: true, gfm: true });
+        const html = DOMPurify.sanitize(marked.parse(md), { ADD_ATTR: ['target'] });
+        box.innerHTML = html;
+        box.querySelectorAll('a').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
+      })
+      .catch(() => tryNext(i + 1));
+  })(0);
+}
+function closeDetail() { detailMask.classList.remove('show'); curDetail = null; document.body.style.overflow = ''; }
+$('#btn-close-detail').addEventListener('click', closeDetail);
+detailMask.addEventListener('click', e => { if (e.target === detailMask) closeDetail(); });
+$('#btn-d-copy').addEventListener('click', () => {
+  if (!curDetail) return;
+  copyText(installCmd(curDetail), () => {
+    toast('安装命令已复制，到终端粘贴运行即可');
+  });
+});
+// ESC 关闭
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (detailMask.classList.contains('show')) closeDetail();
+    if (mask.classList.contains('show')) closeLogin();
+  }
+});
+
+const mask = $('#login-mask');
+let authTab = 'login';
+const API = '/dsh-plugin/api';
+
+function openLogin() {
+  mask.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  // 重置到登录态
+  switchTab('login');
+  ['auth-username','auth-password','auth-confirm'].forEach(id => { const el = $('#' + id); if (el) el.value = ''; });
+  showErr('');
+  setTimeout(() => $('#auth-username').focus(), 100);
+}
+function closeLogin() {
+  mask.classList.remove('show');
+  showErr('');
+  document.body.style.overflow = '';
+}
+function showErr(msg) {
+  const el = $('#auth-err');
+  el.textContent = msg || '';
+  el.classList.toggle('show', !!msg);
+}
+$('#btn-open-login').addEventListener('click', openLogin);
+$('#btn-close-login').addEventListener('click', closeLogin);
+mask.addEventListener('click', e => { if (e.target === mask) closeLogin(); });
+
+function switchTab(tab) {
+  authTab = tab;
+  document.querySelectorAll('.auth-tab').forEach(x => x.classList.toggle('active', x.dataset.tab === tab));
+  const isLogin = tab === 'login';
+  $('#auth-title').textContent = isLogin ? '欢迎回来' : '加入路人甲';
+  $('#btn-auth-submit').innerHTML = isLogin ? '登录' : '注册并登录';
+  $('#field-confirm').style.display = isLogin ? 'none' : '';
+  $('#auth-password').setAttribute('autocomplete', isLogin ? 'current-password' : 'new-password');
+  $('#auth-confirm').setAttribute('autocomplete', 'new-password');
+  showErr('');
+}
+document.querySelectorAll('.auth-tab').forEach(t => t.addEventListener('click', () => switchTab(t.dataset.tab)));
+
+// 密码可见切换
+$('#toggle-pw').addEventListener('click', () => {
+  const pws = [$('#auth-password'), $('#auth-confirm')];
+  const anyText = pws.some(i => i.type === 'text');
+  pws.forEach(i => i.type = anyText ? 'password' : 'text');
+  $('#toggle-pw').innerHTML = anyText
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+});
+
+async function api(path, opts) {
+  const r = await fetch(API + path, Object.assign({ headers: { 'Content-Type': 'application/json' } }, opts));
+  return { status: r.status, body: await r.json().catch(() => ({})) };
+}
+
+$('#btn-auth-submit').addEventListener('click', doAuth);
+['auth-username','auth-password','auth-confirm'].forEach(id => {
+  $('#' + id).addEventListener('keydown', e => { if (e.key === 'Enter') doAuth(); });
+});
+
+async function doAuth() {
+  const username = $('#auth-username').value.trim();
+  const password = $('#auth-password').value;
+  const confirm = $('#auth-confirm') ? $('#auth-confirm').value : '';
+  if (!username) { showErr('请输入用户名'); return; }
+  if (username.length < 2) { showErr('用户名至少 2 个字符'); return; }
+  if (!password) { showErr('请输入密码'); return; }
+  if (password.length < 6) { showErr('密码至少 6 位'); return; }
+  if (authTab === 'register' && password !== confirm) { showErr('两次密码输入不一致'); return; }
+  const btn = $('#btn-auth-submit');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>' + (authTab === 'login' ? '登录中' : '注册中');
+  try {
+    const { status, body } = await api('/' + authTab, { method: 'POST', body: JSON.stringify({ username, password }) });
+    if (body.ok) {
+      closeLogin();
+      toast(authTab === 'login' ? '欢迎回来，' + body.username : '注册成功，欢迎你，' + body.username);
+      renderAuthArea({ logged_in: true, username: body.username, is_admin: body.is_admin });
+    } else {
+      showErr(body.detail || '出了点问题，稍后再试');
+    }
+  } catch (e) {
+    showErr('连不上服务器（后端服务未启动或端口不对），请稍后再试');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = authTab === 'login' ? '登录' : '注册并登录';
+  }
+}
+
+function renderAuthArea(me) {
+  const area = $('#auth-area');
+  if (me && me.logged_in) {
+    area.innerHTML = '<span class="user-chip"><span class="uname">' + esc(me.username) + '</span>'
+      + (me.is_admin ? '<a class="admin-link" href="admin.html">后台</a>' : '')
+      + '<button id="btn-logout">退出</button></span>';
+    $('#btn-logout').addEventListener('click', async () => {
+      await api('/logout', { method: 'POST', body: '{}' });
+      location.reload();
+    });
+  } else {
+    area.innerHTML = '<button class="btn-login" id="btn-open-login">登录</button>';
+    $('#btn-open-login').addEventListener('click', openLogin);
+  }
+}
+
+// 访问上报：生成匿名访客 id，静默上报
+(function track() {
+  try {
+    let vid = localStorage.getItem('dsh-vid');
+    if (!vid) { vid = 'v-' + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('dsh-vid', vid); }
+    fetch(API + '/track', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path: location.pathname, vid: vid, ref: document.referrer || '' }),
+    }).catch(() => {});
+  } catch (e) {}
+})();
+
+// 登录态检查（失败静默，说明后端未上线）
+api('/me').then(({ body }) => renderAuthArea(body)).catch(() => renderAuthArea(null));
+
+function copyText(text, done) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+  } else {
+    fallbackCopy(text, done);
+  }
+}
+function fallbackCopy(text, done) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); } catch (e) {}
+  document.body.removeChild(ta);
+  if (done) done();
+}
+
+let toastTimer;
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+fetch(API + '/plugins')
+  .then(r => { if (!r.ok) throw new Error('api'); return r.json(); })
+  .catch(() => fetch('plugins.json').then(r => r.json()))
+  .then(data => {
+    ALL = data;
+    buildCats();
+    applyFilter();
+  })
+  .catch(() => {
+    $('#search-meta').textContent = '插件数据加载失败，请检查服务是否就绪。';
+  });
+</script>
+</body>
+</html>

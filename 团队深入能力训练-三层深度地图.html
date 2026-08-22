@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>团队「深入」能力训练 · 三层深度地图</title>
+<style>
+  :root {
+    --bg-000: #ffffff;
+    --bg-100: #f8f8f6;
+    --bg-200: #f4f4f1;
+    --bg-300: #efeeed;
+    --bg-400: #e6e5e0;
+    --text-100: #121212;
+    --text-200: #373734;
+    --text-400: #7b7974;
+    --accent-brand: #d97757;
+    --accent-link: #2977d6;
+    --danger: #c0392b;
+    --warning: #a86b00;
+    --success: #3d7400;
+    --border-light: rgba(18,18,18,0.08);
+    --border-medium: rgba(18,18,18,0.12);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-100);
+    color: var(--text-200);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 940px; margin: 0 auto; padding: 0 40px; }
+
+  .hero {
+    padding: 72px 40px 20px;
+    text-align: center;
+  }
+  .hero .eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-brand);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(30px, 5vw, 46px);
+    font-weight: 300;
+    color: var(--text-100);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .hero .subtitle {
+    font-size: 17px;
+    color: var(--text-400);
+    max-width: 620px;
+    margin: 16px auto 0;
+  }
+
+  .principle {
+    max-width: 940px;
+    margin: 32px auto 0;
+    padding: 0 40px;
+  }
+  .principle-box {
+    background: var(--bg-000);
+    border: 1px solid var(--border-light);
+    border-left: 3px solid var(--accent-brand);
+    border-radius: var(--radius-md);
+    padding: 24px 28px;
+  }
+  .principle-box .label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent-brand);
+    margin-bottom: 8px;
+  }
+  .principle-box p { font-size: 16px; color: var(--text-200); }
+  .principle-box strong { color: var(--text-100); font-weight: 600; }
+
+  section { padding: 48px 0 0; }
+  .section-head { margin-bottom: 24px; }
+  .section-head h2 {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text-100);
+    letter-spacing: -0.01em;
+  }
+  .section-head .desc { font-size: 15px; color: var(--text-400); margin-top: 6px; }
+
+  .layer-card {
+    background: var(--bg-000);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 28px 30px;
+    margin-bottom: 20px;
+  }
+  .layer-card:hover { border-color: var(--border-medium); box-shadow: var(--shadow-sm); }
+  .layer-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; }
+  .layer-num {
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--accent-brand);
+    letter-spacing: -0.02em;
+    min-width: 34px;
+  }
+  .layer-card h3 { font-size: 20px; font-weight: 600; color: var(--text-100); }
+  .layer-tagline {
+    font-size: 15px;
+    color: var(--text-200);
+    margin: 4px 0 20px 48px;
+  }
+  .layer-tagline strong { color: var(--text-100); }
+
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-left: 48px; }
+  .split-col {
+    border-radius: var(--radius-sm);
+    padding: 18px 20px;
+  }
+  .split-col.must { background: rgba(61,116,0,0.05); }
+  .split-col.skip { background: var(--bg-200); }
+  .split-col .head {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .split-col.must .head { color: var(--success); }
+  .split-col.skip .head { color: var(--text-400); }
+  .split-col p { font-size: 14.5px; color: var(--text-200); line-height: 1.7; }
+
+  .verify {
+    margin: 16px 0 0 48px;
+    padding: 14px 18px;
+    background: var(--bg-200);
+    border-radius: var(--radius-sm);
+    font-size: 14.5px;
+    color: var(--text-200);
+  }
+  .verify strong { color: var(--text-100); }
+
+  .watershed {
+    margin-left: 48px;
+    font-size: 14.5px;
+    color: var(--text-200);
+    line-height: 1.7;
+  }
+  .watershed .pill {
+    display: inline-block;
+    background: rgba(217,119,87,0.1);
+    color: var(--accent-brand);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 12px;
+  }
+
+  .checklist {
+    background: var(--bg-000);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 12px 8px;
+  }
+  .check-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-light);
+    align-items: baseline;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-num {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent-brand);
+    min-width: 22px;
+  }
+  .check-q { font-size: 15.5px; color: var(--text-100); font-weight: 500; }
+  .check-a { font-size: 14px; color: var(--text-400); margin-top: 3px; }
+
+  .toy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .toy-card {
+    background: var(--bg-000);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 24px 26px;
+  }
+  .toy-card .tag {
+    display: inline-block;
+    background: rgba(41,119,214,0.08);
+    color: var(--accent-link);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 12px;
+  }
+  .toy-card h4 { font-size: 17px; font-weight: 600; color: var(--text-100); margin-bottom: 8px; }
+  .toy-card p { font-size: 14.5px; color: var(--text-200); }
+
+  .adv-subhead { display: flex; align-items: baseline; gap: 12px; margin: 4px 0 18px; }
+  .adv-subhead .n {
+    font-size: 12px; font-weight: 600; color: var(--accent-brand);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .adv-subhead h3 { font-size: 20px; font-weight: 600; color: var(--text-100); }
+  .adv-subhead .n2 { font-size: 14px; color: var(--text-400); font-weight: 400; }
+  .adv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 36px; }
+  .adv-card {
+    background: var(--bg-000);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 22px 24px;
+  }
+  .adv-card:hover { border-color: var(--border-medium); box-shadow: var(--shadow-sm); }
+  .adv-card h4 { font-size: 16.5px; font-weight: 600; color: var(--text-100); margin-bottom: 8px; }
+  .adv-card p { font-size: 14.5px; color: var(--text-200); line-height: 1.7; }
+  .adv-card .hook {
+    display: block; margin-top: 10px; padding-top: 10px;
+    border-top: 1px dashed var(--border-medium);
+    font-size: 13.5px; color: var(--accent-brand);
+  }
+  .adv-card .hook b { font-weight: 600; }
+
+  .cmp-table-wrap {
+    background: var(--bg-000);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  table.cmp { width: 100%; border-collapse: collapse; }
+  table.cmp th {
+    text-align: left; font-size: 12px; font-weight: 500; color: var(--text-400);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    padding: 14px 18px; border-bottom: 1px solid var(--border-medium);
+    background: var(--bg-200);
+  }
+  table.cmp td { padding: 15px 18px; font-size: 14.5px; border-bottom: 1px solid var(--border-light); vertical-align: top; }
+  table.cmp tr:last-child td { border-bottom: none; }
+  table.cmp .name { font-weight: 600; color: var(--text-100); white-space: nowrap; }
+  table.cmp .meta { color: var(--accent-brand); font-size: 13px; }
+
+  .jump-row { margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .jump {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 13px; font-weight: 500; color: var(--accent-link);
+    text-decoration: none; padding: 4px 12px;
+    background: rgba(41,119,214,0.06); border-radius: var(--radius-sm);
+    transition: background 0.15s;
+  }
+  .jump:hover { background: rgba(41,119,214,0.12); }
+  .res-group { margin-bottom: 26px; scroll-margin-top: 20px; }
+  .res-group-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
+  .res-group-head h3 { font-size: 18px; font-weight: 600; color: var(--text-100); }
+  .res-list {
+    background: var(--bg-000);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .res-item { padding: 16px 20px; border-bottom: 1px solid var(--border-light); }
+  .res-item:last-child { border-bottom: none; }
+  .res-item:hover { background: var(--bg-200); }
+  .r-top { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .r-name { font-size: 15.5px; font-weight: 600; color: var(--text-100); }
+  .res-badge {
+    font-size: 11px; font-weight: 500; padding: 2px 8px;
+    border-radius: var(--radius-sm); letter-spacing: 0.02em; white-space: nowrap;
+  }
+  .res-badge.cn { background: rgba(61,116,0,0.09); color: var(--success); }
+  .res-badge.en { background: var(--bg-300); color: var(--text-400); }
+  .res-badge.your { background: rgba(217,119,87,0.12); color: var(--accent-brand); }
+  .res-item p { font-size: 13.5px; color: var(--text-200); margin: 5px 0 8px; line-height: 1.6; }
+  .res-links a {
+    font-size: 13.5px; color: var(--accent-link); text-decoration: none; margin-right: 16px;
+    white-space: nowrap;
+  }
+  .res-links a:hover { text-decoration: underline; }
+  .res-note {
+    background: rgba(217,119,87,0.06);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 14px 18px; margin-bottom: 24px;
+    font-size: 14px; color: var(--text-200);
+  }
+  .res-note b { color: var(--text-100); }
+
+  .topnav { max-width: 940px; margin: 0 auto; padding: 24px 40px 0; }
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 14px; color: var(--accent-link); text-decoration: none;
+    padding: 6px 14px; background: rgba(41,119,214,0.06); border-radius: var(--radius-sm);
+  }
+  .back-link:hover { background: rgba(41,119,214,0.12); }
+
+  .cta-card {
+    display: block; text-decoration: none;
+    background: var(--bg-000);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-md);
+    padding: 26px 30px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .cta-card:hover { border-color: var(--accent-brand); box-shadow: var(--shadow-md); }
+  .cta-title { font-size: 19px; font-weight: 600; color: var(--accent-brand); }
+  .cta-sub { font-size: 14.5px; color: var(--text-400); margin-top: 6px; }
+
+  .footer {
+    margin-top: 56px;
+    padding: 28px 0 64px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-400);
+    border-top: 1px solid var(--border-light);
+  }
+
+  @media (max-width: 768px) {
+    .container, .principle { padding: 0 20px; }
+    .hero { padding: 44px 20px 16px; }
+    .split, .toy-grid { grid-template-columns: 1fr; margin-left: 0; }
+    .layer-tagline, .verify, .watershed { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topnav">
+    <a class="back-link" href="index.html">← 路人甲官网</a>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">团队能力训练 · 第一阶段</div>
+    <h1>「深入」能力训练<br>三层深度地图</h1>
+    <p class="subtitle">做深入浅出的 AI 内容，前提是团队真的深入。这份地图分四块：<strong style="color:var(--text-200);font-weight:600;">核心必懂</strong>（大模型 / Agent / Harness 的地基）、<strong style="color:var(--text-200);font-weight:600;">进阶该懂</strong>（拉开深度的底层机制）、<strong style="color:var(--text-200);font-weight:600;">应用层</strong>（MCP / Skill 等接入与生态）、<strong style="color:var(--text-200);font-weight:600;">前沿热概念</strong>（推理与自主循环）。</p>
+  </div>
+
+  <div class="principle">
+    <div class="principle-box">
+      <div class="label">总原则</div>
+      <p><strong>深到能预测和解释，浅到不必会造。</strong>你们是做内容、不是做研发，所需深度由产出倒推——永远比读者深一层，能从机制推出行为、能解释任何反常现象，但不需要亲手实现这个机制。判断线不是「你会不会造」，而是「你能不能从原理推出行为」。</p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <section>
+      <div class="section-head">
+        <h2>三层深度地图</h2>
+        <div class="desc">每一层都给出「必须懂到哪 / 不必碰哪 / 怎么验收」，拿来当团队学习的边界。</div>
+        <div class="jump-row">
+          <a class="jump" href="#res-1">↓ 大模型课程</a>
+          <a class="jump" href="#res-2">↓ Harness / Agent 课程</a>
+        </div>
+      </div>
+
+      <!-- 大模型 -->
+      <div class="layer-card">
+        <div class="layer-header">
+          <div class="layer-num">01</div>
+          <h3>大模型（LLM）</h3>
+        </div>
+        <div class="layer-tagline">必须懂到 <strong>「机制 → 行为」能打通</strong> 的程度。</div>
+        <div class="split">
+          <div class="split-col must">
+            <div class="head">✓ 必须真懂</div>
+            <p>本质是逐 token 的概率预测，不是检索、不是查数据库；采样带随机性（同一 prompt 结果会变）；上下文窗口是有限预算，窗口外它根本不知道；一次调用之间没有记忆；tokenization（所以数不清字母、中文更耗 token）；预训练与后训练（指令微调 / RLHF）是两回事；知识截止、幻觉是结构性必然而非 bug。注意力懂到「看全部 token、按相关性加权」这个概念层即可。</p>
+          </div>
+          <div class="split-col skip">
+            <div class="head">✕ 不必碰</div>
+            <p>反向传播的数学、矩阵运算细节、自己推导注意力公式、CUDA、真的去训练一个模型。这些是研发的活，对内容没有边际收益。</p>
+          </div>
+        </div>
+        <div class="verify"><strong>验收：</strong>能从机制解释「为什么它会一本正经编造引用」（逐 token 概率，在生成最像的下一个词，不在查真伪）、「为什么两次答案不一样」（采样）、「为什么数不对字母」（tokenization）。答不出来，就是没到。</div>
+      </div>
+
+      <!-- Agent -->
+      <div class="layer-card">
+        <div class="layer-header">
+          <div class="layer-num">02</div>
+          <h3>Agent</h3>
+        </div>
+        <div class="layer-tagline">必须懂到 <strong>「它就是一个循环」</strong> 的程度。</div>
+        <div class="split">
+          <div class="split-col must">
+            <div class="head">✓ 必须真懂</div>
+            <p>Agent 不是更聪明的模型，而是「模型 + 工具 + 把工具结果喂回上下文的控制循环」。核心是 think→act→observe 这个环：模型决定调什么工具，工具去碰真实世界，结果再塞回上下文。所谓「智能」还是那个模型在选下一个 token，工具只是手脚。更关键是懂它为什么失败：错误跨步累积、上下文被污染、一旦「迷路」很难自己爬出来——这些失败模式才是深度内容最值钱的地方。</p>
+          </div>
+          <div class="split-col skip">
+            <div class="head">✕ 不必碰</div>
+            <p>从零手撸一个生产级框架、多智能体调度的工程细节。理解循环本身，不必掌握工程化实现。</p>
+          </div>
+        </div>
+        <div class="verify"><strong>验收：</strong>能解释「Agent 多步任务为什么越走越歪」——从错误累积、上下文污染、无法自我纠偏这几个机制说清楚。</div>
+      </div>
+
+      <!-- Harness -->
+      <div class="layer-card">
+        <div class="layer-header">
+          <div class="layer-num">03</div>
+          <h3>Harness（脚手架层）</h3>
+        </div>
+        <div class="layer-tagline">最容易被漏掉，却是 <strong>区分「深」与「浅」内容的分水岭</strong>。</div>
+        <div class="watershed">
+          <span class="pill">分水岭</span>
+          <p style="margin-bottom:16px;">Harness 就是模型外面那层脚手架：系统提示、工具定义、上下文管理、结果截断与格式化、token 预算、护栏。必须真懂的核心只有一句：<strong style="color:var(--text-100);">用户体验到的「那个 AI」，是模型和 harness 不可分割的合体，你观察到的大量「模型行为」其实是 harness 塑造出来的。</strong>同一个模型放在 claude.ai、Cursor、裸 API 下，行为可以天差地别，差的就是 harness。</p>
+        </div>
+        <div class="split">
+          <div class="split-col must">
+            <div class="head">✓ 必须真懂</div>
+            <p>系统提示塑造一切；上下文窗口是被 harness 管理的预算；工具结果被 harness 格式化和截断；同一模型在不同 harness 下行为迥异。绝大多数「模型不行」的抱怨，追下去其实是「harness 没让它行」。</p>
+          </div>
+          <div class="split-col skip">
+            <div class="head">✕ 不必碰</div>
+            <p>具体某个产品 harness 的私有实现细节。理解「harness 在塑造行为」这个因果，比背某一套实现更重要。</p>
+          </div>
+        </div>
+        <div class="verify"><strong>验收：</strong>浅的内容说「某模型做不了 X」；深的内容说「在这个 harness、这种上下文管理下，它在 X 上会失效，因为……」。能说出后者，就到位了。</div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>进阶该懂</h2>
+        <div class="desc">地基之上，让内容真正有洞察的那批机制。每条都点明「它能帮你解释哪个现象」——这才是对内容有用的判断标准。</div>
+        <div class="jump-row">
+          <a class="jump" href="#res-1">↓ 大模型课程</a>
+          <a class="jump" href="#res-5">↓ 进阶 / 前沿课程</a>
+        </div>
+      </div>
+
+      <div class="adv-subhead">
+        <span class="n">A</span>
+        <h3>大模型</h3>
+        <span class="n2">·  8 条</span>
+      </div>
+      <div class="adv-grid">
+        <div class="adv-card">
+          <h4>上下文不是均匀的</h4>
+          <p>注意力虽看全部 token，但有明显位置效应——开头和结尾权重高、中间容易被忽略（业内叫 lost in the middle），长上下文还会「稀释」指令。</p>
+          <span class="hook"><b>能解释：</b>「我明明说了它却没照做」，多半是位置/稀释问题，不是模型变笨。</span>
+        </div>
+        <div class="adv-card">
+          <h4>「性格」大多来自后训练</h4>
+          <p>语气、爱道歉、爱列点、谄媚附和（sycophancy）、过度自信，这些是 RLHF 塑造出来的，不是模型「本性」，也不是预训练里的知识。</p>
+          <span class="hook"><b>能解释：</b>「为什么它总是顺着我说 / 总在道歉 / 总爱列点」。</span>
+        </div>
+        <div class="adv-card">
+          <h4>校准：它不知道自己不知道</h4>
+          <p>模型对正确答案和错误答案可以一样自信。它输出的「确定语气」和「实际正确率」是两回事，二者的偏差就是校准问题。</p>
+          <span class="hook"><b>能解释：</b>「为什么它一本正经地胡说」「为什么它错得那么理直气壮」。</span>
+        </div>
+        <div class="adv-card">
+          <h4>Prompt 为什么有效（上下文学习）</h4>
+          <p>给几个例子它就照做、换个措辞结果大变——这是 in-context learning，本质是模式匹配而非真正「理解」。这是所有提示技巧的底层原理。</p>
+          <span class="hook"><b>能解释：</b>为什么 few-shot 有用、为什么措辞如此敏感；写 Prompt 教程才讲得清所以然。</span>
+        </div>
+        <div class="adv-card">
+          <h4>能力是「涌现」的（Scaling Laws）</h4>
+          <p>更大、更多数据就更强，但某个能力何时出现没人能精确预测——能力是涌现出来的，不是设计出来的。这解释了整个行业为什么在「炼丹」。</p>
+          <span class="hook"><b>能解释：</b>为什么厂商也说不准下一代能干什么；对「路线图」保持清醒。</span>
+        </div>
+        <div class="adv-card">
+          <h4>评测的陷阱</h4>
+          <p>「测得好」不等于「真的好」。benchmark 污染、过拟合刷分很普遍，跑分高的模型实际未必强。</p>
+          <span class="hook"><b>能解释：</b>为什么不能照搬夸大的跑分；内容里对榜单要留一手。</span>
+        </div>
+        <div class="adv-card">
+          <h4>采样是可调的旋钮</h4>
+          <p>temperature、top-p 控制着「确定 vs 发散」。同一个模型调低就更稳、调高就更有创造性也更容易跑偏——随机性不是玄学，是参数。</p>
+          <span class="hook"><b>能解释：</b>为什么有的场景要「冷」有的要「热」；创造性和可靠性的取舍从哪来。</span>
+        </div>
+        <div class="adv-card">
+          <h4>模型是「冻结」的，所以需要 RAG</h4>
+          <p>训练完模型知识就定格了。要接实时或私有知识，只能靠检索（RAG）把资料喂进上下文——模型本身并没有「学到」新东西。</p>
+          <span class="hook"><b>能解释：</b>为什么要做知识库、为什么「喂了资料才准」；顺带接上 Agent 那层。</span>
+        </div>
+        <div class="adv-card">
+          <h4>Transformer 架构（地基）</h4>
+          <p>现在几乎所有大模型的骨架。核心是自注意力：每个词都同时「看」上下文里所有词、按相关性加权组合。前面讲的「上下文」「注意力」「位置效应」都落在这个结构上。</p>
+          <span class="hook"><b>能解释：</b>为什么模型能并行吃下长文本、为什么「注意力」是一切的核心。</span>
+        </div>
+        <div class="adv-card">
+          <h4>对齐（Alignment）</h4>
+          <p>让模型行为符合人类意图与价值观的一整套方法：RLHF、宪法式 AI（Constitutional AI）、RLAIF、DPO 等。后训练里「让它有用又无害」的部分就属于对齐。</p>
+          <span class="hook"><b>能解释：</b>「乐于助人 / 拒绝有害请求」从哪来；也是 AI 安全争议的核心。</span>
+        </div>
+      </div>
+
+      <div class="adv-subhead">
+        <span class="n">B</span>
+        <h3>Agent</h3>
+        <span class="n2">·  7 条</span>
+      </div>
+      <div class="adv-grid">
+        <div class="adv-card">
+          <h4>工具调用的真相</h4>
+          <p>模型并不真的「执行」函数，它只是输出一段结构化文本（function call），由 harness 解析、执行、再把结果喂回上下文。它始终只是在生成文本。</p>
+          <span class="hook"><b>能解释：</b>消除一大半对 Agent 的误解——动作是外面那层替它做的。</span>
+        </div>
+        <div class="adv-card">
+          <h4>上下文工程才是真正瓶颈</h4>
+          <p>给 Agent 喂什么、怎么组织、何时清理上下文，往往比换个更强的模型更决定成败。这是当下 Agent 的核心手艺。</p>
+          <span class="hook"><b>能解释：</b>为什么「模型够强了 Agent 还是不行」；把视角从「模型」抬高到「上下文」。</span>
+        </div>
+        <div class="adv-card">
+          <h4>记忆是工程拼出来的幻觉</h4>
+          <p>Agent 的「记忆」不是模型天生的，而是外部存储 + 检索造出来的：短期记忆在上下文里，长期记忆在外面。</p>
+          <span class="hook"><b>能解释：</b>「为什么它一会儿记得住一会儿又忘」。</span>
+        </div>
+        <div class="adv-card">
+          <h4>确定性 vs 概率性的根本矛盾</h4>
+          <p>传统软件每次结果相同，Agent 每次都可能不一样。于是「测试」「可靠性」「上线」对 Agent 是全新问题——这是落地最大的障碍。</p>
+          <span class="hook"><b>能解释：</b>为什么 Agent 难以「保证」；这是内容里最值钱、最少人讲清的角度。</span>
+        </div>
+        <div class="adv-card">
+          <h4>成本与延迟</h4>
+          <p>每走一步都要一次模型推理，还按 token 计费——所以 Agent 天然又慢又贵。这决定了几乎所有 Agent 产品的形态约束。</p>
+          <span class="hook"><b>能解释：</b>为什么 Agent 产品要限制步数、要做缓存、要「够用就停」。</span>
+        </div>
+        <div class="adv-card">
+          <h4>规划与反思为何脆弱</h4>
+          <p>Agent 会拆解任务、自我检查（planning / reflection），但这些能力建立在概率生成之上，一旦前提判断错，后面会顺着错下去。</p>
+          <span class="hook"><b>能解释：</b>为什么它「计划做得漂亮却执行翻车」；反思也可能自我强化错误。</span>
+        </div>
+        <div class="adv-card">
+          <h4>权限边界与人在环中</h4>
+          <p>Agent 有自主性，但危险操作（发钱、删数据、对外发送）必须卡人工审批。自主性的边界是设计出来的，不是模型自带的。</p>
+          <span class="hook"><b>能解释：</b>为什么负责任的 Agent 都要 human-in-the-loop；自主 ≠ 放任。</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>应用层：接入、生态与工程化</h2>
+        <div class="desc">底层之上，真正被产品用起来的一层。这些概念最容易被混为一谈——先用一张表把最常混的五个钉清楚。</div>
+        <div class="jump-row">
+          <a class="jump" href="#res-4">↓ MCP 课程</a>
+          <a class="jump" href="#res-3">↓ Skill 课程</a>
+        </div>
+      </div>
+
+      <div class="cmp-table-wrap">
+        <table class="cmp">
+          <thead>
+            <tr><th>概念</th><th>一句话本质</th><th>它给模型的是</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="name">Tool / 函数调用</td><td>让模型触发一个动作（查天气、发邮件、跑代码）</td><td class="meta">一双手</td></tr>
+            <tr><td class="name">MCP</td><td>统一标准，让 Agent 用同一种方式接入各种工具与数据源</td><td class="meta">统一的接线口</td></tr>
+            <tr><td class="name">Skill</td><td>打包好的知识 / 工作流，按需加载，教它「这类任务怎么做」</td><td class="meta">一本说明书</td></tr>
+            <tr><td class="name">RAG / 知识库</td><td>把外部资料检索出来喂进上下文，补它没背过的事实</td><td class="meta">一个记忆外挂</td></tr>
+            <tr><td class="name">Plugin / 插件</td><td>把上面这些打包、分发、安装的容器，常聚合成市场</td><td class="meta">一个盒子</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="adv-subhead"><span class="n">A</span><h3>接入与扩展</h3></div>
+      <div class="adv-grid">
+        <div class="adv-card">
+          <h4>MCP（模型上下文协议）</h4>
+          <p>一个开放标准，把「每个工具各写一套对接」变成「一次对接、到处可用」。Server 暴露工具 / 数据 / 提示，Client（harness）统一去调。相当于 AI 工具生态的 USB-C。</p>
+          <span class="hook"><b>能解释：</b>为什么它能快速接入一堆外部能力，而不用为每个服务重写代码。</span>
+        </div>
+        <div class="adv-card">
+          <h4>Skill（技能）</h4>
+          <p>本质是结构化的知识 + 工作流（可带脚本），按需加载进上下文。它不给模型新「感官」，而是教它「这类事该按什么步骤、什么标准做」。</p>
+          <span class="hook"><b>能解释：</b>为什么同一个模型加载了 Skill 后，在某类任务上突然「专业」了。</span>
+        </div>
+        <div class="adv-card">
+          <h4>Connector（连接器）</h4>
+          <p>连接外部 SaaS / 数据源的对接件（Slack、数据库、网盘等）。MCP 可以理解为「连接器的统一标准」，让连接器不再各说各话。</p>
+          <span class="hook"><b>能解释：</b>为什么「接入你的公司数据」是一类独立能力，和模型强不强无关。</span>
+        </div>
+        <div class="adv-card">
+          <h4>Plugin / Marketplace（插件与市场）</h4>
+          <p>把 MCP、Skill、工具打包成可安装单元，再聚合成市场分发。是生态从「自己搭」走向「装一下就能用」的关键。</p>
+          <span class="hook"><b>能解释：</b>为什么 AI 产品开始有「应用商店」形态，生态怎么长起来。</span>
+        </div>
+        <div class="adv-card">
+          <h4>A2A / ACP（智能体通信协议）</h4>
+          <p>让不同来源的 Agent 能互相对话、协作的开放标准（Agent2Agent、ACP）。如果说 MCP 解决「Agent 连工具」，A2A 解决「Agent 连 Agent」，2026 年落地很快。</p>
+          <span class="hook"><b>能解释：</b>多智能体生态怎么互通；A2A 与 MCP 是互补，不是替代。</span>
+        </div>
+      </div>
+
+      <div class="adv-subhead"><span class="n">B</span><h3>知识与定制</h3></div>
+      <div class="adv-grid">
+        <div class="adv-card">
+          <h4>RAG（检索增强生成）</h4>
+          <p>先检索相关资料、再喂给模型生成答案。解决知识冻结和私有数据两个问题——模型没「学到」新东西，只是当场「查着答」。</p>
+          <span class="hook"><b>能解释：</b>为什么要建知识库、为什么「喂了资料才准」、为什么检索质量决定答案质量。</span>
+        </div>
+        <div class="adv-card">
+          <h4>Embedding / 向量数据库</h4>
+          <p>把文字变成向量，用「语义距离」找相似内容，是 RAG 的检索地基。语义相近的东西向量也相近。</p>
+          <span class="hook"><b>能解释：</b>为什么它能按「意思」而非「关键词」检索；RAG 找不准往往错在这一层。</span>
+        </div>
+        <div class="adv-card">
+          <h4>Fine-tuning（微调）</h4>
+          <p>用特定数据继续训练，改变模型的默认行为 / 风格 / 格式。改的是「模型本身的倾向」，不是喂给它的临时资料。</p>
+          <span class="hook"><b>能解释：</b>它和 RAG 的根本区别——微调改「性格」，RAG 补「事实」。</span>
+        </div>
+        <div class="adv-card">
+          <h4>三条定制路径的辨析</h4>
+          <p>让模型「更贴合你」有三条路：<b>提示工程</b>（最轻，改说法）、<b>RAG</b>（补事实，接私有知识）、<b>微调</b>（最重，改行为倾向）。先用轻的，不够再上重的。</p>
+          <span class="hook"><b>能解释：</b>大多数需求用提示 + RAG 就够，动辄微调是常见的过度工程。</span>
+        </div>
+        <div class="adv-card">
+          <h4>量化与蒸馏（模型压缩）</h4>
+          <p>两种让大模型变小变便宜的手段：量化降精度省显存，蒸馏用大模型「教」出能力接近的小模型。是模型能跑在本地 / 手机 / 低成本环境的关键。</p>
+          <span class="hook"><b>能解释：</b>为什么「小模型」能力越来越逼近大模型；本地部署怎么成为可能。</span>
+        </div>
+        <div class="adv-card">
+          <h4>合成数据（Synthetic Data）</h4>
+          <p>用 AI 生成的数据来训练 AI，已从「数据不够时的权宜」变成训练流程的核心一环。但也带来「模型崩溃」——在自产数据上反复训练会退化。</p>
+          <span class="hook"><b>能解释：</b>训练数据从哪来的新答案；以及为什么「AI 喂 AI」有隐忧。</span>
+        </div>
+      </div>
+
+      <div class="adv-subhead"><span class="n">C</span><h3>工程化</h3></div>
+      <div class="adv-grid">
+        <div class="adv-card">
+          <h4>结构化输出（JSON mode）</h4>
+          <p>强制模型输出可被程序解析的固定格式。是把「会聊天的模型」接进真实系统的关键一环。</p>
+          <span class="hook"><b>能解释：</b>为什么产品能把模型输出直接喂给下游代码，而不是让人读一段话。</span>
+        </div>
+        <div class="adv-card">
+          <h4>流式输出（Streaming）</h4>
+          <p>边生成边逐 token 吐出，所以你看到「打字机效果」。不是特效，是逐 token 生成的自然呈现。</p>
+          <span class="hook"><b>能解释：</b>为什么 AI 回复是一个字一个字出来的；也解释了首字延迟从哪来。</span>
+        </div>
+        <div class="adv-card">
+          <h4>提示缓存（Prompt Caching）</h4>
+          <p>把重复用的长上下文（系统提示、文档）缓存起来，省去每次重算，大幅降本降延迟。</p>
+          <span class="hook"><b>能解释：</b>为什么长 system prompt 不一定贵、为什么产品要精心设计「哪部分固定」。</span>
+        </div>
+        <div class="adv-card">
+          <h4>多模态（Multimodal）</h4>
+          <p>模型能接收 / 产出文字之外的图像、音频、视频。它把不同模态都转成同一套 token 来处理。</p>
+          <span class="hook"><b>能解释：</b>为什么它能「看图」「听音」；也解释了这些模态各自的准确率短板。</span>
+        </div>
+        <div class="adv-card">
+          <h4>沙箱 / 代码执行</h4>
+          <p>Agent 跑代码、装包、读写文件时，运行在隔离环境里，防止它误伤真实系统。自主性越高，沙箱越关键。</p>
+          <span class="hook"><b>能解释：</b>为什么「能跑代码的 Agent」必须被关在盒子里；能力与风险的取舍。</span>
+        </div>
+      </div>
+
+      <div class="adv-subhead"><span class="n">D</span><h3>安全与质量</h3></div>
+      <div class="adv-grid">
+        <div class="adv-card">
+          <h4>护栏（Guardrails）</h4>
+          <p>在模型输入 / 输出两端加的安全层：过滤有害内容、拦截越界请求、校验格式。是产品「兜底」的一环，独立于模型本身。</p>
+          <span class="hook"><b>能解释：</b>为什么同一个模型在不同产品里「能说 / 不能说」的边界不一样。</span>
+        </div>
+        <div class="adv-card">
+          <h4>提示注入（Prompt Injection）</h4>
+          <p>攻击者把恶意指令藏在网页、文档、邮件里，Agent 读进上下文后被「劫持」。是 Agent 时代最独特的安全风险。</p>
+          <span class="hook"><b>能解释：</b>为什么「能自主读外部内容的 Agent」天生有安全隐患，为什么要限制权限。</span>
+        </div>
+        <div class="adv-card">
+          <h4>评测（Eval）</h4>
+          <p>系统化衡量模型 / Agent 在真实任务上的质量。因为输出是概率性的，「跑一次觉得不错」远远不够，得成规模地测。</p>
+          <span class="hook"><b>能解释：</b>为什么严肃团队都在建 eval；「demo 惊艳、上线拉胯」通常就是没做这个。</span>
+        </div>
+        <div class="adv-card">
+          <h4>LLM-as-Judge（用模型当裁判）</h4>
+          <p>用一个模型去评判另一个模型的输出好坏，替代昂贵的人工评测，是当下 eval 规模化的主流手段之一。</p>
+          <span class="hook"><b>能解释：</b>概率性系统怎么规模化「打分」；也要当心裁判本身带偏差。</span>
+        </div>
+      </div>
+
+      <div class="adv-subhead"><span class="n">E</span><h3>生态格局</h3></div>
+      <div class="adv-grid">
+        <div class="adv-card">
+          <h4>开源 vs 闭源模型</h4>
+          <p>闭源（API 调用，能力常更强）与开源（可本地部署、可改、可控）是两条路线，各有权衡：性能、成本、隐私、可控性。</p>
+          <span class="hook"><b>能解释：</b>为什么有的企业坚持本地开源模型，哪怕性能略逊。</span>
+        </div>
+        <div class="adv-card">
+          <h4>API vs 本地部署</h4>
+          <p>调云端 API（省心、随用随付、数据出门）还是自建部署（可控、数据不出门、要养基建）——形态选择直接影响成本与合规。</p>
+          <span class="hook"><b>能解释：</b>为什么敏感行业不能简单「接个 API」；部署形态是产品决策不是技术细节。</span>
+        </div>
+        <div class="adv-card">
+          <h4>模型路由 / 选型</h4>
+          <p>不同任务用不同模型：简单的用小而快的、难的用强而贵的，动态分配。是控成本、控延迟的常用手段。</p>
+          <span class="hook"><b>能解释：</b>为什么产品里「不是所有请求都用最强模型」；性价比是怎么调出来的。</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>前沿热概念</h2>
+        <div class="desc">近一两年最火、也最容易被误用的一批。核心是一个范式转变：从「把模型练更大」转向「让模型在回答时多花计算去想、去循环」。</div>
+        <div class="jump-row">
+          <a class="jump" href="#res-5">↓ 进阶 / 前沿课程</a>
+        </div>
+      </div>
+      <div class="adv-grid">
+        <div class="adv-card">
+          <h4>推理 / 思维模型（Reasoning）</h4>
+          <p>模型在给答案前先生成一段内部「思考」（推理链），用更多计算换更高准确率——会「想一会儿」再回答。</p>
+          <span class="hook"><b>能解释：</b>为什么新一代模型解难题更强，但更慢、更贵。</span>
+        </div>
+        <div class="adv-card">
+          <h4>思维链（Chain-of-Thought）</h4>
+          <p>让模型「一步步想」再下结论，显著提升推理类任务。它是推理模型的雏形，也是「让它一步步来」这句提示有用的原因。</p>
+          <span class="hook"><b>能解释：</b>为什么拆解步骤能提质；推理模型只是把这一步「内化」了。</span>
+        </div>
+        <div class="adv-card">
+          <h4>测试时计算（Test-time Compute）</h4>
+          <p>不靠把模型练更大，而靠在回答时多花计算（想更久、试多条路再择优）来提升表现。是近一年最重要的范式转变。</p>
+          <span class="hook"><b>能解释：</b>为什么「想得久 = 答得好」，为什么开始按「思考量」计费。</span>
+        </div>
+        <div class="adv-card">
+          <h4>Agentic Loop / 长时程自主循环</h4>
+          <p>Agent 在一个目标下持续自主循环——规划、执行、观察、再规划——跑很多步、很长时间完成复杂任务。这就是当下最火的「自主智能体」形态。</p>
+          <span class="hook"><b>能解释：</b>为什么它能「自己干很久」；也为什么步数一多就容易跑偏（接回 Agent 层的失败模式）。</span>
+        </div>
+        <div class="adv-card">
+          <h4>反思循环（Reflection）</h4>
+          <p>Agent 产出后自我批评、再修正的循环。让它「自查一遍」通常能提质。</p>
+          <span class="hook"><b>能解释：</b>为什么自查有用，也为什么有时会把错误越查越「确信」。</span>
+        </div>
+        <div class="adv-card">
+          <h4>Computer Use（电脑操作智能体）</h4>
+          <p>Agent 直接看屏幕、点鼠标、敲键盘，操作真实软件，而不是只调 API。</p>
+          <span class="hook"><b>能解释：</b>为什么它能「用你的电脑干活」，也为什么慢、脆、必须有安全边界。</span>
+        </div>
+        <div class="adv-card">
+          <h4>Deep Research（深度研究智能体）</h4>
+          <p>Agent 自主多轮检索、交叉验证、汇总成报告——把一次问答升级成一场调研。</p>
+          <span class="hook"><b>能解释：</b>为什么它比单次回答全面，代价是时间和成本。</span>
+        </div>
+        <div class="adv-card">
+          <h4>MoE（混合专家）</h4>
+          <p>模型内部由多个「专家」子网络组成，每次只激活一部分，用更低算力跑更大的模型。偏底层但常被提及。</p>
+          <span class="hook"><b>能解释：</b>为什么有的模型「参数很大，但推理不算贵」。</span>
+        </div>
+        <div class="adv-card">
+          <h4>RLVR（可验证奖励强化学习）</h4>
+          <p>当下推理模型的训练关键。对数学、代码这类答案能自动验证的任务，模型自己生成多条解法、用程序判对错、朝对的方向强化。DeepSeek-R1、o 系列就是这么练强的。相关算法 GRPO、DPO 是圈内高频词。</p>
+          <span class="hook"><b>能解释：</b>为什么推理能力能「自我练出来」，不全靠人工标注。</span>
+        </div>
+        <div class="adv-card">
+          <h4>机制可解释性（Interpretability）</h4>
+          <p>试图打开模型这个黑箱，找出内部的「特征」和「回路」，看它到底怎么想。2026 年的热门方向（被 MIT 评为年度突破），也是安全审计的基础。</p>
+          <span class="hook"><b>能解释：</b>「模型不可解释」正在被攻克；它关系到能不能真正信任模型。</span>
+        </div>
+        <div class="adv-card">
+          <h4>多智能体编排（Multi-Agent）</h4>
+          <p>用一个「编排者」协调多个各司其职的子智能体，完成单个 Agent 搞不定的复杂任务。2026 年企业级落地的主流形态。</p>
+          <span class="hook"><b>能解释：</b>为什么复杂任务要「拆给一队 Agent」；也带来新的协调与失控风险。</span>
+        </div>
+        <div class="adv-card">
+          <h4>世界模型（World Models）</h4>
+          <p>让 AI 学到「环境如何演变」的内部模型，而不只是预测下一个词。被很多人视为通向更强通用智能、机器人、具身智能的路径。</p>
+          <span class="hook"><b>能解释：</b>为什么有人说「光靠语言模型不够」；下一代架构的争论焦点。</span>
+        </div>
+        <div class="adv-card">
+          <h4>Mamba / 状态空间模型（SSM）</h4>
+          <p>Transformer 之外的另一条架构路线，在长序列上更省算力，实践中常和注意力做「混合架构」。是圈内讨论最多的「后 Transformer」候选。</p>
+          <span class="hook"><b>能解释：</b>为什么「Transformer 不是唯一解」；长上下文效率的另一种思路。</span>
+        </div>
+        <div class="adv-card">
+          <h4>Vibe Coding → 目标验证</h4>
+          <p>用自然语言「凭感觉」让 AI 生成可用代码，2025 年爆火；2026 年正演进为「你定目标并验收、一队 Agent 自主实现」的模式。</p>
+          <span class="hook"><b>能解释：</b>AI 编程范式怎么变；为什么「会验收」开始比「会写」更重要。</span>
+        </div>
+        <div class="adv-card">
+          <h4>扩散语言模型（Diffusion LLM）</h4>
+          <p>借鉴图像扩散思路、并行「去噪」生成文本的新路线，潜在更快。仍在早期，但圈内关注度在上升。</p>
+          <span class="hook"><b>能解释：</b>为什么文本生成未必只能一个字一个字地来。</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>学习资源</h2>
+        <div class="desc">每一大块配了可以直接去学的课程。中文优先；英文资源都标注了中文版 / 中字情况，标 <span class="res-badge your" style="display:inline;">收藏</span> 的是团队自己收藏的链接。</div>
+      </div>
+
+      <div class="res-note">
+        <b>建议学法：</b>先用「李宏毅 + 3Blue1Brown」把大模型底层的直觉建起来，再看 Anthropic 官方文档补 Agent / Harness 的工程视角，MCP / Skill 用官方入门课上手，前沿理论按需查阅。配合前面的「玩具版练习」边学边搓，效果最好。
+      </div>
+
+      <div class="res-group" id="res-1">
+        <div class="res-group-head"><h3>① 大模型底层原理</h3></div>
+        <div class="res-list">
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">李宏毅《生成式人工智能导论 2024》</span><span class="res-badge cn">中文</span></div>
+            <p>台大公开课，中文授课，圈内公认最好的大模型入门到进阶课程之一。从「生成式 AI 是什么」讲到训练三阶段、可解释性、安全，风趣易懂。</p>
+            <div class="res-links"><a href="https://speech.ee.ntu.edu.tw/~hylee/genai/2024-spring.php" target="_blank" rel="noopener">课程主页</a><a href="https://www.bilibili.com/video/BV1BJ4m1e7g8/" target="_blank" rel="noopener">B站合集</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">3Blue1Brown 深度学习 / Transformer / 注意力</span><span class="res-badge cn">官方中文</span></div>
+            <p>用可视化把神经网络、Transformer、注意力机制讲得极其直观。有 B 站官方中文频道，配音 + 字幕齐全，最适合建立「机制直觉」。</p>
+            <div class="res-links"><a href="https://space.bilibili.com/88461692" target="_blank" rel="noopener">B站官方频道</a><a href="https://www.3blue1brown.com/topics/neural-networks" target="_blank" rel="noopener">官网课程页</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Karpathy《Deep Dive into LLMs》《Zero to Hero》</span><span class="res-badge en">英文 · B站有中字搬运</span></div>
+            <p>前特斯拉 AI 总监、OpenAI 创始成员。前者 3.5 小时讲透 LLM 全训练栈，后者带你从零手搓一个 GPT。深度第一，B 站搜「Karpathy 中字」有搬运版。</p>
+            <div class="res-links"><a href="https://karpathy.ai/zero-to-hero.html" target="_blank" rel="noopener">Zero to Hero 主页</a><a href="https://karpathy.ai/" target="_blank" rel="noopener">全部视频</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">模型底层原理（团队收藏）</span><span class="res-badge your">收藏</span></div>
+            <p>团队自己收藏的底层原理讲解。</p>
+            <div class="res-links"><a href="https://www.bilibili.com/video/BV16cNEeXEer" target="_blank" rel="noopener">B站链接</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="res-group" id="res-2">
+        <div class="res-group-head"><h3>② Harness 与 Agent</h3></div>
+        <div class="res-list">
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Harness 与 Agent（团队收藏）</span><span class="res-badge your">收藏</span></div>
+            <p>团队自己收藏的 Harness 与 Agent 讲解。</p>
+            <div class="res-links"><a href="https://www.bilibili.com/video/BV1t55v6DE2v" target="_blank" rel="noopener">B站链接</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Anthropic《Building Effective Agents》</span><span class="res-badge en">英文 · 可配翻译</span></div>
+            <p>Claude 官方出品的「如何构建高效智能体」权威指南，讲清工作流 vs 智能体、何时该用 Agent、常见设计模式。做 Agent 内容的必读。</p>
+            <div class="res-links"><a href="https://www.anthropic.com/research/building-effective-agents" target="_blank" rel="noopener">官方文章</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Anthropic《Effective Context Engineering》</span><span class="res-badge en">英文 · 可配翻译</span></div>
+            <p>官方讲「上下文工程」——前面强调过它是 Agent 的真正瓶颈，这篇是权威原文。</p>
+            <div class="res-links"><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noopener">官方文章</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Datawhale 开源 Agent 学习路线</span><span class="res-badge cn">中文</span></div>
+            <p>国内知名开源学习社区，把 Agent 学习整理成可照做的路线，从基础概念到多智能体，分阶段推进，中文友好。</p>
+            <div class="res-links"><a href="https://www.bilibili.com/video/BV1RyGo6QEVR/" target="_blank" rel="noopener">B站介绍</a><a href="https://github.com/datawhalechina" target="_blank" rel="noopener">Datawhale GitHub</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Hugging Face Agents 课程</span><span class="res-badge cn">有中文版</span></div>
+            <p>系统讲 AI Agent 开发，免费，官方提供多语言（含中文）翻译，适合动手实践。</p>
+            <div class="res-links"><a href="https://huggingface.co/learn/agents-course" target="_blank" rel="noopener">课程链接</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="res-group" id="res-3">
+        <div class="res-group-head"><h3>③ Skill（技能）</h3></div>
+        <div class="res-list">
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Skill（团队收藏）</span><span class="res-badge your">收藏</span></div>
+            <p>团队自己收藏的 Skill 讲解。</p>
+            <div class="res-links"><a href="https://www.bilibili.com/video/BV1EXksBGEa8" target="_blank" rel="noopener">B站链接</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Anthropic Agent Skills 官方（Build with Claude）</span><span class="res-badge en">英文 · 可配翻译</span></div>
+            <p>官方学习中心，涵盖 Agent Skills（SKILL.md 打包）等概念的一手说明与实践。</p>
+            <div class="res-links"><a href="https://www.anthropic.com/learn/build-with-claude" target="_blank" rel="noopener">Anthropic Academy</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="res-group" id="res-4">
+        <div class="res-group-head"><h3>④ MCP（模型上下文协议）</h3></div>
+        <div class="res-list">
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">MCP（团队收藏）</span><span class="res-badge your">收藏</span></div>
+            <p>团队自己收藏的 MCP 讲解。</p>
+            <div class="res-links"><a href="https://www.bilibili.com/video/BV1sWoMYUEi9" target="_blank" rel="noopener">B站链接</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">MCP 官方文档与规范</span><span class="res-badge en">英文 · 可配翻译</span></div>
+            <p>modelcontextprotocol.io，一手规范与教程。想真正搞懂「Agent 怎么连工具」看这里。</p>
+            <div class="res-links"><a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">官方文档</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Anthropic 官方 MCP 入门课</span><span class="res-badge en">英文 · 免费</span></div>
+            <p>官方免费入门课程，从零讲清 MCP 是什么、怎么用。</p>
+            <div class="res-links"><a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank" rel="noopener">课程链接</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">DeepLearning.AI《MCP: Build Rich-Context AI Apps》</span><span class="res-badge en">英文 · 带字幕</span></div>
+            <p>吴恩达平台 × Anthropic 合作短课，1 小时 48 分带你动手搭 MCP server 与客户端。</p>
+            <div class="res-links"><a href="https://www.deeplearning.ai/courses/mcp-build-rich-context-ai-apps-with-anthropic" target="_blank" rel="noopener">课程链接</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="res-group" id="res-5">
+        <div class="res-group-head"><h3>⑤ 进阶 · 前沿理论</h3></div>
+        <div class="res-list">
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Hugging Face LLM 课程</span><span class="res-badge cn">有中文版</span></div>
+            <p>系统入门大模型与 NLP，从 Transformer 原理到微调、tokenization，免费，含中文翻译。</p>
+            <div class="res-links"><a href="https://huggingface.co/learn/llm-course" target="_blank" rel="noopener">课程链接</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">mlabonne / llm-course</span><span class="res-badge en">英文 · GitHub</span></div>
+            <p>GitHub 高星大模型学习路线图，配 Colab 笔记本，从基础到部署一条龙，适合系统进阶。</p>
+            <div class="res-links"><a href="https://github.com/mlabonne/llm-course" target="_blank" rel="noopener">GitHub</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Datawhale 大模型系列开源教程</span><span class="res-badge cn">中文</span></div>
+            <p>中文开源教程合集（self-llm 部署微调、so-large-lm 大模型基础等），适合系统补底层与实操。</p>
+            <div class="res-links"><a href="https://github.com/datawhalechina" target="_blank" rel="noopener">Datawhale GitHub</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>自测与练习</h2>
+        <div class="desc">检验「深入」是否到位的自测题，和逼出深度的动手练习，都放在单独一页，方便反复自测。</div>
+      </div>
+      <a class="cta-card" href="团队深入能力训练-自测与练习.html">
+        <div class="cta-title">打开「自测与练习」页 →</div>
+        <div class="cta-sub">50+ 道自测题（点击展开答案）· 动手练习清单，覆盖四大块全部概念。全部能从机制答出、不靠背诵，就算「深入」阶段验收通过。</div>
+      </a>
+    </section>
+
+    <div class="footer">
+      团队「深入」能力训练 · 三层深度地图　|　最小可执行形态：动手前写预测、动手后写差异、每周聚起来拆彼此的翻车案例。
+    </div>
+
+  </div>
+
+</body>
+</html>

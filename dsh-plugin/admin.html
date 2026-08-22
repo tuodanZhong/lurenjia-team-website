@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理后台 · DSH 插件小卖部</title>
+<link rel="icon" type="image/png" href="../assets/mascot.png">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg-000: #ffffff; --bg-100: #f8f8f6; --bg-200: #f4f4f1; --bg-300: #efeeed;
+    --ink: #1a1a1a; --text-100: #121212; --text-200: #373734; --text-400: #7b7974;
+    --accent-brand: #d97757; --accent-brand-soft: rgba(217,119,87,0.12);
+    --danger: #c0392b; --success: #3d7400;
+    --border-light: rgba(18,18,18,0.08); --border-medium: rgba(18,18,18,0.12);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --radius-sm: 6px; --radius-md: 12px;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-sans); background: var(--bg-100); color: var(--text-200); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; }
+
+  .nav { position: sticky; top: 0; z-index: 50; background: rgba(248,248,246,0.85); backdrop-filter: saturate(180%) blur(12px); border-bottom: 1px solid var(--border-light); }
+  .nav .inner { max-width: 1080px; margin: 0 auto; padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; }
+  .nav .brand { display: flex; align-items: center; gap: 10px; }
+  .nav .brand img { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-000); }
+  .nav .brand .name { font-size: 17px; font-weight: 600; color: var(--text-100); }
+  .nav .brand .crumb { font-size: 13px; color: var(--text-400); }
+  .nav .links { display: flex; gap: 22px; align-items: center; font-size: 14px; }
+  .nav .links a { color: var(--text-400); } .nav .links a:hover { color: var(--text-100); }
+  .user-chip { display: flex; align-items: center; gap: 10px; font-size: 13.5px; }
+  .user-chip .uname { font-weight: 600; color: var(--text-100); }
+  .user-chip button { border: none; background: none; color: var(--text-400); font-size: 13px; }
+  .user-chip button:hover { color: var(--text-100); }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 40px 60px; }
+  h1 { font-size: 26px; color: var(--text-100); margin-bottom: 4px; }
+  .sub { font-size: 13.5px; color: var(--text-400); margin-bottom: 24px; }
+
+  .tabs { display: flex; gap: 8px; margin-bottom: 24px; border-bottom: 1px solid var(--border-light); padding-bottom: 12px; }
+  .tab { font-size: 14px; padding: 7px 18px; border-radius: 999px; border: 1px solid var(--border-light); background: var(--bg-000); color: var(--text-400); transition: all 0.15s; }
+  .tab.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+  .stat-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+  @media (max-width: 800px) { .stat-cards { grid-template-columns: repeat(2, 1fr); } }
+  .stat-card { background: var(--bg-000); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 18px 20px; }
+  .stat-card .label { font-size: 12.5px; color: var(--text-400); margin-bottom: 6px; }
+  .stat-card .value { font-size: 28px; font-weight: 700; color: var(--text-100); line-height: 1.2; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .stat-card .value small { font-size: 13px; font-weight: 400; color: var(--text-400); }
+
+  .panel { background: var(--bg-000); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 22px 24px; margin-bottom: 18px; }
+  .panel h2 { font-size: 16px; color: var(--text-100); margin-bottom: 16px; font-weight: 600; }
+  .chart-box { position: relative; height: 260px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { text-align: left; font-size: 12.5px; color: var(--text-400); font-weight: 500; padding: 8px 10px; border-bottom: 1px solid var(--border-light); }
+  td { padding: 9px 10px; border-bottom: 1px solid var(--border-light); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td.mono { font-family: var(--font-mono); font-size: 12.5px; }
+
+  .pill { font-size: 11px; padding: 2px 9px; border-radius: 999px; font-weight: 500; }
+  .pill.on { background: #e8f3e2; color: var(--success); }
+  .pill.off { background: var(--bg-300); color: var(--text-400); }
+  .pill.tested { background: var(--accent-brand-soft); color: var(--accent-brand); }
+  .pill.featured { background: linear-gradient(135deg, #d97757, #b85c3d); color: #fff; }
+
+  .mini-btn { font-size: 12px; padding: 4px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); background: var(--bg-100); color: var(--text-200); transition: all 0.15s; margin-right: 6px; }
+  .mini-btn:hover { border-color: var(--accent-brand); color: var(--accent-brand); }
+  .mini-btn.warn:hover { border-color: var(--danger); color: var(--danger); }
+
+  .toolbar { display: flex; gap: 10px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
+  .toolbar input[type=text] { flex: 1; min-width: 200px; padding: 9px 14px; font-size: 13.5px; border: 1px solid var(--border-medium); border-radius: var(--radius-sm); background: var(--bg-100); outline: none; font-family: inherit; }
+  .toolbar input[type=text]:focus { border-color: var(--accent-brand); background: var(--bg-000); }
+  .toolbar select { padding: 9px 12px; font-size: 13px; border: 1px solid var(--border-medium); border-radius: var(--radius-sm); background: var(--bg-100); font-family: inherit; }
+
+  .edit-row td { background: var(--bg-200); }
+  .edit-row input, .edit-row select { width: 100%; padding: 7px 10px; font-size: 13px; border: 1px solid var(--border-medium); border-radius: var(--radius-sm); font-family: inherit; background: var(--bg-000); }
+  .edit-row textarea { width: 100%; padding: 7px 10px; font-size: 13px; border: 1px solid var(--border-medium); border-radius: var(--radius-sm); font-family: inherit; background: var(--bg-000); resize: vertical; min-height: 52px; }
+
+  .guard { text-align: center; padding: 100px 20px; color: var(--text-400); }
+  .guard .big { font-size: 42px; margin-bottom: 14px; }
+  .guard a { color: var(--accent-brand); border-bottom: 1px solid var(--accent-brand); padding-bottom: 1px; }
+
+  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--ink); color: #fff; font-size: 13px; padding: 10px 20px; border-radius: 999px; opacity: 0; transition: all 0.25s; z-index: 200; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .hidden { display: none !important; }
+  @media (max-width: 640px) { .nav .inner, .wrap { padding-left: 20px; padding-right: 20px; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="inner">
+    <a class="brand" href="../index.html">
+      <img src="../assets/mascot.png" alt="路人甲">
+      <span class="name">路人甲</span>
+      <span class="crumb">/ 插件小卖部 · 管理后台</span>
+    </a>
+    <div class="links">
+      <a href="index.html">市场首页</a>
+      <span id="auth-area"></span>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap" id="guard" style="display:none">
+  <div class="guard">
+    <div class="big">🔒</div>
+    <div id="guard-msg">正在确认管理员身份…</div>
+  </div>
+</div>
+
+<div class="wrap hidden" id="main">
+  <h1>管理后台</h1>
+  <div class="sub">看看小卖部的客流，管管货架上的插件。</div>
+
+  <div class="tabs">
+    <button class="tab active" data-view="overview">访问统计</button>
+    <button class="tab" data-view="plugins">插件管理</button>
+    <button class="tab" data-view="users">用户列表</button>
+  </div>
+
+  <!-- 概览 -->
+  <div id="view-overview">
+    <div class="stat-cards">
+      <div class="stat-card"><div class="label">今日访问</div><div class="value" id="s-today-pv">–<small id="s-today-uv"></small></div></div>
+      <div class="stat-card"><div class="label">近 7 天访问</div><div class="value" id="s-week-pv">–<small id="s-week-uv"></small></div></div>
+      <div class="stat-card"><div class="label">近 30 天访问</div><div class="value" id="s-month-pv">–<small id="s-month-uv"></small></div></div>
+      <div class="stat-card"><div class="label">注册用户 / 上架插件</div><div class="value" id="s-users">–<small id="s-plugins"></small></div></div>
+    </div>
+    <div class="panel">
+      <h2>近 30 天访问趋势</h2>
+      <div class="chart-box"><canvas id="chart-daily"></canvas></div>
+    </div>
+    <div class="panel">
+      <h2>页面排行（近 30 天）</h2>
+      <table id="tbl-pages">
+        <thead><tr><th>页面</th><th style="width:100px">浏览量 PV</th><th style="width:100px">访客 UV</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 插件管理 -->
+  <div id="view-plugins" class="hidden">
+    <div class="panel">
+      <div class="toolbar">
+        <input type="text" id="pq" placeholder="搜索插件名称 / 简介…">
+        <select id="pstatus">
+          <option value="">全部状态</option>
+          <option value="on">已上架</option>
+          <option value="off">已下架</option>
+        </select>
+        <select id="pcat"><option value="">全部分类</option></select>
+        <span style="font-size:13px;color:var(--text-400)" id="pcount"></span>
+      </div>
+      <table id="tbl-plugins">
+        <thead><tr>
+          <th>插件</th><th style="width:90px">分类</th><th style="width:60px">星数</th>
+          <th style="width:80px">状态</th><th style="width:230px">操作</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+      <div style="text-align:center;padding:14px 0 4px" id="pmore-wrap">
+        <button class="mini-btn" id="pmore" style="padding:8px 26px">加载更多</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 用户列表 -->
+  <div id="view-users" class="hidden">
+    <div class="panel">
+      <h2>注册用户</h2>
+      <table id="tbl-users">
+        <thead><tr><th style="width:60px">ID</th><th>用户名</th><th style="width:80px">角色</th><th style="width:170px">注册时间</th><th style="width:170px">最后登录</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = '/dsh-plugin/api';
+const $ = s => document.querySelector(s);
+function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtTs(ts) { return ts ? new Date(ts * 1000).toLocaleString('zh-CN', { hour12: false }) : '—'; }
+let toastTimer;
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+async function api(path, opts) {
+  const r = await fetch(API + path, Object.assign({ headers: { 'Content-Type': 'application/json' } }, opts));
+  const body = await r.json().catch(() => ({}));
+  if (r.status === 401 || r.status === 403) { showGuard(body.detail || '需要管理员权限'); throw new Error('forbidden'); }
+  return body;
+}
+function showGuard(msg) {
+  $('#guard').style.display = '';
+  $('#main').classList.add('hidden');
+  $('#guard-msg').innerHTML = esc(msg) + '。请先到 <a href="index.html">市场首页</a> 用管理员账号登录。';
+}
+
+// 登录态
+api('/me').then(me => {
+  if (!me.logged_in || !me.is_admin) { showGuard(me.logged_in ? '当前账号不是管理员' : '还没有登录'); return; }
+  $('#auth-area').innerHTML = '<span class="user-chip"><span class="uname">' + esc(me.username) + '</span><button id="btn-logout">退出</button></span>';
+  $('#btn-logout').addEventListener('click', async () => {
+    await fetch(API + '/logout', { method: 'POST' });
+    location.href = 'index.html';
+  });
+  $('#guard').style.display = 'none';
+  $('#main').classList.remove('hidden');
+  loadOverview();
+}).catch(() => showGuard('无法连接后端服务'));
+
+// 访问上报（后台页也记）
+try {
+  let vid = localStorage.getItem('dsh-vid');
+  if (!vid) { vid = 'v-' + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('dsh-vid', vid); }
+  fetch(API + '/track', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ path: location.pathname, vid: vid, ref: document.referrer || '' }) }).catch(() => {});
+} catch (e) {}
+
+// Tab 切换
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x === t));
+    ['overview', 'plugins', 'users'].forEach(v => $('#view-' + v).classList.toggle('hidden', v !== t.dataset.view));
+    if (t.dataset.view === 'plugins' && !PLUGINS.length) loadPlugins();
+    if (t.dataset.view === 'users' && !USERS.length) loadUsers();
+  });
+});
+
+// ---------- 概览 ----------
+let chart;
+function loadOverview() {
+  api('/admin/stats').then(s => {
+    $('#s-today-pv').innerHTML = s.today.pv + '<small>' + s.today.uv + ' 位访客</small>';
+    $('#s-week-pv').innerHTML = s.week.pv + '<small>' + s.week.uv + ' 位访客</small>';
+    $('#s-month-pv').innerHTML = s.month.pv + '<small>' + s.month.uv + ' 位访客</small>';
+    $('#s-users').innerHTML = s.total_users + '<small>' + s.plugins.on + ' / ' + s.plugins.total + ' 上架</small>';
+    const labels = s.daily.map(d => d.date);
+    if (chart) chart.destroy();
+    chart = new Chart($('#chart-daily'), {
+      type: 'line',
+      data: { labels, datasets: [
+        { label: '浏览量 PV', data: s.daily.map(d => d.pv), borderColor: '#d97757', backgroundColor: 'rgba(217,119,87,0.10)', fill: true, tension: 0.3, pointRadius: 2 },
+        { label: '访客 UV', data: s.daily.map(d => d.uv), borderColor: '#2977d6', backgroundColor: 'transparent', tension: 0.3, pointRadius: 2 },
+      ]},
+      options: { responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { labels: { font: { size: 12 } } } },
+        scales: { y: { beginAtZero: true, ticks: { precision: 0 } }, x: { ticks: { maxTicksLimit: 10 } } } },
+    });
+    const tb = $('#tbl-pages tbody');
+    tb.innerHTML = s.top_pages.length
+      ? s.top_pages.map(p => '<tr><td class="mono">' + esc(p.path) + '</td><td>' + p.pv + '</td><td>' + p.uv + '</td></tr>').join('')
+      : '<tr><td colspan="3" style="color:var(--text-400)">还没有访问数据，去市场首页逛一圈就有了。</td></tr>';
+  }).catch(() => {});
+}
+
+// ---------- 插件管理 ----------
+let PLUGINS = [], pShown = 0, pFiltered = [];
+const P_PAGE = 40;
+function loadPlugins() {
+  api('/admin/plugins').then(list => {
+    PLUGINS = list;
+    const cats = [...new Set(list.map(p => p.cat))].sort();
+    $('#pcat').innerHTML = '<option value="">全部分类</option>' + cats.map(c => '<option>' + esc(c) + '</option>').join('');
+    filterPlugins();
+  }).catch(() => {});
+}
+function filterPlugins() {
+  const q = $('#pq').value.trim().toLowerCase();
+  const st = $('#pstatus').value, cat = $('#pcat').value;
+  pFiltered = PLUGINS.filter(p => {
+    if (st && p.status !== st) return false;
+    if (cat && p.cat !== cat) return false;
+    if (q && !(p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q))) return false;
+    return true;
+  });
+  pShown = 0;
+  $('#tbl-plugins tbody').innerHTML = '';
+  $('#pcount').textContent = pFiltered.length + ' 个';
+  renderPlugins();
+}
+function rowHtml(p) {
+  return '<tr data-id="' + p.id + '">'
+    + '<td><div style="font-weight:600;color:var(--text-100);font-size:13px" class="mono">' + esc(p.name) + '</div>'
+    + '<div style="font-size:12px;color:var(--text-400);max-width:380px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(p.desc) + '</div></td>'
+    + '<td>' + esc(p.cat) + '</td>'
+    + '<td>' + (p.stars || 0) + '</td>'
+    + '<td>' + (p.status === 'on' ? '<span class="pill on">上架中</span>' : '<span class="pill off">已下架</span>')
+    + (p.tested ? ' <span class="pill tested">实测</span>' : '')
+    + (p.featured ? ' <span class="pill featured">精选</span>' : '') + '</td>'
+    + '<td style="white-space:nowrap">'
+    + '<button class="mini-btn" data-act="edit">编辑</button>'
+    + '<button class="mini-btn" data-act="toggle">' + (p.status === 'on' ? '下架' : '上架') + '</button>'
+    + '<button class="mini-btn" data-act="featured">' + (p.featured ? '取消精选' : '标记精选') + '</button>'
+    + '<button class="mini-btn" data-act="tested">' + (p.tested ? '取消实测' : '标记实测') + '</button>'
+    + '<button class="mini-btn warn" data-act="del">删除</button>'
+    + '</td></tr>';
+}
+function renderPlugins() {
+  const next = pFiltered.slice(pShown, pShown + P_PAGE);
+  const html = next.map(rowHtml).join('');
+  $('#tbl-plugins tbody').insertAdjacentHTML('beforeend', html);
+  pShown += next.length;
+  $('#pmore-wrap').style.display = pShown < pFiltered.length ? '' : 'none';
+}
+let pDebounce;
+$('#pq').addEventListener('input', () => { clearTimeout(pDebounce); pDebounce = setTimeout(filterPlugins, 200); });
+$('#pstatus').addEventListener('change', filterPlugins);
+$('#pcat').addEventListener('change', filterPlugins);
+$('#pmore').addEventListener('click', renderPlugins);
+
+$('#tbl-plugins').addEventListener('click', async e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  const tr = btn.closest('tr');
+  const id = +tr.dataset.id;
+  const p = PLUGINS.find(x => x.id === id);
+  if (!p) return;
+  const act = btn.dataset.act;
+  if (act === 'toggle') {
+    const ns = p.status === 'on' ? 'off' : 'on';
+    const r = await api('/admin/plugins/' + id, { method: 'PATCH', body: JSON.stringify({ status: ns }) });
+    if (r.ok) { p.status = ns; refreshRow(tr, p); toast(ns === 'on' ? '已上架' : '已下架'); }
+  } else if (act === 'featured') {
+    const nf = !p.featured;
+    const r = await api('/admin/plugins/' + id, { method: 'PATCH', body: JSON.stringify({ featured: nf }) });
+    if (r.ok) { p.featured = nf ? 1 : 0; refreshRow(tr, p); toast(nf ? '已标记「路人甲精选」' : '已取消精选'); }
+  } else if (act === 'tested') {
+    const nt = !p.tested;
+    const r = await api('/admin/plugins/' + id, { method: 'PATCH', body: JSON.stringify({ tested: nt }) });
+    if (r.ok) { p.tested = nt ? 1 : 0; refreshRow(tr, p); toast(nt ? '已标记「路人甲实测」' : '已取消实测标记'); }
+  } else if (act === 'del') {
+    if (!confirm('确定删除「' + p.name + '」吗？删了就找不回来了。')) return;
+    const r = await api('/admin/plugins/' + id, { method: 'DELETE' });
+    if (r.ok) { PLUGINS = PLUGINS.filter(x => x.id !== id); tr.remove(); toast('已删除'); }
+  } else if (act === 'edit') {
+    openEditRow(tr, p);
+  } else if (act === 'save') {
+    const body = {
+      name: tr.querySelector('.e-name').value.trim(),
+      desc: tr.querySelector('.e-desc').value.trim(),
+      cat: tr.querySelector('.e-cat').value.trim() || '其他',
+      stars: parseInt(tr.querySelector('.e-stars').value, 10) || 0,
+    };
+    const r = await api('/admin/plugins/' + id, { method: 'PATCH', body: JSON.stringify(body) });
+    if (r.ok) { Object.assign(p, body); refreshRow(tr, p, true); toast('已保存'); }
+    else toast(r.detail || '保存失败');
+  } else if (act === 'cancel') {
+    refreshRow(tr, p, true);
+  }
+});
+
+function refreshRow(tr, p, fromEdit) {
+  const idx = Array.from(tr.parentNode.children).indexOf(tr);
+  tr.outerHTML = rowHtml(p);
+}
+
+function openEditRow(tr, p) {
+  tr.innerHTML = '<td colspan="2"><input class="e-name" value="' + esc(p.name) + '">'
+    + '<textarea class="e-desc" style="margin-top:6px">' + esc(p.desc) + '</textarea></td>'
+    + '<td><input class="e-stars" type="number" min="0" value="' + (p.stars || 0) + '"></td>'
+    + '<td><input class="e-cat" value="' + esc(p.cat) + '"></td>'
+    + '<td style="white-space:nowrap"><button class="mini-btn" data-act="save">保存</button>'
+    + '<button class="mini-btn" data-act="cancel">取消</button></td>';
+  tr.classList.add('edit-row');
+}
+
+// ---------- 用户列表 ----------
+let USERS = [];
+function loadUsers() {
+  api('/admin/users').then(list => {
+    USERS = list;
+    $('#tbl-users tbody').innerHTML = list.length ? list.map(u =>
+      '<tr><td>' + u.id + '</td><td style="font-weight:500;color:var(--text-100)">' + esc(u.username) + '</td>'
+      + '<td>' + (u.is_admin ? '<span class="pill tested">管理员</span>' : '<span class="pill off">普通用户</span>') + '</td>'
+      + '<td class="mono">' + fmtTs(u.created_at) + '</td><td class="mono">' + fmtTs(u.last_login_at) + '</td></tr>'
+    ).join('') : '<tr><td colspan="5" style="color:var(--text-400)">还没有注册用户。</td></tr>';
+  }).catch(() => {});
+}
+</script>
+</body>
+</html>

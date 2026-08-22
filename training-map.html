@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>团队 AI 能力训练 · 小白递进路线</title>
+<title>团队「深入」能力训练 · 三层深度地图</title>
 <style>
   :root {
     --bg-000: #ffffff;
@@ -88,77 +88,6 @@
   .principle-box p { font-size: 16px; color: var(--text-200); }
   .principle-box strong { color: var(--text-100); font-weight: 600; }
 
-  .learning-path {
-    max-width: 940px;
-    margin: 18px auto 0;
-    padding: 0 40px;
-  }
-  .path-box {
-    background: var(--bg-000);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
-    padding: 22px 24px;
-  }
-  .path-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
-  .path-head h2 { font-size: 18px; font-weight: 600; color: var(--text-100); }
-  .path-head span { font-size: 13px; color: var(--text-400); }
-  .path-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
-  .path-step {
-    display: block;
-    color: inherit;
-    text-decoration: none;
-    background: var(--bg-200);
-    border: 1px solid transparent;
-    border-radius: var(--radius-sm);
-    padding: 13px 14px;
-    min-height: 112px;
-  }
-  .path-step:hover { border-color: var(--border-medium); background: var(--bg-100); }
-  .path-step .num { font-size: 11px; font-weight: 600; color: var(--accent-brand); letter-spacing: 0.08em; }
-  .path-step .name { font-size: 14px; font-weight: 600; color: var(--text-100); margin-top: 5px; line-height: 1.45; }
-  .path-step .what { font-size: 12px; color: var(--text-400); margin-top: 6px; line-height: 1.5; }
-
-  .stage-kicker {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--accent-brand);
-    background: rgba(217,119,87,0.09);
-    border-radius: var(--radius-sm);
-    padding: 3px 9px;
-    margin-bottom: 8px;
-    letter-spacing: 0.04em;
-  }
-  .stage-divider {
-    background: var(--bg-000);
-    border: 1px solid var(--border-light);
-    border-left: 3px solid var(--accent-brand);
-    border-radius: var(--radius-md);
-    padding: 18px 20px;
-    margin: 8px 0 22px;
-  }
-  .stage-divider h3 { font-size: 18px; color: var(--text-100); }
-  .stage-divider p { font-size: 14px; color: var(--text-400); margin-top: 4px; }
-  .required-block > summary {
-    list-style: none;
-    cursor: pointer;
-    background: var(--bg-000);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
-    padding: 16px 20px;
-    color: var(--accent-link);
-    font-size: 14px;
-    font-weight: 600;
-  }
-  .required-block > summary::-webkit-details-marker { display: none; }
-  .required-block > summary::after { content: " ＋"; }
-  .required-block[open] > summary::after { content: " －"; }
-  .required-block[open] > summary { margin-bottom: 16px; }
-  .required-block > summary {
-    border-left: 3px solid var(--accent-brand);
-    color: var(--accent-brand);
-  }
-
   section { padding: 48px 0 0; }
   .section-head { margin-bottom: 24px; }
   .section-head h2 {
@@ -223,88 +152,6 @@
     color: var(--text-200);
   }
   .verify strong { color: var(--text-100); }
-
-  .starter-story {
-    background: var(--bg-000);
-    border: 1px solid var(--border-light);
-    border-left: 3px solid var(--accent-brand);
-    border-radius: var(--radius-md);
-    padding: 24px 26px;
-    margin-bottom: 20px;
-  }
-  .starter-label {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    color: var(--accent-brand);
-    margin-bottom: 6px;
-  }
-  .starter-story h3 { font-size: 19px; color: var(--text-100); line-height: 1.45; }
-  .story-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 18px; }
-  .story-step { background: var(--bg-200); border-radius: var(--radius-sm); padding: 14px; }
-  .story-step .no { font-size: 11px; font-weight: 600; color: var(--accent-brand); letter-spacing: 0.06em; }
-  .story-step strong { display: block; color: var(--text-100); font-size: 14px; margin-top: 3px; }
-  .story-step p { font-size: 13px; color: var(--text-200); line-height: 1.6; margin-top: 5px; }
-  .story-takeaway {
-    margin-top: 14px;
-    padding: 12px 14px;
-    background: rgba(61,116,0,0.05);
-    border-radius: var(--radius-sm);
-    font-size: 14px;
-    color: var(--text-200);
-  }
-  .story-takeaway strong { color: var(--text-100); }
-
-  .term-drawer {
-    margin: 16px 0 0 48px;
-    background: var(--bg-100);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
-  }
-  .starter-story .term-drawer { margin-left: 0; }
-  .term-drawer > summary {
-    list-style: none;
-    cursor: pointer;
-    padding: 14px 18px;
-    color: var(--accent-link);
-    font-size: 14px;
-    font-weight: 600;
-  }
-  .term-drawer > summary::-webkit-details-marker { display: none; }
-  .term-drawer > summary::after { content: " ＋"; }
-  .term-drawer[open] > summary { border-bottom: 1px solid var(--border-light); }
-  .term-drawer[open] > summary::after { content: " －"; }
-  .term-content { padding: 16px 18px 18px; }
-  .term-drawer .title { font-size: 15px; font-weight: 600; color: var(--text-100); margin-bottom: 10px; }
-  .term-drawer p { font-size: 14px; color: var(--text-200); line-height: 1.75; margin-top: 7px; }
-  .term-drawer p:first-of-type { margin-top: 0; }
-  .term-drawer strong { color: var(--text-100); }
-  .term-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .term-card { background: var(--bg-000); border-radius: var(--radius-sm); padding: 12px 14px; }
-  .term-card b { display: block; color: var(--text-100); font-size: 13px; margin-bottom: 3px; }
-  .term-card span { display: block; color: var(--text-200); font-size: 13px; line-height: 1.6; }
-  .term-drawer code {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--text-100);
-    background: var(--bg-300);
-    padding: 2px 6px;
-    border-radius: 4px;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    line-height: 2;
-  }
-
-  .first-pass-stop {
-    background: rgba(41,119,214,0.06);
-    border: 1px solid rgba(41,119,214,0.16);
-    border-radius: var(--radius-md);
-    padding: 18px 20px;
-    margin-top: 4px;
-  }
-  .first-pass-stop .label { color: var(--accent-link); font-size: 12px; font-weight: 600; letter-spacing: 0.05em; }
-  .first-pass-stop p { margin-top: 4px; color: var(--text-200); font-size: 14.5px; }
-  .first-pass-stop strong { color: var(--text-100); }
 
   .watershed {
     margin-left: 48px;
@@ -423,8 +270,6 @@
   .res-group { margin-bottom: 26px; scroll-margin-top: 20px; }
   .res-group-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
   .res-group-head h3 { font-size: 18px; font-weight: 600; color: var(--text-100); }
-  .course-block { margin: 24px 0 30px; }
-  .course-note { font-size: 13px; color: var(--text-400); }
   .res-list {
     background: var(--bg-000);
     border: 1px solid var(--border-light);
@@ -458,18 +303,6 @@
   }
   .res-note b { color: var(--text-100); }
 
-  .fig {
-    background: var(--bg-000); border: 1px solid var(--border-light);
-    border-radius: var(--radius-md); padding: 20px 22px; margin: 18px 0;
-  }
-  .fig-inset { background: var(--bg-100); margin: 18px 0 4px; }
-  .fig-cap { font-size: 13px; color: var(--text-400); margin-top: 12px; text-align: center; line-height: 1.6; }
-  .fig svg { width: 100%; height: auto; display: block; max-width: 660px; margin: 0 auto; }
-  .fig text { font-family: var(--font-sans); }
-  .fig-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 18px 0; }
-  .fig-duo .fig { margin: 0; }
-  @media (max-width: 768px) { .fig-duo { grid-template-columns: 1fr; } }
-
   .topnav { max-width: 940px; margin: 0 auto; padding: 24px 40px 0; }
   .back-link {
     display: inline-flex; align-items: center; gap: 6px;
@@ -500,15 +333,10 @@
   }
 
   @media (max-width: 768px) {
-    .container, .principle, .learning-path { padding: 0 20px; }
+    .container, .principle { padding: 0 20px; }
     .hero { padding: 44px 20px 16px; }
-    .path-head { display: block; }
-    .path-head span { display: block; margin-top: 4px; }
-    .path-grid { grid-template-columns: 1fr; }
-    .path-step { min-height: 0; }
-    .split, .toy-grid, .story-steps, .term-grid { grid-template-columns: 1fr; margin-left: 0; }
-    .layer-tagline, .verify, .term-drawer, .watershed { margin-left: 0; }
-    .starter-story, .layer-card { padding: 22px 20px; }
+    .split, .toy-grid { grid-template-columns: 1fr; margin-left: 0; }
+    .layer-tagline, .verify, .watershed { margin-left: 0; }
   }
 </style>
 </head>
@@ -519,268 +347,105 @@
   </div>
 
   <div class="hero">
-    <div class="eyebrow">团队 AI 能力训练 · 从零开始</div>
-    <h1>从会用，到会解释<br>小白递进学习路线</h1>
-    <p class="subtitle">先看一件日常任务怎样完成，再回头认识术语。五站全部必修，只是拆成四次学习，不要求一口气读完。</p>
+    <div class="eyebrow">团队能力训练 · 第一阶段</div>
+    <h1>「深入」能力训练<br>三层深度地图</h1>
+    <p class="subtitle">做深入浅出的 AI 内容，前提是团队真的深入。这份地图分四块：<strong style="color:var(--text-200);font-weight:600;">核心必懂</strong>（大模型 / Agent / Harness 的地基）、<strong style="color:var(--text-200);font-weight:600;">进阶该懂</strong>（拉开深度的底层机制）、<strong style="color:var(--text-200);font-weight:600;">应用层</strong>（MCP / Skill 等接入与生态）、<strong style="color:var(--text-200);font-weight:600;">前沿热概念</strong>（推理与自主循环）。</p>
   </div>
 
   <div class="principle">
     <div class="principle-box">
-      <div class="label">先记住这一个目标</div>
-      <p><strong>不是背术语，而是能把现象讲明白。</strong>学完每一站，都要能回答一个真实问题：它为什么这样回复、为什么会出错、为什么能调用工具、为什么同一模型换个产品就变了。能用人话讲清因果，就够深；不要求会训练模型或实现算法。</p>
-    </div>
-  </div>
-
-  <div class="learning-path">
-    <div class="path-box">
-      <div class="path-head">
-        <h2>五站都必修，分四次完成</h2>
-        <span>一轮只学一个模块，减少卡顿，不减少必修内容</span>
-      </div>
-      <div class="path-grid">
-        <a class="path-step" href="#stage-foundation"><div class="num">01 · 第一次必修</div><div class="name">它怎样把话接下去</div><div class="what">先理解：流畅不等于真实</div></a>
-        <a class="path-step" href="#stage-action"><div class="num">02 · 第一次必修</div><div class="name">它怎样借软件做事</div><div class="what">先理解：AI 决定，软件动手</div></a>
-        <a class="path-step" href="#stage-explain"><div class="num">03 · 第二次必修</div><div class="name">为什么会忘、会错、会跑偏</div><div class="what">系统学会解释常见现象</div></a>
-        <a class="path-step" href="#stage-product"><div class="num">04 · 第三次必修</div><div class="name">资料、工具和安全怎么组合</div><div class="what">系统认识产品零件与可靠性</div></a>
-        <a class="path-step" href="#stage-frontier"><div class="num">05 · 第四次必修</div><div class="name">前沿能力与行业方向</div><div class="what">理解推理、智能体与新架构</div></a>
-      </div>
+      <div class="label">总原则</div>
+      <p><strong>深到能预测和解释，浅到不必会造。</strong>你们是做内容、不是做研发，所需深度由产出倒推——永远比读者深一层，能从机制推出行为、能解释任何反常现象，但不需要亲手实现这个机制。判断线不是「你会不会造」，而是「你能不能从原理推出行为」。</p>
     </div>
   </div>
 
   <div class="container">
 
-    <section id="stage-foundation">
+    <section>
       <div class="section-head">
-        <div class="stage-kicker">第一次学习 · 完成第 1–2 站</div>
-        <h2>先跟着一个任务走一遍</h2>
-        <div class="desc">先不记 token、Agent、Harness 这些名字。只要能看懂：谁负责说话，谁负责动手，产品又怎样影响它，就够了。</div>
-      </div>
-
-      <div class="starter-story">
-        <div class="starter-label">先读这个日常例子 · 约 2 分钟</div>
-        <h3>你说：“查一下上海今天会不会下雨，告诉我带不带伞。”</h3>
-        <div class="story-steps">
-          <div class="story-step"><div class="no">01</div><strong>你提出任务</strong><p>你把地点、时间和想要的结果说清楚。</p></div>
-          <div class="story-step"><div class="no">02</div><strong>AI 判断下一步</strong><p>它发现要回答“今天”，不能只靠旧知识猜。</p></div>
-          <div class="story-step"><div class="no">03</div><strong>外部软件去查询</strong><p>天气服务真的去拿数据；AI 本身没有打开网站。</p></div>
-          <div class="story-step"><div class="no">04</div><strong>AI 把结果说成人话</strong><p>查询结果回来后，它整理成“带不带伞”的建议。</p></div>
+        <h2>三层深度地图</h2>
+        <div class="desc">每一层都给出「必须懂到哪 / 不必碰哪 / 怎么验收」，拿来当团队学习的边界。</div>
+        <div class="jump-row">
+          <a class="jump" href="#res-1">↓ 大模型课程</a>
+          <a class="jump" href="#res-2">↓ Harness / Agent 课程</a>
         </div>
-        <div class="story-takeaway"><strong>先拿走三句话：</strong>AI 擅长根据当前内容组织下一句话；要碰到今天的天气、你的文件或真实系统，得借外部软件；产品给它什么工具、规则和聊天记录，也会改变它的表现。</div>
-        <details class="term-drawer">
-          <summary>上面这些，用行业术语怎么说？不记也能继续</summary>
-          <div class="term-content">
-            <div class="term-grid">
-              <div class="term-card"><b>大模型</b><span>负责把当前对话接成一段段回答的内核。</span></div>
-              <div class="term-card"><b>Agent</b><span>让 AI 想下一步、软件动手、再看结果的工作流程。</span></div>
-              <div class="term-card"><b>Harness</b><span>给 AI 配工具、规则和聊天记录的“工作台”。</span></div>
-              <div class="term-card"><b>token</b><span>模型内部处理文字的片段；它不一定等于人眼看到的一个字。</span></div>
-            </div>
-          </div>
-        </details>
       </div>
 
       <!-- 大模型 -->
       <div class="layer-card">
         <div class="layer-header">
           <div class="layer-num">01</div>
-          <h3>第一站 · 它怎样把话接下去（大模型）</h3>
+          <h3>大模型（LLM）</h3>
         </div>
-        <div class="layer-tagline">这一站先只记一句：<strong>它会根据你刚刚给的内容，一小段一小段地把回答接下去。</strong></div>
+        <div class="layer-tagline">必须懂到 <strong>「机制 → 行为」能打通</strong> 的程度。</div>
         <div class="split">
           <div class="split-col must">
-            <div class="head">✓ 先用人话理解</div>
-            <p>它默认不是去网上或资料库找一段现成答案，而是看当前对话，把最像合适回答的下一小段文字接出来；接完一段，再接下一段。于是它能写得很通顺，也可能在没核对事实时，把看起来合理的话编出来。</p>
+            <div class="head">✓ 必须真懂</div>
+            <p>本质是逐 token 的概率预测，不是检索、不是查数据库；采样带随机性（同一 prompt 结果会变）；上下文窗口是有限预算，窗口外它根本不知道；一次调用之间没有记忆；tokenization（所以数不清字母、中文更耗 token）；预训练与后训练（指令微调 / RLHF）是两回事；知识截止、幻觉是结构性必然而非 bug。注意力懂到「看全部 token、按相关性加权」这个概念层即可。</p>
           </div>
           <div class="split-col skip">
-            <div class="head">✕ 这次先别背</div>
-            <p>token、概率、注意力、预训练、后训练、RLHF 都是后面查用的名字。先有“它是在接话，不是在验真”的画面，再认识这些词，才不会读一句卡一句。</p>
+            <div class="head">✕ 不必碰</div>
+            <p>反向传播的数学、矩阵运算细节、自己推导注意力公式、CUDA、真的去训练一个模型。这些是研发的活，对内容没有边际收益。</p>
           </div>
         </div>
-        <details class="term-drawer">
-          <summary>遇到“为什么它会数错字母”时，再展开这个例子</summary>
-          <div class="term-content">
-            <div class="title">先看人和模型“读字”的差别</div>
-            <p><strong>人眼：</strong>看到 <code>s · t · r · a · w · b · e · r · r · y</code>，很自然会逐个字母数出 3 个 r。</p>
-            <p><strong>模型：</strong>文字会先被切成自己的“词块”（行业里叫 token）。一个词块可能是一个字母、半个词，或一个常见词，并不天然等于一排字母。</p>
-            <p><strong>所以会错：</strong>它要先把词块重新拆开，再稳定地逐个计数；这不是它最顺手的任务。字符串越长、重复越多、位置越精确，越容易出问题。切词只是原因之一，不是唯一原因。</p>
-            <p><strong>现在好些了吗：</strong>较新的模型，特别是会主动逐字检查或能调用代码工具的系统，简单题通常做得更好；但这不等于字符级短板消失。字数、字符数、空格数或固定格式需要绝对正确时，交给代码统计并验证。</p>
-          </div>
-        </details>
-        <div class="verify"><strong>学到这里就够：</strong>能说出“它很擅长把话接得通顺，但通顺不等于真实；重要事实要查资料或用工具核对”。</div>
-      </div>
-
-      <div class="res-group course-block">
-        <div class="res-group-head"><h3>第一站 · 全部配套课程</h3><span class="course-note">按下面顺序完成，再进入第二站。</span></div>
-        <div class="res-list">
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">李宏毅《生成式人工智能导论 2024》</span><span class="res-badge cn">中文</span></div>
-            <p>台大公开课，中文授课，从「生成式 AI 是什么」讲到训练三阶段、可解释性、安全，适合作为大模型的第一门系统课。</p>
-            <div class="res-links"><a href="https://speech.ee.ntu.edu.tw/~hylee/genai/2024-spring.php" target="_blank" rel="noopener">课程主页</a><a href="https://www.bilibili.com/video/BV1BJ4m1e7g8/" target="_blank" rel="noopener">B站合集</a></div>
-          </div>
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">3Blue1Brown 深度学习 / Transformer / 注意力</span><span class="res-badge cn">官方中文</span></div>
-            <p>用可视化讲清神经网络、Transformer 和注意力机制，最适合建立「机制直觉」。</p>
-            <div class="res-links"><a href="https://space.bilibili.com/88461692" target="_blank" rel="noopener">B站官方频道</a><a href="https://www.3blue1brown.com/topics/neural-networks" target="_blank" rel="noopener">官网课程页</a></div>
-          </div>
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">模型底层原理（团队收藏）</span><span class="res-badge your">收藏</span></div>
-            <p>团队收藏的中文底层原理讲解，用来把课程内容和团队的表达方式对上。</p>
-            <div class="res-links"><a href="https://www.bilibili.com/video/BV16cNEeXEer" target="_blank" rel="noopener">B站链接</a></div>
-          </div>
-        </div>
+        <div class="verify"><strong>验收：</strong>能从机制解释「为什么它会一本正经编造引用」（逐 token 概率，在生成最像的下一个词，不在查真伪）、「为什么两次答案不一样」（采样）、「为什么数不对字母」（tokenization）。答不出来，就是没到。</div>
       </div>
 
       <!-- Agent -->
-      <div class="layer-card" id="stage-action">
+      <div class="layer-card">
         <div class="layer-header">
           <div class="layer-num">02</div>
-          <h3>第二站 · 它怎样借软件真正做事（Agent）</h3>
+          <h3>Agent</h3>
         </div>
-        <div class="layer-tagline">先记住分工：<strong>AI 决定下一步，外部软件负责真正动手。</strong></div>
+        <div class="layer-tagline">必须懂到 <strong>「它就是一个循环」</strong> 的程度。</div>
         <div class="split">
           <div class="split-col must">
-            <div class="head">✓ 看懂一个回合</div>
-            <p>AI 本身不会打开天气网站。它先提出“查上海天气”这个下一步；外部程序真的去查询；结果回到对话里，它再告诉你带不带伞。任务更复杂时，就重复“想下一步 → 软件执行 → 看结果”。这种让 AI 借助手脚完成任务的流程，行业里叫 Agent。</p>
+            <div class="head">✓ 必须真懂</div>
+            <p>Agent 不是更聪明的模型，而是「模型 + 工具 + 把工具结果喂回上下文的控制循环」。核心是 think→act→observe 这个环：模型决定调什么工具，工具去碰真实世界，结果再塞回上下文。所谓「智能」还是那个模型在选下一个 token，工具只是手脚。更关键是懂它为什么失败：错误跨步累积、上下文被污染、一旦「迷路」很难自己爬出来——这些失败模式才是深度内容最值钱的地方。</p>
           </div>
           <div class="split-col skip">
-            <div class="head">✕ 这次先别背</div>
-            <p>think→act→observe、function call、多智能体调度都是给这件事起的名字。第一次只要看懂“它不是自己动手，而是在请软件动手”就可以。</p>
+            <div class="head">✕ 不必碰</div>
+            <p>从零手撸一个生产级框架、多智能体调度的工程细节。理解循环本身，不必掌握工程化实现。</p>
           </div>
         </div>
-        <div class="verify"><strong>学到这里就够：</strong>能用“AI 决定下一步，软件负责执行，结果再交回来”解释什么是 Agent。</div>
-        <div class="fig fig-inset">
-          <svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agent 循环示意图">
-            <defs>
-              <marker id="ah1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--accent-brand)"/></marker>
-              <marker id="ah1g" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--text-400)"/></marker>
-            </defs>
-            <path d="M520,52 C520,8 120,8 120,52" fill="none" stroke="var(--accent-brand)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah1)"/>
-            <text x="320" y="20" text-anchor="middle" font-size="12" fill="var(--text-400)">循环往复，直到完成目标</text>
-            <circle cx="120" cy="96" r="46" fill="var(--bg-000)" stroke="var(--accent-brand)" stroke-width="2"/>
-            <text x="120" y="92" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text-100)">思考</text>
-            <text x="120" y="111" text-anchor="middle" font-size="11" fill="var(--text-400)">决定下一步</text>
-            <circle cx="320" cy="96" r="46" fill="var(--bg-000)" stroke="var(--accent-brand)" stroke-width="2"/>
-            <text x="320" y="92" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text-100)">行动</text>
-            <text x="320" y="111" text-anchor="middle" font-size="11" fill="var(--text-400)">调用工具</text>
-            <circle cx="520" cy="96" r="46" fill="var(--bg-000)" stroke="var(--accent-brand)" stroke-width="2"/>
-            <text x="520" y="92" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text-100)">观察</text>
-            <text x="520" y="111" text-anchor="middle" font-size="11" fill="var(--text-400)">结果回到上下文</text>
-            <line x1="170" y1="96" x2="270" y2="96" stroke="var(--accent-brand)" stroke-width="2" marker-end="url(#ah1)"/>
-            <line x1="370" y1="96" x2="470" y2="96" stroke="var(--accent-brand)" stroke-width="2" marker-end="url(#ah1)"/>
-            <rect x="250" y="188" width="140" height="42" rx="8" fill="var(--bg-200)" stroke="var(--border-medium)"/>
-            <text x="320" y="214" text-anchor="middle" font-size="12.5" fill="var(--text-200)">工具 · 真实世界</text>
-            <line x1="320" y1="143" x2="320" y2="186" stroke="var(--text-400)" stroke-width="1.6" marker-end="url(#ah1g)"/>
-            <path d="M390,206 C455,202 520,182 520,146" fill="none" stroke="var(--text-400)" stroke-width="1.6" marker-end="url(#ah1g)"/>
-          </svg>
-          <div class="fig-cap">模型负责决定<b style="color:var(--text-200)">下一步做什么</b>；工具是它的手脚。任务每多绕一圈，带回来的信息就更多，也更容易出错或跑偏。</div>
-        </div>
+        <div class="verify"><strong>验收：</strong>能解释「Agent 多步任务为什么越走越歪」——从错误累积、上下文污染、无法自我纠偏这几个机制说清楚。</div>
       </div>
 
       <!-- Harness -->
       <div class="layer-card">
         <div class="layer-header">
           <div class="layer-num">03</div>
-          <h3>第二站补充 · 为什么同一个 AI 换个产品就不一样</h3>
+          <h3>Harness（脚手架层）</h3>
         </div>
-        <div class="layer-tagline">先把 Harness 当成 <strong>AI 的工作台</strong>；名字可以以后再记。</div>
+        <div class="layer-tagline">最容易被漏掉，却是 <strong>区分「深」与「浅」内容的分水岭</strong>。</div>
         <div class="watershed">
-          <span class="pill">一个例子</span>
-          <p style="margin-bottom:16px;">同一个模型放在聊天产品、写代码产品或企业客服里，表现可以很不一样。因为每个产品都给它配了不同的“工作台”：怎么说话、能用哪些工具、能看到多少聊天记录、哪些事不准做。<strong style="color:var(--text-100);">用户体验到的 AI，是模型和这套工作台一起形成的。</strong>行业里把这套工作台叫 Harness。</p>
+          <span class="pill">分水岭</span>
+          <p style="margin-bottom:16px;">Harness 就是模型外面那层脚手架：系统提示、工具定义、上下文管理、结果截断与格式化、token 预算、护栏。必须真懂的核心只有一句：<strong style="color:var(--text-100);">用户体验到的「那个 AI」，是模型和 harness 不可分割的合体，你观察到的大量「模型行为」其实是 harness 塑造出来的。</strong>同一个模型放在 claude.ai、Cursor、裸 API 下，行为可以天差地别，差的就是 harness。</p>
         </div>
         <div class="split">
           <div class="split-col must">
-            <div class="head">✓ 先只记这个因果</div>
-            <p>产品决定它有哪些工具、带着哪些历史、遵守哪些规则；这些设置会改变同一个模型的表现。听到“这个模型不行”时，先问它放在哪个产品、拿到了什么信息和工具。</p>
+            <div class="head">✓ 必须真懂</div>
+            <p>系统提示塑造一切；上下文窗口是被 harness 管理的预算；工具结果被 harness 格式化和截断；同一模型在不同 harness 下行为迥异。绝大多数「模型不行」的抱怨，追下去其实是「harness 没让它行」。</p>
           </div>
           <div class="split-col skip">
-            <div class="head">✕ 这次先别背</div>
-            <p>系统提示、上下文管理、结果截断、token 预算、护栏的具体做法，等你真的配置一个产品时再学。现在知道“工作台会塑造行为”就够了。</p>
+            <div class="head">✕ 不必碰</div>
+            <p>具体某个产品 harness 的私有实现细节。理解「harness 在塑造行为」这个因果，比背某一套实现更重要。</p>
           </div>
         </div>
-        <div class="verify"><strong>学到这里就够：</strong>能说“模型不是产品的全部；产品给它的规则、工具和信息，也决定了它好不好用”。</div>
-        <div class="fig fig-inset">
-          <svg viewBox="0 0 620 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Harness 分层示意图">
-            <rect x="30" y="30" width="560" height="264" rx="16" fill="var(--bg-000)" stroke="var(--border-medium)"/>
-            <text x="310" y="52" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--text-200)">安全规则 · 使用额度</text>
-            <rect x="70" y="66" width="480" height="192" rx="14" fill="var(--bg-200)" stroke="var(--border-light)"/>
-            <text x="310" y="88" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--text-200)">工具 · 结果整理</text>
-            <rect x="112" y="100" width="396" height="124" rx="12" fill="var(--bg-000)" stroke="var(--border-light)"/>
-            <text x="310" y="122" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--text-200)">聊天记录管理</text>
-            <rect x="152" y="134" width="316" height="58" rx="10" fill="var(--bg-200)" stroke="var(--border-light)"/>
-            <text x="310" y="152" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--text-200)">给 AI 的基本规则</text>
-            <rect x="238" y="162" width="144" height="46" rx="10" fill="var(--accent-brand)"/>
-            <text x="310" y="190" text-anchor="middle" font-size="14" font-weight="600" fill="#fff">AI 模型</text>
-            <text x="310" y="284" text-anchor="middle" font-size="12" fill="var(--text-400)">↑ 这一整套组合，才是你实际在使用的 AI</text>
-          </svg>
-          <div class="fig-cap">模型只是最里面的内核。换一套工作台（规则、聊天记录、工具和安全限制），<b style="color:var(--text-200)">同一个模型的表现就会变</b>。</div>
-        </div>
-      </div>
-      <div class="res-group course-block">
-        <div class="res-group-head"><h3>第二站 · 全部配套课程</h3><span class="course-note">按下面顺序完成，理解 Agent 与 Harness 的工程视角。</span></div>
-        <div class="res-list">
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">Harness 与 Agent（团队收藏）</span><span class="res-badge your">收藏</span></div>
-            <p>团队收藏的 Harness 与 Agent 讲解，先用中文案例巩固模型、工具和工作台之间的关系。</p>
-            <div class="res-links"><a href="https://www.bilibili.com/video/BV1t55v6DE2v" target="_blank" rel="noopener">B站链接</a></div>
-          </div>
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">Anthropic《Building Effective Agents》</span><span class="res-badge en">英文 · 可配翻译</span></div>
-            <p>官方讲清工作流与 Agent 的区别、何时该用 Agent，以及常见设计模式。</p>
-            <div class="res-links"><a href="https://www.anthropic.com/research/building-effective-agents" target="_blank" rel="noopener">官方文章</a></div>
-          </div>
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">Datawhale 开源 Agent 学习路线</span><span class="res-badge cn">中文</span></div>
-            <p>中文友好的分阶段 Agent 路线，从基础概念到多智能体，适合作为系统复盘。</p>
-            <div class="res-links"><a href="https://www.bilibili.com/video/BV1RyGo6QEVR/" target="_blank" rel="noopener">B站介绍</a><a href="https://github.com/datawhalechina" target="_blank" rel="noopener">Datawhale GitHub</a></div>
-          </div>
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">Hugging Face Agents 课程</span><span class="res-badge cn">有中文版</span></div>
-            <p>免费官方课程，系统讲 Agent 开发，提供多语言翻译，适合配合后面的动手练习。</p>
-            <div class="res-links"><a href="https://huggingface.co/learn/agents-course" target="_blank" rel="noopener">课程链接</a></div>
-          </div>
-        </div>
-      </div>
-      <div class="first-pass-stop">
-        <div class="label">第一次学习到这里结束</div>
-        <p><strong>现在不需要背术语，但后面仍然必须学。</strong>第二次集中完成第三站，学会解释常见现象；第三次集中完成第四站，认识产品零件、工程与安全；第四次集中完成第五站，建立前沿能力与行业方向的基础认识。</p>
+        <div class="verify"><strong>验收：</strong>浅的内容说「某模型做不了 X」；深的内容说「在这个 harness、这种上下文管理下，它在 X 上会失效，因为……」。能说出后者，就到位了。</div>
       </div>
     </section>
 
-    <section id="stage-explain">
+    <section>
       <div class="section-head">
-        <div class="stage-kicker">第二次学习 · 第三站必修</div>
-        <h2>把常见的“怎么会这样”讲明白</h2>
-        <div class="desc">这不是故障出现后才查的手册，而是核心理解课：学完后，才能从机制解释它为什么忘、为什么错、为什么跑偏。</div>
-      </div>
-
-      <div class="res-group course-block">
-        <div class="res-group-head"><h3>第三站 · 全部配套课程</h3><span class="course-note">先完成课程，再用下方卡片把机制和现象对应起来。</span></div>
-        <div class="res-list">
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">Karpathy《Deep Dive into LLMs》《Zero to Hero》</span><span class="res-badge en">英文 · B站有中字搬运</span></div>
-            <p>前者系统讲 LLM 训练与工作方式，后者带你从零理解 GPT；适合在第一站直觉建立后深入机制。</p>
-            <div class="res-links"><a href="https://karpathy.ai/zero-to-hero.html" target="_blank" rel="noopener">Zero to Hero 主页</a><a href="https://karpathy.ai/" target="_blank" rel="noopener">全部视频</a></div>
-          </div>
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">Anthropic《Effective Context Engineering》</span><span class="res-badge en">英文 · 可配翻译</span></div>
-            <p>官方讲上下文如何决定 Agent 的表现，直接对应“为什么会忘、会跑偏、越做越乱”。</p>
-            <div class="res-links"><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noopener">官方文章</a></div>
-          </div>
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">Hugging Face LLM 课程</span><span class="res-badge cn">有中文版</span></div>
-            <p>系统学习大模型与 NLP，从 Transformer 原理到微调、tokenization，免费且有中文翻译。</p>
-            <div class="res-links"><a href="https://huggingface.co/learn/llm-course" target="_blank" rel="noopener">课程链接</a></div>
-          </div>
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">Datawhale 大模型系列开源教程</span><span class="res-badge cn">中文</span></div>
-            <p>中文开源教程合集，覆盖大模型基础、部署与微调，适合系统补足机制与实操。</p>
-            <div class="res-links"><a href="https://github.com/datawhalechina" target="_blank" rel="noopener">Datawhale GitHub</a></div>
-          </div>
+        <h2>进阶该懂</h2>
+        <div class="desc">地基之上，让内容真正有洞察的那批机制。每条都点明「它能帮你解释哪个现象」——这才是对内容有用的判断标准。</div>
+        <div class="jump-row">
+          <a class="jump" href="#res-1">↓ 大模型课程</a>
+          <a class="jump" href="#res-5">↓ 进阶 / 前沿课程</a>
         </div>
       </div>
 
-      <details class="required-block">
-        <summary>第二次必修：展开反常现象学习卡，完成后再进入第四站</summary>
       <div class="adv-subhead">
         <span class="n">A</span>
         <h3>大模型</h3>
@@ -881,14 +546,16 @@
           <span class="hook"><b>能解释：</b>为什么负责任的 Agent 都要 human-in-the-loop；自主 ≠ 放任。</span>
         </div>
       </div>
-      </details>
     </section>
 
-    <section id="stage-product">
+    <section>
       <div class="section-head">
-        <div class="stage-kicker">第三次学习 · 第四站必修</div>
-        <h2>系统认识一个 AI 产品由哪些零件组成</h2>
-        <div class="desc">这不是等做产品才补的知识。先建立完整零件地图，再理解产品为什么能接资料、用工具、稳定上线并守住安全边界。</div>
+        <h2>应用层：接入、生态与工程化</h2>
+        <div class="desc">底层之上，真正被产品用起来的一层。这些概念最容易被混为一谈——先用一张表把最常混的五个钉清楚。</div>
+        <div class="jump-row">
+          <a class="jump" href="#res-4">↓ MCP 课程</a>
+          <a class="jump" href="#res-3">↓ Skill 课程</a>
+        </div>
       </div>
 
       <div class="cmp-table-wrap">
@@ -906,76 +573,6 @@
         </table>
       </div>
 
-      <div class="fig">
-        <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MCP、Skill、Tool、RAG 如何作用于模型">
-          <defs>
-            <marker id="ah3g" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--text-400)"/></marker>
-          </defs>
-          <rect x="250" y="126" width="150" height="54" rx="12" fill="var(--bg-000)" stroke="var(--accent-brand)" stroke-width="2"/>
-          <text x="325" y="158" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text-100)">模型 / Agent</text>
-          <rect x="270" y="28" width="110" height="42" rx="9" fill="var(--bg-200)" stroke="var(--border-light)"/>
-          <text x="325" y="46" text-anchor="middle" font-size="13" font-weight="600" fill="var(--text-100)">Skill</text>
-          <text x="325" y="62" text-anchor="middle" font-size="11" fill="var(--text-400)">教方法 · 说明书</text>
-          <line x1="325" y1="70" x2="325" y2="124" stroke="var(--text-400)" stroke-width="1.6" marker-end="url(#ah3g)"/>
-          <rect x="24" y="132" width="150" height="42" rx="9" fill="var(--bg-200)" stroke="var(--border-light)"/>
-          <text x="99" y="150" text-anchor="middle" font-size="13" font-weight="600" fill="var(--text-100)">RAG</text>
-          <text x="99" y="166" text-anchor="middle" font-size="11" fill="var(--text-400)">补事实 · 记忆外挂</text>
-          <line x1="174" y1="153" x2="248" y2="153" stroke="var(--text-400)" stroke-width="1.6" marker-end="url(#ah3g)"/>
-          <rect x="476" y="132" width="140" height="42" rx="9" fill="var(--bg-200)" stroke="var(--border-light)"/>
-          <text x="546" y="150" text-anchor="middle" font-size="13" font-weight="600" fill="var(--text-100)">Tool</text>
-          <text x="546" y="166" text-anchor="middle" font-size="11" fill="var(--text-400)">做动作 · 手</text>
-          <line x1="476" y1="153" x2="402" y2="153" stroke="var(--text-400)" stroke-width="1.6" marker-end="url(#ah3g)"/>
-          <rect x="238" y="230" width="174" height="42" rx="9" fill="var(--bg-200)" stroke="var(--border-light)"/>
-          <text x="325" y="248" text-anchor="middle" font-size="13" font-weight="600" fill="var(--text-100)">MCP</text>
-          <text x="325" y="264" text-anchor="middle" font-size="11" fill="var(--text-400)">统一接线口</text>
-          <line x1="325" y1="230" x2="325" y2="182" stroke="var(--text-400)" stroke-width="1.6" marker-end="url(#ah3g)"/>
-          <line x1="412" y1="251" x2="450" y2="251" stroke="var(--border-medium)" stroke-width="1.6"/>
-          <rect x="450" y="238" width="24" height="26" rx="5" fill="var(--bg-000)" stroke="var(--border-medium)"/>
-          <rect x="482" y="238" width="24" height="26" rx="5" fill="var(--bg-000)" stroke="var(--border-medium)"/>
-          <rect x="514" y="238" width="24" height="26" rx="5" fill="var(--bg-000)" stroke="var(--border-medium)"/>
-          <text x="548" y="256" font-size="11" fill="var(--text-400)">…一堆工具</text>
-        </svg>
-        <div class="fig-cap">四者各司其职：<b style="color:var(--text-200)">Tool</b> 给手、<b style="color:var(--text-200)">MCP</b> 是统一接线口（连一堆工具）、<b style="color:var(--text-200)">Skill</b> 注入方法、<b style="color:var(--text-200)">RAG</b> 补事实。别混为一谈。</div>
-      </div>
-
-      <div class="res-group course-block">
-        <div class="res-group-head"><h3>第四站 · 全部配套课程</h3><span class="course-note">从 Skill 到 MCP 按顺序完成，建立产品接入与扩展的完整地图。</span></div>
-        <div class="res-list">
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">Skill（团队收藏）</span><span class="res-badge your">收藏</span></div>
-            <p>团队收藏的 Skill 讲解，先理解“说明书 / 工作流”在产品里的作用。</p>
-            <div class="res-links"><a href="https://www.bilibili.com/video/BV1EXksBGEa8" target="_blank" rel="noopener">B站链接</a></div>
-          </div>
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">Anthropic Agent Skills 官方（Build with Claude）</span><span class="res-badge en">英文 · 可配翻译</span></div>
-            <p>官方学习中心，涵盖 Agent Skills（SKILL.md 打包）等一手说明与实践。</p>
-            <div class="res-links"><a href="https://www.anthropic.com/learn/build-with-claude" target="_blank" rel="noopener">Anthropic Academy</a></div>
-          </div>
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">MCP（团队收藏）</span><span class="res-badge your">收藏</span></div>
-            <p>团队收藏的 MCP 讲解，先用中文案例理解“统一接线口”。</p>
-            <div class="res-links"><a href="https://www.bilibili.com/video/BV1sWoMYUEi9" target="_blank" rel="noopener">B站链接</a></div>
-          </div>
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">MCP 官方文档与规范</span><span class="res-badge en">英文 · 可配翻译</span></div>
-            <p>一手规范与教程，解释 Agent 怎样以统一方式连接工具、资源与提示。</p>
-            <div class="res-links"><a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">官方文档</a></div>
-          </div>
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">Anthropic 官方 MCP 入门课</span><span class="res-badge en">英文 · 免费</span></div>
-            <p>官方免费入门课程，从零讲清 MCP 是什么、怎么用。</p>
-            <div class="res-links"><a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank" rel="noopener">课程链接</a></div>
-          </div>
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">DeepLearning.AI《MCP: Build Rich-Context AI Apps》</span><span class="res-badge en">英文 · 带字幕</span></div>
-            <p>吴恩达平台与 Anthropic 合作短课，带你动手搭 MCP server 与客户端。</p>
-            <div class="res-links"><a href="https://www.deeplearning.ai/courses/mcp-build-rich-context-ai-apps-with-anthropic" target="_blank" rel="noopener">课程链接</a></div>
-          </div>
-        </div>
-      </div>
-
-      <details class="required-block">
-        <summary>第三次必修：展开产品零件、工程化与安全说明</summary>
       <div class="adv-subhead"><span class="n">A</span><h3>接入与扩展</h3></div>
       <div class="adv-grid">
         <div class="adv-card">
@@ -1037,61 +634,6 @@
           <p>用 AI 生成的数据来训练 AI，已从「数据不够时的权宜」变成训练流程的核心一环。但也带来「模型崩溃」——在自产数据上反复训练会退化。</p>
           <span class="hook"><b>能解释：</b>训练数据从哪来的新答案；以及为什么「AI 喂 AI」有隐忧。</span>
         </div>
-      </div>
-
-      <div class="fig-duo">
-        <div class="fig">
-          <svg viewBox="0 0 640 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RAG 流程示意图">
-            <defs>
-              <marker id="ah4" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--accent-brand)"/></marker>
-              <marker id="ah4g" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--text-400)"/></marker>
-            </defs>
-            <rect x="12" y="52" width="86" height="44" rx="8" fill="var(--bg-000)" stroke="var(--border-medium)"/>
-            <text x="55" y="79" text-anchor="middle" font-size="12.5" fill="var(--text-100)">提问</text>
-            <rect x="120" y="52" width="92" height="44" rx="8" fill="var(--bg-000)" stroke="var(--border-medium)"/>
-            <text x="166" y="79" text-anchor="middle" font-size="12.5" fill="var(--text-100)">检索</text>
-            <rect x="234" y="52" width="120" height="44" rx="8" fill="var(--bg-000)" stroke="var(--accent-brand)" stroke-width="2"/>
-            <text x="294" y="79" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--text-100)">拼进上下文</text>
-            <rect x="376" y="52" width="104" height="44" rx="8" fill="var(--bg-000)" stroke="var(--border-medium)"/>
-            <text x="428" y="79" text-anchor="middle" font-size="12.5" fill="var(--text-100)">模型生成</text>
-            <rect x="502" y="52" width="90" height="44" rx="8" fill="var(--bg-000)" stroke="var(--border-medium)"/>
-            <text x="547" y="79" text-anchor="middle" font-size="12.5" fill="var(--text-100)">答案</text>
-            <line x1="98" y1="74" x2="118" y2="74" stroke="var(--accent-brand)" stroke-width="2" marker-end="url(#ah4)"/>
-            <line x1="212" y1="74" x2="232" y2="74" stroke="var(--accent-brand)" stroke-width="2" marker-end="url(#ah4)"/>
-            <line x1="354" y1="74" x2="374" y2="74" stroke="var(--accent-brand)" stroke-width="2" marker-end="url(#ah4)"/>
-            <line x1="480" y1="74" x2="500" y2="74" stroke="var(--accent-brand)" stroke-width="2" marker-end="url(#ah4)"/>
-            <path d="M146,124 v20 a20,6 0 0 0 40,0 v-20" fill="var(--bg-200)" stroke="var(--border-medium)"/>
-            <ellipse cx="166" cy="124" rx="20" ry="6" fill="var(--bg-000)" stroke="var(--border-medium)"/>
-            <text x="166" y="160" text-anchor="middle" font-size="10.5" fill="var(--text-400)">知识库</text>
-            <line x1="166" y1="118" x2="166" y2="98" stroke="var(--text-400)" stroke-width="1.6" marker-end="url(#ah4g)"/>
-          </svg>
-          <div class="fig-cap">RAG 流程：模型没「学到」，只是把检索到的资料<b style="color:var(--text-200)">当场读着答</b>——检索质量直接决定答案质量。</div>
-        </div>
-        <div class="fig">
-          <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三条定制路径阶梯示意图">
-            <defs>
-              <marker id="ah5" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--accent-brand)"/></marker>
-            </defs>
-            <rect x="20" y="134" width="156" height="48" rx="9" fill="var(--bg-200)" stroke="var(--border-light)"/>
-            <text x="98" y="156" text-anchor="middle" font-size="13" font-weight="600" fill="var(--text-100)">提示工程</text>
-            <text x="98" y="173" text-anchor="middle" font-size="11" fill="var(--text-400)">改说法 · 最轻</text>
-            <rect x="196" y="86" width="156" height="48" rx="9" fill="rgba(41,119,214,0.06)" stroke="var(--border-light)"/>
-            <text x="274" y="108" text-anchor="middle" font-size="13" font-weight="600" fill="var(--text-100)">RAG</text>
-            <text x="274" y="125" text-anchor="middle" font-size="11" fill="var(--text-400)">补事实 · 接私有知识</text>
-            <rect x="372" y="38" width="156" height="48" rx="9" fill="rgba(217,119,87,0.1)" stroke="var(--border-light)"/>
-            <text x="450" y="60" text-anchor="middle" font-size="13" font-weight="600" fill="var(--text-100)">微调</text>
-            <text x="450" y="77" text-anchor="middle" font-size="11" fill="var(--text-400)">改行为倾向 · 最重</text>
-            <line x1="176" y1="150" x2="196" y2="120" stroke="var(--accent-brand)" stroke-width="2" marker-end="url(#ah5)"/>
-            <line x1="352" y1="102" x2="372" y2="72" stroke="var(--accent-brand)" stroke-width="2" marker-end="url(#ah5)"/>
-            <text x="16" y="24" font-size="11" fill="var(--text-400)">越往上：越重、越贵、越慢</text>
-          </svg>
-          <div class="fig-cap">三条定制路径：<b style="color:var(--text-200)">先用轻的</b>（提示 → RAG），不够再上重的（微调）。动辄微调是常见的过度工程。</div>
-        </div>
-      </div>
-
-      <div class="stage-divider">
-        <h3>第四站后半程：从「能用」走到「可靠」</h3>
-        <p>前面解决怎么接能力，下面解决怎么让它稳定、可控、能上线。第一次只抓结构化输出、评测、提示注入和人在环中，其余按需查阅。</p>
       </div>
 
       <div class="adv-subhead"><span class="n">C</span><h3>工程化</h3></div>
@@ -1165,28 +707,17 @@
           <span class="hook"><b>能解释：</b>为什么产品里「不是所有请求都用最强模型」；性价比是怎么调出来的。</span>
         </div>
       </div>
-      </details>
     </section>
 
-    <section id="stage-frontier">
+    <section>
       <div class="section-head">
-        <div class="stage-kicker">第四次学习 · 第五站必修</div>
-        <h2>建立前沿能力与行业方向的基础认识</h2>
-        <div class="desc">这一站也是必修。目标不是死记名词，而是能说清每个方向在解决什么问题、为什么重要、它和前面四站怎样连起来。</div>
-      </div>
-      <div class="res-group course-block">
-        <div class="res-group-head"><h3>第五站 · 全部配套课程</h3><span class="course-note">完成路线图课程后，再逐项理解下方的前沿方向。</span></div>
-        <div class="res-list">
-          <div class="res-item">
-            <div class="r-top"><span class="r-name">mlabonne / llm-course</span><span class="res-badge en">英文 · GitHub</span></div>
-            <p>高星大模型学习路线图，配 Colab 笔记本，从基础、训练、部署延伸到更深的技术方向，适合把前沿概念放进完整能力图里理解。</p>
-            <div class="res-links"><a href="https://github.com/mlabonne/llm-course" target="_blank" rel="noopener">GitHub</a></div>
-          </div>
+        <h2>前沿热概念</h2>
+        <div class="desc">近一两年最火、也最容易被误用的一批。核心是一个范式转变：从「把模型练更大」转向「让模型在回答时多花计算去想、去循环」。</div>
+        <div class="jump-row">
+          <a class="jump" href="#res-5">↓ 进阶 / 前沿课程</a>
         </div>
       </div>
-      <details class="required-block">
-        <summary>第四次必修：展开前沿能力与行业方向学习卡</summary>
-        <div class="adv-grid">
+      <div class="adv-grid">
         <div class="adv-card">
           <h4>推理 / 思维模型（Reasoning）</h4>
           <p>模型在给答案前先生成一段内部「思考」（推理链），用更多计算换更高准确率——会「想一会儿」再回答。</p>
@@ -1262,23 +793,164 @@
           <p>借鉴图像扩散思路、并行「去噪」生成文本的新路线，潜在更快。仍在早期，但圈内关注度在上升。</p>
           <span class="hook"><b>能解释：</b>为什么文本生成未必只能一个字一个字地来。</span>
         </div>
-        </div>
-      </details>
+      </div>
     </section>
 
-    <section id="stage-check">
+    <section>
       <div class="section-head">
-        <h2>按学习顺序验收，而不是一次考完</h2>
-        <div class="desc">每完成一站就做对应题组。五站都能用自己的话讲清并完成练习，才算完成基础能力训练。</div>
+        <h2>学习资源</h2>
+        <div class="desc">每一大块配了可以直接去学的课程。中文优先；英文资源都标注了中文版 / 中字情况，标 <span class="res-badge your" style="display:inline;">收藏</span> 的是团队自己收藏的链接。</div>
       </div>
-      <a class="cta-card" href="training-quiz.html">
+
+      <div class="res-note">
+        <b>建议学法：</b>先用「李宏毅 + 3Blue1Brown」把大模型底层的直觉建起来，再看 Anthropic 官方文档补 Agent / Harness 的工程视角，MCP / Skill 用官方入门课上手，前沿理论按需查阅。配合前面的「玩具版练习」边学边搓，效果最好。
+      </div>
+
+      <div class="res-group" id="res-1">
+        <div class="res-group-head"><h3>① 大模型底层原理</h3></div>
+        <div class="res-list">
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">李宏毅《生成式人工智能导论 2024》</span><span class="res-badge cn">中文</span></div>
+            <p>台大公开课，中文授课，圈内公认最好的大模型入门到进阶课程之一。从「生成式 AI 是什么」讲到训练三阶段、可解释性、安全，风趣易懂。</p>
+            <div class="res-links"><a href="https://speech.ee.ntu.edu.tw/~hylee/genai/2024-spring.php" target="_blank" rel="noopener">课程主页</a><a href="https://www.bilibili.com/video/BV1BJ4m1e7g8/" target="_blank" rel="noopener">B站合集</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">3Blue1Brown 深度学习 / Transformer / 注意力</span><span class="res-badge cn">官方中文</span></div>
+            <p>用可视化把神经网络、Transformer、注意力机制讲得极其直观。有 B 站官方中文频道，配音 + 字幕齐全，最适合建立「机制直觉」。</p>
+            <div class="res-links"><a href="https://space.bilibili.com/88461692" target="_blank" rel="noopener">B站官方频道</a><a href="https://www.3blue1brown.com/topics/neural-networks" target="_blank" rel="noopener">官网课程页</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Karpathy《Deep Dive into LLMs》《Zero to Hero》</span><span class="res-badge en">英文 · B站有中字搬运</span></div>
+            <p>前特斯拉 AI 总监、OpenAI 创始成员。前者 3.5 小时讲透 LLM 全训练栈，后者带你从零手搓一个 GPT。深度第一，B 站搜「Karpathy 中字」有搬运版。</p>
+            <div class="res-links"><a href="https://karpathy.ai/zero-to-hero.html" target="_blank" rel="noopener">Zero to Hero 主页</a><a href="https://karpathy.ai/" target="_blank" rel="noopener">全部视频</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">模型底层原理（团队收藏）</span><span class="res-badge your">收藏</span></div>
+            <p>团队自己收藏的底层原理讲解。</p>
+            <div class="res-links"><a href="https://www.bilibili.com/video/BV16cNEeXEer" target="_blank" rel="noopener">B站链接</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="res-group" id="res-2">
+        <div class="res-group-head"><h3>② Harness 与 Agent</h3></div>
+        <div class="res-list">
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Harness 与 Agent（团队收藏）</span><span class="res-badge your">收藏</span></div>
+            <p>团队自己收藏的 Harness 与 Agent 讲解。</p>
+            <div class="res-links"><a href="https://www.bilibili.com/video/BV1t55v6DE2v" target="_blank" rel="noopener">B站链接</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Anthropic《Building Effective Agents》</span><span class="res-badge en">英文 · 可配翻译</span></div>
+            <p>Claude 官方出品的「如何构建高效智能体」权威指南，讲清工作流 vs 智能体、何时该用 Agent、常见设计模式。做 Agent 内容的必读。</p>
+            <div class="res-links"><a href="https://www.anthropic.com/research/building-effective-agents" target="_blank" rel="noopener">官方文章</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Anthropic《Effective Context Engineering》</span><span class="res-badge en">英文 · 可配翻译</span></div>
+            <p>官方讲「上下文工程」——前面强调过它是 Agent 的真正瓶颈，这篇是权威原文。</p>
+            <div class="res-links"><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noopener">官方文章</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Datawhale 开源 Agent 学习路线</span><span class="res-badge cn">中文</span></div>
+            <p>国内知名开源学习社区，把 Agent 学习整理成可照做的路线，从基础概念到多智能体，分阶段推进，中文友好。</p>
+            <div class="res-links"><a href="https://www.bilibili.com/video/BV1RyGo6QEVR/" target="_blank" rel="noopener">B站介绍</a><a href="https://github.com/datawhalechina" target="_blank" rel="noopener">Datawhale GitHub</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Hugging Face Agents 课程</span><span class="res-badge cn">有中文版</span></div>
+            <p>系统讲 AI Agent 开发，免费，官方提供多语言（含中文）翻译，适合动手实践。</p>
+            <div class="res-links"><a href="https://huggingface.co/learn/agents-course" target="_blank" rel="noopener">课程链接</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="res-group" id="res-3">
+        <div class="res-group-head"><h3>③ Skill（技能）</h3></div>
+        <div class="res-list">
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Skill（团队收藏）</span><span class="res-badge your">收藏</span></div>
+            <p>团队自己收藏的 Skill 讲解。</p>
+            <div class="res-links"><a href="https://www.bilibili.com/video/BV1EXksBGEa8" target="_blank" rel="noopener">B站链接</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Anthropic Agent Skills 官方（Build with Claude）</span><span class="res-badge en">英文 · 可配翻译</span></div>
+            <p>官方学习中心，涵盖 Agent Skills（SKILL.md 打包）等概念的一手说明与实践。</p>
+            <div class="res-links"><a href="https://www.anthropic.com/learn/build-with-claude" target="_blank" rel="noopener">Anthropic Academy</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="res-group" id="res-4">
+        <div class="res-group-head"><h3>④ MCP（模型上下文协议）</h3></div>
+        <div class="res-list">
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">MCP（团队收藏）</span><span class="res-badge your">收藏</span></div>
+            <p>团队自己收藏的 MCP 讲解。</p>
+            <div class="res-links"><a href="https://www.bilibili.com/video/BV1sWoMYUEi9" target="_blank" rel="noopener">B站链接</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">MCP 官方文档与规范</span><span class="res-badge en">英文 · 可配翻译</span></div>
+            <p>modelcontextprotocol.io，一手规范与教程。想真正搞懂「Agent 怎么连工具」看这里。</p>
+            <div class="res-links"><a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">官方文档</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Anthropic 官方 MCP 入门课</span><span class="res-badge en">英文 · 免费</span></div>
+            <p>官方免费入门课程，从零讲清 MCP 是什么、怎么用。</p>
+            <div class="res-links"><a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank" rel="noopener">课程链接</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">DeepLearning.AI《MCP: Build Rich-Context AI Apps》</span><span class="res-badge en">英文 · 带字幕</span></div>
+            <p>吴恩达平台 × Anthropic 合作短课，1 小时 48 分带你动手搭 MCP server 与客户端。</p>
+            <div class="res-links"><a href="https://www.deeplearning.ai/courses/mcp-build-rich-context-ai-apps-with-anthropic" target="_blank" rel="noopener">课程链接</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="res-group" id="res-5">
+        <div class="res-group-head"><h3>⑤ 进阶 · 前沿理论</h3></div>
+        <div class="res-list">
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Hugging Face LLM 课程</span><span class="res-badge cn">有中文版</span></div>
+            <p>系统入门大模型与 NLP，从 Transformer 原理到微调、tokenization，免费，含中文翻译。</p>
+            <div class="res-links"><a href="https://huggingface.co/learn/llm-course" target="_blank" rel="noopener">课程链接</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">mlabonne / llm-course</span><span class="res-badge en">英文 · GitHub</span></div>
+            <p>GitHub 高星大模型学习路线图，配 Colab 笔记本，从基础到部署一条龙，适合系统进阶。</p>
+            <div class="res-links"><a href="https://github.com/mlabonne/llm-course" target="_blank" rel="noopener">GitHub</a></div>
+          </div>
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">Datawhale 大模型系列开源教程</span><span class="res-badge cn">中文</span></div>
+            <p>中文开源教程合集（self-llm 部署微调、so-large-lm 大模型基础等），适合系统补底层与实操。</p>
+            <div class="res-links"><a href="https://github.com/datawhalechina" target="_blank" rel="noopener">Datawhale GitHub</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="res-group" id="res-6">
+        <div class="res-group-head"><h3>⑥ Agent 工具使用教程</h3></div>
+        <div class="res-list">
+          <div class="res-item">
+            <div class="r-top"><span class="r-name">WorkBuddy 入门级教程「附最新功能使用详解」</span><span class="res-badge your">团队教程</span></div>
+            <p>从下载安装、主界面和权限设置，到模型选择、技能、连接器与实战演练，完整走一遍 Agent 工具的实际使用流程。建议边看边完成一个真实任务。</p>
+            <div class="res-links"><a href="WorkBuddy入门教程-排版版.html">打开第六章教程</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>自测与练习</h2>
+        <div class="desc">检验「深入」是否到位的自测题，和逼出深度的动手练习，都放在单独一页，方便反复自测。</div>
+      </div>
+      <a class="cta-card" href="团队深入能力训练-自测与练习.html">
         <div class="cta-title">打开「自测与练习」页 →</div>
-        <div class="cta-sub">51 道自测题按五站重新排序 · 动手练习清单。按四次学习完成五站，不跳过前沿能力与行业方向。</div>
+        <div class="cta-sub">50+ 道自测题（点击展开答案）· 动手练习清单，覆盖四大块全部概念。全部能从机制答出、不靠背诵，就算「深入」阶段验收通过。</div>
       </a>
     </section>
 
     <div class="footer">
-      团队 AI 能力训练 · 小白递进路线　|　最小可执行形态：动手前写预测、动手后写差异、每周聚起来拆彼此的翻车案例。
+      团队「深入」能力训练 · 三层深度地图　|　最小可执行形态：动手前写预测、动手后写差异、每周聚起来拆彼此的翻车案例。
     </div>
 
   </div>

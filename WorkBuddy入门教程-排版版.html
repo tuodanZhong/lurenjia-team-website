@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="WorkBuddy入门级教程「附最新功能使用详解」，看完我奶奶也会用了">
+  <title>WorkBuddy入门级教程「附最新功能使用详解」，看完我奶奶也会用了</title>
+  <style>
+  :root {
+    --paper: #f5f1ea;
+    --surface: #fffdf9;
+    --ink: #292522;
+    --muted: #756e67;
+    --accent: #d97757;
+    --accent-dark: #a94e37;
+    --line: #ded6cc;
+    --soft-accent: #f8e7dd;
+    --panel-radius: 14px;
+    --small-radius: 7px;
+    --popover-radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    color: var(--ink);
+    background: var(--paper);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: 92px 24px 118px;
+    color: var(--ink);
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    width: 520px;
+    height: 220px;
+    right: -80px;
+    top: -90px;
+    border: 1px solid rgba(217, 119, 87, .48);
+    border-radius: 50%;
+    transform: rotate(-17deg);
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    width: 320px;
+    height: 140px;
+    right: 75px;
+    top: 24px;
+    border-top: 1px solid rgba(217, 119, 87, .3);
+    border-radius: 50%;
+    transform: rotate(-17deg);
+  }
+  .hero-inner { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    color: var(--accent-dark);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+  .eyebrow::before { content: ""; width: 30px; height: 1px; background: var(--accent); }
+  h1, h2 {
+    font-family: Georgia, "Times New Roman", "Noto Serif SC", "Songti SC", serif;
+    font-weight: 400;
+  }
+  h1 { max-width: 900px; margin: 0; font-size: clamp(32px, 4.6vw, 56px); line-height: 1.1; letter-spacing: -.04em; }
+  .dek { max-width: 690px; margin: 28px 0 0; color: var(--muted); font-size: 17px; line-height: 1.8; }
+  .layout {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 245px minmax(0, 1fr);
+    grid-template-areas: "toc article";
+    gap: 28px;
+    max-width: 1160px;
+    margin: -58px auto 84px;
+    padding: 0 20px;
+  }
+  .article, .toc { background: var(--surface); border: 1px solid var(--line); }
+  .article { grid-area: article; min-width: 0; padding: clamp(30px, 5vw, 72px); border-radius: var(--panel-radius); }
+  .toc { grid-area: toc; align-self: start; position: sticky; top: 22px; padding: 24px 20px; border-radius: var(--panel-radius); }
+  .toc-title { margin: 0 0 14px; color: var(--accent-dark); font-family: Georgia, "Times New Roman", serif; font-size: 20px; }
+  .toc ol { margin: 0; padding-left: 22px; color: var(--muted); font-size: 13px; line-height: 1.65; }
+  .toc li + li { margin-top: 7px; }
+  .toc a { color: inherit; text-decoration: none; }
+  .toc a:hover { color: var(--accent-dark); }
+  .article > p:first-of-type { font-size: 20px; line-height: 1.82; color: #4c443d; }
+  p { margin: 0 0 1.25em; font-size: 17px; }
+  h2 {
+    counter-increment: section;
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin: 2.7em 0 .85em;
+    padding: 17px 0 13px;
+    border-top: 1px solid var(--line);
+    color: var(--ink);
+    font-size: clamp(24px, 3.2vw, 34px);
+    line-height: 1.25;
+    letter-spacing: -.035em;
+    scroll-margin-top: 22px;
+  }
+  h2::before {
+    content: counter(section, decimal-leading-zero);
+    position: static;
+    flex: 0 0 auto;
+    color: var(--accent);
+    font: 700 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: .08em;
+  }
+  h2::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 32px;
+    height: 2px;
+    background: var(--accent);
+  }
+  ol {
+    margin: 0 0 1.6em;
+    padding: 17px 24px 17px 45px;
+    background: #fbf5ef;
+    border: 1px solid #f0ded3;
+    border-left: 3px solid var(--accent);
+  }
+  li { padding-left: 7px; margin: .35em 0; font-size: 16px; }
+  .article-figure { margin: 32px 0 38px; text-align: center; }
+  .article-figure img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 760px;
+    margin: 0 auto;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    box-shadow: 0 10px 24px rgba(58, 45, 35, .09);
+    background: #f2eee8;
+  }
+  .callout {
+    margin: 24px 0;
+    padding: 16px 18px 16px 20px;
+    color: #704838;
+    background: var(--soft-accent);
+    border-left: 3px solid var(--accent);
+  }
+  .callout.warning { color: #704838; background: #fff0e8; border-left-color: #c65d40; }
+  .subsection-lead { margin-top: 2em; margin-bottom: .65em; color: var(--accent-dark); font-weight: 700; font-size: 20px; }
+  .source { margin-top: 50px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+  .source a { color: var(--accent-dark); overflow-wrap: anywhere; }
+  .source .wechat-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 4px;
+    color: var(--accent-dark);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+  .source .wechat-link:hover { color: var(--accent); }
+  .wechat-popover {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 14px);
+    z-index: 20;
+    width: min(236px, calc(100vw - 32px));
+    padding: 14px 14px 12px;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--popover-radius);
+    box-shadow: 0 16px 34px rgba(58, 45, 35, .2);
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate(-50%, 8px);
+    transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+  }
+  .wechat-popover::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -7px;
+    width: 12px;
+    height: 12px;
+    background: var(--surface);
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    transform: translateX(-50%) rotate(45deg);
+  }
+  .wechat-popover-title { display: block; margin: 0 0 10px; color: var(--ink); font-size: 14px; font-weight: 700; line-height: 1.4; }
+  .wechat-popover img { display: block; width: 100%; max-width: 208px; height: auto; margin: 0 auto; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+  .wechat-link:hover .wechat-popover,
+  .wechat-link:focus-visible .wechat-popover,
+  .wechat-link:focus-within .wechat-popover {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+  }
+  .back-link {
+    position: absolute;
+    top: 22px;
+    left: max(20px, calc((100% - 1120px) / 2));
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    color: var(--accent-dark);
+    background: rgba(255, 253, 249, .82);
+    border: 1px solid var(--line);
+    border-radius: var(--small-radius);
+    font-size: 13px;
+    text-decoration: none;
+  }
+  .back-link:hover { background: var(--surface); }
+  .to-top {
+    position: fixed;
+    right: clamp(16px, 3vw, 30px);
+    bottom: clamp(16px, 3vw, 30px);
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 42px;
+    padding: 9px 13px;
+    color: var(--surface);
+    background: rgba(169, 78, 55, .94);
+    border: 1px solid rgba(255, 253, 249, .58);
+    border-radius: 999px;
+    box-shadow: 0 8px 24px rgba(58, 45, 35, .18);
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .to-top:hover { background: var(--ink); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(58, 45, 35, .24); }
+  .to-top .arrow { font-size: 18px; line-height: 1; }
+  .wechat-link:focus-visible, .to-top:focus-visible { outline: 3px solid rgba(217, 119, 87, .42); outline-offset: 3px; }
+  @media (max-width: 820px) {
+    .hero { padding: 58px 20px 88px; }
+    .hero::before, .hero::after { right: -180px; }
+    .layout { display: flex; flex-direction: column; margin-top: -42px; padding: 0 12px; }
+    .toc { position: static; order: 1; margin-bottom: 16px; }
+    .article { order: 2; }
+    .toc ol { columns: 2; column-gap: 24px; }
+    .article { padding: 30px 22px 40px; }
+    p { font-size: 16px; }
+    .article > p:first-of-type { font-size: 18px; }
+  }
+  @media (max-width: 560px) {
+    .to-top { right: 14px; bottom: 14px; min-height: 40px; padding: 8px 11px; }
+    .wechat-popover { width: min(220px, calc(100vw - 28px)); }
+  }
+  @media print {
+    body { background: white; }
+    .hero { padding: 28px 0 34px; }
+    .layout { display: block; margin: 0 auto; padding: 0; max-width: 780px; }
+    .toc { display: none; }
+    .article { padding: 0; border: 0; }
+    .article-figure, h2, ol, .callout { break-inside: avoid; }
+    .back-link { display: none; }
+    .to-top, .wechat-popover { display: none !important; }
+  }
+</style>
+</head>
+<body>
+  <a class="back-link" href="training-map.html#res-6">← 返回第六章</a>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">WorkBuddy 入门指南</div>
+      <h1>WorkBuddy入门级教程「附最新功能使用详解」，看完我奶奶也会用了</h1>
+      <p class="dek">从下载安装、主界面和权限设置，到模型、专家、技能、连接器与实战案例，一篇文章快速了解 WorkBuddy 的常用工作流。</p>
+    </div>
+  </header>
+  <main class="layout">
+    <article class="article">
+      <p>前段时间我对国内的部分Agent产品做了一个初步的横向测评</p><p>最后发现，WorkBuddy在国内横向产品中太能打了</p><p>易观分析的一份报告也证明这不是我的一家之言，用户用脚投票，workbuddy的日活已经把第二名远远甩开在了身后。</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-01.webp" alt="image.png" loading="lazy"></figure><p>一方面WorkBuddy的生态太强了，这是腾讯系产品发展至今的先天优势，我相信没有人不用微信，不用微信你也看不到这篇文章。</p><p>另一方面就是WokrBuddy作为Agent产品本身就很出色，内置模型多，有国内最强的模型K3也有性价比极高的模型ds，还有限时免费的自家模型Hy3，还有大量其他模型。同时配套设施极其完善，可以说到了应有尽有的程度。</p><p>因此，我决定为可能会用到WorkBuddy的朋友们，写上一篇最新的入门保姆级教程。</p><p>相信我，即使你是小白，看完你也能快速上手。</p><p>我会从下载安装开始介绍，到各个功能模块的详解，开始实战前带大家改一下个性化设置，最后用两个案例带你全方位了解该如何使用WorkBuddy</p><h2 id="下载安装">下载安装</h2><p>任意浏览器检索「workbuddy」</p><p>点击进入官网，就是以下页面</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-02.webp" alt="下载页面.png" loading="lazy"></figure><p>Mac、Windows、鸿蒙系统全都支持，根据你的电脑系统选择相应的版本就行。</p><p>我的电脑系统是Mac，所以选择下载Mac版本进行演示，安装完成后打开是这样一个页面。</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-03.webp" alt="打开后.png" loading="lazy"></figure><p>点击登陆</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-04.webp" alt="微信图片_20260807114306_117_2.png" loading="lazy"></figure><p>会出现一个微信扫码登录的页面</p><p>如果你的电脑上已经登陆了微信，那就直接点击快捷登录就行，这个对我来说是真的很方便。</p><h2 id="认识主界面">认识主界面</h2><p>下面这张图就是登陆后的页面，有主界面也有侧边栏，不用担心，今天全部为你介绍一遍。</p><p>先来看看中间这一大块主界面有哪些功能。</p><figure class="article-figure" data-crop="[0.001300,0.000000,1.000000,0.878500]"><img src="assets/workbuddy/workbuddy-05.webp" alt="image.png" loading="lazy"></figure><p>红色圈出来的是你能够选择的三种主要模式，分别是：日常办公，代码开发，设计创意。</p><p>这三种模式基本上覆盖了使用中的大多数场景，绿色部分与三种模式关联，会随着你选择的模式不同有差别。</p><p>选择日常办公，就是文档处理、金融服务、数据分析等等。选择代码开发，就是网站开发、Agent应用等等</p><figure class="article-figure" data-crop="[0.222400,0.170100,0.916600,0.846200]"><img src="assets/workbuddy/workbuddy-06.webp" alt="image.png" loading="lazy"></figure><p>选择设计创意，就是网站设计、PPT设计和视觉海报等等</p><figure class="article-figure" data-crop="[0.229900,0.225300,0.917900,0.813300]"><img src="assets/workbuddy/workbuddy-07.webp" alt="image.png" loading="lazy"></figure><p>选择某种技能，比如选择了日常办公下的文档处理，还会出现各种更加详细的技能供你选择，这里就有财报分析、文档格式转化、竞品分析等等。</p><figure class="article-figure" data-crop="[0.171800,0.195200,1.000000,0.888200]"><img src="assets/workbuddy/workbuddy-08.webp" alt="image.png" loading="lazy"></figure><p>任意选择一个，比如说财报分析全流程，。就会出来一段财报分析全流程的提示词模版</p><figure class="article-figure" data-crop="[0.171800,0.137600,1.000000,0.744200]"><img src="assets/workbuddy/workbuddy-09.webp" alt="image.png" loading="lazy"></figure><p>提示词是什么呢，我们日常所说的提示词其实就是对话框中你向AI输入的那些语句，提示词越具体越明了，AI最终产出的效果就会越如意。</p><p>而WorkBuddy为了防止大家刚开始使用不太会写提示词，直接给了相应场景下的提示词模板，只需要根据自己的实际需要进行改动就行。</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-10.webp" alt="image.png" loading="lazy"></figure><p>点击左下角的➕，会出现图中这些选项，点击添加文件。</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-11.webp" alt="image.png" loading="lazy"></figure><p>可以选择添加本地文件、腾讯文档、ima知识库、乐享知识库。</p><p>本地文件就是你在使用workbuddy的设备上存放的文件，腾讯文档就是腾讯自家的在线文档，其余两个暂时放在一边，日常使用场景不多，属于进阶使用。</p><p>将文件上传后，你可以指挥workbuddy给你修改文件，转化文件格式等等。</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-12.webp" alt="image.png" loading="lazy"></figure><p>添加文件下面是选择模式，可以看到有两个模式可以选择</p><p>其实原本是三个，只是craft模式现在变成默认模式了</p><p>craft模式也就是默认模式下，当你给workbuddy发送指令后，workbuddy就会按照你的需求直接开始干活，也就是Agent模式，这会是使用场景最多的模式，所以直接被设为默认了</p><p class="callout warning">FBI warning，当workbuddy开始干活的时候，你的积分就在被消耗了</p><p>Plan模式下，当你提出需求后，workbuddy不会直接干活，而是和你讨论如何实现这个需求，先规划好</p><p>如果你在开始一个任务前，自己也不是很清楚自己的需求，我建议你先用Plan模式，防止Agent做任务的时候偏离了你的目标</p><p>Ask模式其实就是和AI聊天了，你问它答，不会动手操作，和用手机端豆包一样</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-13.webp" alt="image.png" loading="lazy"></figure><p>接下来的专家、技能以及连接器有两个入口，除了在左下角➕处可以选择，也可以在左边侧栏中点击进入</p><p>这个后面单独展开细说</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-14.webp" alt="image.png" loading="lazy"></figure><p>Auto边上的两个键，一个是语音输入，打开之后你对着电脑说话，对话框中就会出现对应的文字</p><p>另外一个就是发送了，点击就可以将你的提示词发送给大模型</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-15.webp" alt="image.png" loading="lazy"></figure><p>左下角的工作空间可以理解为项目文件夹，你可以新建一个工作空间完成一个项目，也可以选择本地已有的文件夹进行，如果你都不选，项目就会在默认路径输出。</p><p>一个项目放在一个工作空间中处理会更加便捷</p><p>如果你需要对自己的项目进行一个细致的管理，我也建议你还各个项目的工作空间隔开，不然产出都在默认路径输出，会混在一起，最后可能找不到自己需要的那个文件</p><h2 id="权限设置">权限设置</h2><figure class="article-figure"><img src="assets/workbuddy/workbuddy-16.webp" alt="image.png" loading="lazy"></figure><p>旁边点开可以设置权限，默认权限下更加安全，有风险的操作workbuddy会在询问过你，且你同意之后再进行</p><p>允许完全访问就是放开电脑上基本所有的用户权限给workbuddy，这样它可以利用一切工具来完成你的任务，也不需要中途一直请求你的许可。</p><p>这两种权限都有利有弊，默认权限下相对更安全，但是得有人看着，给它权限，不然workbuddy的工作可能会因为无权限进行下一步而中断。允许完全访问的话就可以交代清楚任务就不管了，但是可能会有未知风险</p><p>刚开始使用我建议大家还是选择默认权限，后面再根据自己的需求进行必要的改动。</p><h2 id="模型选择">模型选择</h2><p>右下角红框内是选择模型的地方</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-17.webp" alt="image.png" loading="lazy"></figure><p>点击Auto，就进入了模型选择页面。</p><p>workbuddy原生接入了大量的国产模型，如果你不知道该如何选择，你可以选择Auto不变，这也是默认选项。Auto模式中，进行任务时workbuddy会自动根据任务难度分配合适的模型。</p><p>简单说一下，日常工作中我会怎么选择这些模型。</p><p>一些简单的任务比如说做做研报、简单的编程，我会选择Hy3，这是腾讯自研的大模型，一直到八月底都限时免费。稍微复杂一点的我会选择DeepSeek，性价比之选。如果是一些比较复杂的任务，我会选择GLM5.2，这属于国内大模型中上一代的顶级王者。如果有GLM5.2也无法妥善处理的任务，我会选择Kimi的K3，这是目前国内综合最强的大模型。</p><p>大家也可以在自己的使用过程中，根据自己的偏好选择喜欢的大模型处理任务。</p><p>如果觉得这些大模型不足以满足自己的需要，也可以点击「配置自定义模型」，会出现以下页面</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-18.webp" alt="image.png" loading="lazy"></figure><p>在API Key处填写从别的大模型开放平台处导出的Key就可以了</p><p>大家注意，这个Key一般只会出现一次，也就是你刚创建出来的时候，之后就看不见了</p><p>所以要赶紧复制下来，可以保存到自己信任的文档中，也可以直接导入workbuddy中</p><p class="callout">千万不要将这个Key泄漏出去，任何人复制了这个Key都可以花你用自己钱买的token了。</p><h2 id="侧边栏介绍">侧边栏介绍</h2><figure class="article-figure"><img src="assets/workbuddy/workbuddy-19.webp" alt="image.png" loading="lazy"></figure><p>首先是「新建任务」，点击这个就会新建一个任务，即使你在别的对话窗口，也会跳到新页面，重新开始一段对话。</p><p>然后是「助理」，这个我觉得很实用，也很好玩。</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-20.webp" alt="image.png" loading="lazy"></figure><p>点击助理，会出现一个二维码，扫码绑定自己的手机之后，你就可以通过微信小程序在手机上控制workbuddy工作，也可以直接在微信对话框中与workbuddy进行对话。</p><p class="callout">注意，这必须保证你登陆着workbuddy的电脑是开机状态，对话和工作也会正常消耗你的积分</p><p>在介绍「项目」之前，我先介绍它下方的这个功能区</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-21.webp" alt="image.png" loading="lazy"></figure><p>一个一个来，首先是，专家</p><p>专家就是将该垂直领域的知识、技能都封装了进去，workbuddy中内置了大量的专家，你可以根据自己的需要选择，比如日常工作如果需要数据分析，就可以选择召唤数据分析师辅助工作。</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-22.webp" alt="image.png" loading="lazy"></figure><p>技能，也就是通常所说的skill，和专家不一样的是，专家是涵盖了一个领域的知识，广度和深度并重。</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-23.webp" alt="image.png" loading="lazy"></figure><p>skill是彻底抛弃广度，专注于一个角度深挖，装上技能后，workbuddy在某个角度处理问题的能力会大大提升。workbuddy中有一个skillhub，中文意思就是技能市场，其中收录了基本上日常能用到的所有skill，数以万计。当你的任务用专家表现一般时，不妨试试skill，反之亦然。</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-24.webp" alt="image.png" loading="lazy"></figure><p>连接器，其实就是MCP，一种和外部软件打通的协议，通过它你可以将workbuddy与其他软件连接起来，比如飞书、企业微信。</p><p>连接之后，workbuddy就能够读取授权软件中的信息，也可以在其中进行权限内的操作，这能够帮助你的workbuddy更便捷地辅助工作。</p><p>如果有什么产品你想接入，但是workbuddy中没有，你也可以自己定义。</p><p>总之，在确保基本设施可以满足用户日常需求的情况下，workbuddy的开放度同样很高。</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-25.webp" alt="image.png" loading="lazy"></figure><p>「自动化」就是给你的任务加个前置条件。当该前置条件被触发时，比如定了六点作为前置条件，六点到了，那么就会自动开始任务。</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-26.webp" alt="image.png" loading="lazy"></figure><p>这个资料库是workbuddy刚上的功能，算得上一次重磅升级，这个功能带来了两个大的提升。</p><p>一是在workbuddy中，大家可以对同一个网页进行编辑，就像编辑腾讯在线文档一样。</p><p>二是以前只能本地运行的的个人DIY工作台可以多设备同步数据了，你在电脑上更新了数据，手机上也能看见，反过来也是，甚至可以变成团队工作台。</p><p>不知道工作台怎么做的同学，一会就给你做个示范。</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-27.webp" alt="image.png" loading="lazy"></figure><p>最后介绍左边侧栏中的最后一项，项目</p><p>打开项目后，你可以选择新建一个项目，也可以根据模板创建一个</p><p>选择新建项目</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-28.webp" alt="image.png" loading="lazy"></figure><p>就会来到这个页面，在这你可以邀请自己的朋友、同事一起加入这个项目，共同协作，也可以在其中配置项目背景、MCP、专家、skill等等功能。</p><p>在我看来，这就是专门一个留给团队的协作空间。</p><h2 id="改设置">改设置</h2><p>介绍到这，距离实战演练只剩最后一步了，改设置。</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-29.webp" alt="image.png" loading="lazy"></figure><p>点击自己的头像，选择设置，我们来调整一下设置。</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-30.webp" alt="image.png" loading="lazy"></figure><p>我在使用每个Agent前，都会自己调整一下系统提示词，你可以在系统提示词中写一段话，workbuddy会在所有的任务中记住它，这样就不用在每次开始任务前重复提醒了。</p><p>我常用的系统提示词放在这了，需要的朋友可以自取。</p><p class="subsection-lead">一、底层开发思维</p><p>坚决杜绝闭门造车、重复造轮子</p><ol><li>启动项目或制定较大方案前，优先去 GitHub（代码托管平台）查找同类项目、文档、实现思路和源码</li><li>有成熟现成项目时，优先评估 license（许可证）、维护状态、安全风险和适配成本后复用</li><li>简单 bug（问题）修复、明确小改动或离线任务可不强制调研</li><li>多检索、多看、多拆解学习开源项目，可复用内容直接取用，有参考价值的方案借鉴参考</li><li>多套开源方案交叉对比，取优势、剔除缺陷糟粕</li></ol><p class="subsection-lead">二、文档同步</p><ol><li>功能开发、业务逻辑、接口协议、数据结构、产品交互或模块职责发生变化时，必须同步检查相关 README、开发规范、接口文档和当前状态文档是否需要更新。</li><li>文档同步属于开发收尾的一部分，不能只在用户提醒时才做；准备说明“完成”、运行 test通过或 commit前，都要检查文档是否过期。</li><li>如果只是内部实现细节调整，且不影响使用方式、接口、数据、交互和模块边界，可以说明“无需更新文档”。</li><li>如果发现旧文档会误导后续 Agent 或人工开发者，必须更新或归档，不能让过期文档继续留在默认阅读路径。</li><li>文档更新要优先更新当前执行入口和模块 README；历史设计、历史计划类文档如已归档，只在需要保留背景时补充归档说明，不作为当前执行依据。</li><li>更新当前执行文档时，优先把正文改成当前真实规则，不要用“修订说明”“当前改为”“之前如何”这类补丁式语气堆在顶部或正文里。</li><li>只有归档文档、migration note、changelog或用户明确要求保留历史脉络时，才记录历史修订说明；当前执行文档应保持像正式说明书，而不是更新日志。</li></ol><p class="subsection-lead">三、临时残留代码清理</p><ol><li>功能开发完成、test（测试）通过、准备 commit（提交）前，必须自动检查本轮是否留下临时残留代码。</li><li>明确属于临时验证的内容，Agent（代理程序）应自行清理，不需要用户判断。</li><li>可直接清理的内容包括：debug print（调试打印）、临时 file（文件）、一次性 script（脚本）、临时 mock（模拟数据）、临时 API（接口）、写死假数据、临时开关、临时注释和没有正式引用的验证代码。</li><li>不得清理正式业务代码、正式 regression test（回归测试）、正式 fixture（测试夹具）、正式 document（文档）、关键运行 log（日志）和为排查问题有意保留的诊断日志。</li><li>拿不准的内容必须单独列出，说明文件位置、用途、风险和建议，由用户决定。</li><li>如果用户要求 git commit（版本提交），先完成临时残留代码检查和必要清理，再运行 test（测试），最后 commit（提交）。</li><li>如果用户要求开发下一个功能，但发现上一轮可能还有残留，先提醒用户是否清理上一轮残留，再进入新功能。</li></ol><figure class="article-figure"><img src="assets/workbuddy/workbuddy-31.webp" alt="image.png" loading="lazy"></figure><p>如果你之前使用过别的AI产品，可以在此处导入记忆，让你的workbuddy一上手就很懂你</p><p>现在，基本上所有的界面、功能都介绍完了，设置也调好了</p><p>可以开始实战了</p><h2 id="实战演练">实战演练</h2><p class="subsection-lead">个人工作台</p><p>不妨让我们先来搭建一个属于自己的个人工作台，这可比上来就处理工作有意思得多</p><p>你可以在其中记录自己的开销、运动、看了什么书什么剧等等</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-32.webp" alt="image.png" loading="lazy"></figure><p>权限上我没动，默认权限，模型上我选择了Hy3，毕竟它免费，这个任务也不复杂，然后选择了工作台搭建师这个专家</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-33.webp" alt="image.png" loading="lazy"></figure><p>一切准备就绪后，还是有些无从下手，该怎么和workbuddy描述才能搭建一个工作台呢</p><p>不用担心，官方早就考虑到了这个问题</p><p>点击上方的「个人工作台」</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-34.webp" alt="image.png" loading="lazy"></figure><p>可以看到出现了一排工作台让你选择，这里我选择了生活工作台。</p><p>选择完毕后对话框中自动出现了一大段提示词，大家可以根据自己具体的需求再改一改。改完后点击发送，等待一会。</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-35.webp" alt="image.png" loading="lazy"></figure><p>不到一刻钟，一个生活工作台就搭建好了，这次在我是没有改模板内容的情况下生成的，可以看到功能还是比较齐全的。</p><p>现在这个工作台只能在本地运行，别的设备上是无法查看的，想要升级就要用到新上的资料库功能了</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-36.webp" alt="image.png" loading="lazy"></figure><figure class="article-figure"><img src="assets/workbuddy/workbuddy-37.webp" alt="image.png" loading="lazy"></figure><p>升级的方法很简单，跟workbuddy说上一句就行，接下来你就拥有了一个属于自己的，可以带出门的工作台了。如果你需要做一些轻量的应用，都可以复刻同样的操作。</p><p>接下来让workbuddy处理一下本地的文件。一般我会将提前需要处理的文件统一放置在一个文件夹中，分好类，这样可以让workbuddy工作时更加迅捷，直观。</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-38.webp" alt="image.png" loading="lazy"></figure><p>这里我选择了一个本地文件夹进行数据的处理，这是一个较为复杂的任务，需要workbuddy从PDF中抓取我需要的信息，这需要它先进行OCR再定位重点信息，还要可以进行语义理解，最后与另外一个文件进行匹配。</p><p>我事先已经把所有的逻辑整理好写入了一份MD也就是markdown格式的文件中，接下来只需要在对话框中说清楚你的需求，就像这样</p><figure class="article-figure"><img src="assets/workbuddy/workbuddy-39.webp" alt="image.png" loading="lazy"></figure><p class="callout">注意，真的建议大家在描述自己需求时尽量清晰，清晰的需求会让Agent更好地明白你要做什么，特别对于一些不是很聪明的模型，如果你的需求模糊，可能会出现一些比较糟糕的结果。</p><p>为了保证任务完成率和质量，打磨提示词是有必须性的。砍柴不误磨刀功。</p><p>能够看到半个小时后workbuddy输出了结果，我检查后发现质量完全没问题，同样的任务我之前人工肝了一个星期。</p><p>对于重复任务，AI还会越干越快，第一遍写的脚本它能够复用，前面踩的坑它也会总结，防止下次再犯。</p><h2 id="小结">小结</h2><p>Agent确实大大解放了生产力，作为工具它很棒，如何使用确实还是一件需要学习的事情。</p><p>好的工具可以帮助我们完成任务，但是任务本身需要人类提供。一个好的任务、好的想法，会让你的Agent创造出更加优秀的产出。</p><p>人在这条链路上始终是主导者，所以不要担心AI，放心大胆地去学习它、使用它吧！</p>
+      <div class="source">更多工具教学请关注公众号 <a class="wechat-link" href="#wechat-qr">「路人甲TM」<span class="wechat-popover" id="wechat-qr" role="tooltip"><span class="wechat-popover-title">扫码关注公众号</span><img src="assets/wechat-qr.jpg" alt="路人甲微信公众号二维码"></span></a></div>
+    </article>
+    <nav class="toc" aria-label="文章目录">
+      <p class="toc-title">文章目录</p>
+      <ol><li><a href="#下载安装">下载安装</a></li><li><a href="#认识主界面">认识主界面</a></li><li><a href="#权限设置">权限设置</a></li><li><a href="#模型选择">模型选择</a></li><li><a href="#侧边栏介绍">侧边栏介绍</a></li><li><a href="#改设置">改设置</a></li><li><a href="#实战演练">实战演练</a></li><li><a href="#小结">小结</a></li></ol>
+    </nav>
+  </main>
+  <button class="to-top" id="to-top" type="button" aria-label="回到页面顶部" title="回到页面顶部"><span class="arrow" aria-hidden="true">↑</span><span>顶部</span></button>
+  <script>
+    (() => {
+      document.getElementById('to-top').addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
+  </script>
+</body>
+</html>
